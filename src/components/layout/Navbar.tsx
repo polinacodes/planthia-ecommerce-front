@@ -17,7 +17,7 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`flex items-center justify-between px-12 py-6 sticky top-0 z-50 transition-all duration-300 ${isScrolled
+      className={`flex items-center justify-between px-3 md:px-8 lg:px-12 py-6 sticky top-0 z-50 transition-all duration-300 ${isScrolled
         ? "bg-planthia-cream/60 backdrop-blur-md shadow-sm"
         : "bg-transparent"
         }`}
@@ -33,18 +33,18 @@ export default function Navbar() {
         <Link href="/news" className="hover:text-planthia-green transition-colors">Contacto</Link>
       </div>
 
-      <div className="flex items-center gap-6 text-planthia-dark">
+      <div className="flex items-center gap-4 sm:gap-6 text-planthia-dark">
         <button className="hover:text-planthia-green transition-colors cursor-pointer">
-          <Search size={22} />
+          <Search size={20} className="sm:w-[22px] sm:h-[22px]" />
         </button>
         <button className="hover:text-planthia-green transition-colors cursor-pointer relative">
-          <ShoppingCart size={22} />
+          <ShoppingCart size={20} className="sm:w-[22px] sm:h-[22px]" />
           <span className="absolute -top-2 -right-2 bg-planthia-green text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
             0
           </span>
         </button>
         <button className="hover:text-planthia-green transition-colors cursor-pointer">
-          <User size={22} />
+          <User size={20} className="sm:w-[22px] sm:h-[22px]" />
         </button>
       </div>
     </nav>
