@@ -1,0 +1,18 @@
+@import "tailwindcss";
+
+@theme {
+  --color-planthia-green: #588534;
+  --color-planthia-dark: #0F110E;
+  --color-planthia-light-green: #739D52;
+  --color-planthia-cream: #F6F6F6;
+  --color-planthia-ice: #FFFFFF;
+
+  /* Tipografías */
+  --font-headline: var(--font-manrope);
+  --font-body: var(--font-inter);
+}
+
+:root {
+  background-color: var(--color-planthia-cream);
+  color: var(--color-planthia-dark);
+}
