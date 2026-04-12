@@ -21,11 +21,11 @@ const categories = [
 
 export default function Categories() {
   return (
-    <section className="bg-cream py-24 pt-48 px-6 md:px-12 relative z-0">
+    <section  className="bg-cream pt-48 pb-20 xl:pt-62 xl:pb-24 px-6 md:px-12 relative z-0">
       <div className="max-w-7xl mx-auto">
         {/* Encabezado */}
         <div className="mb-16"> 
-          <h2 className="text-4xl md:text-5xl font-extrabold text-[#1A1A1A] tracking-tight">
+          <h2 className="text-4xl font-extrabold text-[#1A1A1A] tracking-tight">
             Nuestras colecciones
           </h2>
           <p className="text-gray-400 mt-4 text-lg font-medium">

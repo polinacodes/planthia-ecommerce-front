@@ -5,7 +5,7 @@ export default function Hero() {
   return (
     // <section className="relative bg-white py-20 px-6 md:px-12">
 
-    <section className="grid grid-cols-12 gap-4 items-center lg:min-h-[70vh]">
+    <section className="grid grid-cols-12 gap-4 items-center lg:min-h-[70vh] ">
 
       {/* Contenido Izquierdo  */}
       <div className="col-span-12 lg:col-span-5 z-10 mt-8 lg:mt-0 px-4 md:px-0 order-last lg:order-first max-[1366px]:order-last">
@@ -45,7 +45,7 @@ export default function Hero() {
         </div>
 
         {/* CONTENEDOR DE PLANTA */}
-        <div className="absolute -top-30 sm:-top-28 lg:-top-32 max-[1366px]:-top-28 -left-4 -right-4 sm:-left-6 sm:-right-6 md:left-0 md:right-0 lg:-left-10 xl:-left-16 max-[1366px]:left-0 max-[1366px]:right-0 lg:right-auto z-10 w-auto md:w-full h-[120%] lg:h-[140%] flex items-start justify-center lg:justify-start max-[1366px]:justify-center z-10">
+        <div className="absolute -top-30 sm:-top-28 lg:-top-32 max-[1366px]:-top-28 -left-4 -right-4 sm:-left-6 sm:-right-6 md:left-0 md:right-0 lg:-left-10 xl:-left-16 max-[1366px]:left-0 max-[1366px]:right-0 lg:right-auto z-10 w-auto md:w-full h-[120%] lg:h-[140%] xl:h-[150%] flex items-start justify-center lg:justify-start max-[1366px]:justify-center z-10">
           <div className="relative w-full lg:w-[110%] max-[1366px]:w-full h-full">
             <Image
               src="/hero.webp"

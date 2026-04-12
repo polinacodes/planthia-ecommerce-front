@@ -6,7 +6,7 @@
     "tags": ["pothos", "potus", "potos", "marble queen", "epipremnum aureum", "planta colgante", "hiedra del diablo", "variegado", "blanco y verde"],
     "price": 2800,
     "description": "Una planta colgante extremadamente resistente con hojas en tonos blanco y verde. Ideal para purificar el aire.",
-    "image": "/products/pothos.webp",
+    "image": "/pothos-marble-queen.webp",
     "category": "interior",
     "featured": true,
     "stock": 15
@@ -18,7 +18,7 @@
     "tags": ["pink princess", "filodendro rosa", "philodendron", "planta rosa", "coleccion", "variegada", "filodendro pink"],
     "price": 12500,
     "description": "La joya de cualquier colección. Sus hojas oscuras con manchas rosadas naturales la hacen única en su especie.",
-    "image": "/products/pink-princess.webp",
+    "image": "/philodendron-pink-princess.webp",
     "category": "interior",
     "featured": true,
     "stock": 3
@@ -30,7 +30,7 @@
     "tags": ["monstera", "costilla de adan", "ceriman", "filodendro de hoja partida", "monsteras", "selvatico", "tropical"],
     "price": 5400,
     "description": "Famosa por sus grandes hojas con agujeros naturales. Aporta un look selvático instantáneo a cualquier living.",
-    "image": "/products/monstera.webp",
+    "image": "/monstera-deliciosa.webp",
     "category": "interior",
     "featured": true,
     "stock": 8
@@ -42,7 +42,7 @@
     "tags": ["lengua de suegra", "espada de san jorge", "snake plant", "sansevieria", "planta indestructible", "rabo de tigre", "sanseviera"],
     "price": 3200,
     "description": "Prácticamente indestructible. Perfecta para principiantes y espacios con poca luz natural.",
-    "image": "/products/sansevieria.webp",
+    "image": "/sansevieria.webp",
     "category": "interior",
     "featured": true,
     "stock": 20
@@ -54,7 +54,7 @@
     "tags": ["anthurium", "anturio", "cala roja", "flor roja", "anturios", "planta con flor"],
     "price": 4800,
     "description": "Destaca por sus flores rojas cerosas y hojas brillantes en forma de corazón. Un toque de color tropical.",
-    "image": "/products/anthurium.webp",
+    "image": "/anthurium.webp",
     "category": "interior",
     "featured": false,
     "stock": 10
@@ -66,7 +66,7 @@
     "tags": ["cuna de moises", "lirio de la paz", "espatifilo", "spathiphyllum", "flor blanca"],
     "price": 3500,
     "description": "Elegante y purificadora. Sus flores blancas contrastan perfectamente con su follaje verde oscuro.",
-    "image": "/products/spathiphyllum.webp",
+    "image": "/spathiphyllum.webp",
     "category": "interior",
     "featured": false,
     "stock": 12
@@ -78,7 +78,7 @@
     "tags": ["gomero", "ficus elastica", "rubber plant", "ficus robusta", "hojas grandes", "gomero negro"],
     "price": 5200,
     "description": "Hojas grandes, gruesas y muy brillantes. Es una planta estructural que llena cualquier rincón.",
-    "image": "/products/ficus-elastica.webp",
+    "image": "/ficus-elastica.webp",
     "category": "interior",
     "featured": false,
     "stock": 7
@@ -90,7 +90,7 @@
     "tags": ["peperomia", "peperomia rugosa", "ripple peperomia", "hoja arrugada", "peperomia roja", "mini planta"],
     "price": 2100,
     "description": "Pequeña y compacta, con hojas profundamente texturizadas en tonos verde oscuro y rojizos.",
-    "image": "/products/peperomia-rugosa.webp",
+    "image": "/peperomia-rugosa.webp",
     "category": "interior",
     "featured": false,
     "stock": 25
@@ -102,7 +102,7 @@
     "tags": ["bromelia", "vriesea", "pluma de indio", "planta tropical", "flor naranja", "bromelias"],
     "price": 4300,
     "description": "Exótica inflorescencia en forma de pluma de color naranja vibrante sobre una roseta de hojas verdes.",
-    "image": "/products/bromelia.webp",
+    "image": "/bromelia-vriesea.webp",
     "category": "interior",
     "featured": false,
     "stock": 6
@@ -114,7 +114,7 @@
     "tags": ["alocasia black velvet", "oreja de elefante", "planta negra", "terciopelo", "alocasia", "planta de coleccion"],
     "price": 8900,
     "description": "Hojas de textura aterciopelada casi negras con venas blancas muy marcadas. Una pieza de diseño natural.",
-    "image": "/products/alocasia-black-velvet.webp",
+    "image": "/alocasia-black-velvet.webp",
     "category": "interior",
     "featured": false,
     "stock": 4
@@ -126,7 +126,7 @@
     "tags": ["areca", "palmera de salon", "dypsis lutescens", "palmerita", "tropical", "palmera de interior"],
     "price": 7500,
     "description": "Palmera de aspecto ligero y plumoso. Ideal para crear un ambiente tropical relajado y aireado.",
-    "image": "/products/palmera-areca.webp",
+    "image": "/palmera-areca.webp",
     "category": "interior",
     "featured": false,
     "stock": 5
