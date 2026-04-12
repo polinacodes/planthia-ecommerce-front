@@ -25,9 +25,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es" className={`${manrope.variable} ${inter.variable}`}>
-      <body className="font-body antialiased bg-planthia-cream text-planthia-dark">
+      <body className=" relative font-body antialiased bg-planthia-cream text-planthia-dark">
         <Navbar />
-        <main>
+        <main className="relative">
           {children}
         </main>
       </body>
