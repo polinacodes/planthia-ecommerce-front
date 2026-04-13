@@ -19,7 +19,7 @@ const HeroTienda = () => {
   }, []);
 
   return (
-   <section className="relative w-screen left-[50%] right-[50%] ml-[-50vw] mr-[-50vw] h-[35vh] md:h-[42vh] mt-[-96px] overflow-hidden mb-16">
+  <section className="relative w-full h-[35vh] md:h-[42vh] mt-[-96px] overflow-hidden mb-16">
   {/* Carrusel de Imágenes */}
   <AnimatePresence mode="wait">
     <motion.img
