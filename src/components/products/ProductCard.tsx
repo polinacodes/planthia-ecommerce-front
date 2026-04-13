@@ -46,7 +46,7 @@ const ProductCard = ({ plant, isActive, onClick }: ProductCardProps) => {
       >
         <Heart
           className={`w-5 h-5 sm:w-6 sm:h-6 transition-colors ${
-            isActive ? 'text-white/70 hover:text-white' : 'text-gray-300 hover:text-red-400'
+            isActive ? 'text-white/70 hover:text-white' : 'text-gray-300 hover:text-[#588534]'
           }`}
         />
       </motion.button>

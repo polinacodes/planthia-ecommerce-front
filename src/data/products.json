@@ -9,7 +9,12 @@
     "image": "/pothos-marble-queen.webp",
     "category": "interior",
     "featured": true,
-    "stock": 15
+    "stock": 15,
+    "light": "indirecta",
+    "petFriendly": false,
+    "difficulty": "principiante",
+    "water": "Cada 7-10 días",
+    "growth": "rápido"
   },
   {
     "id": "p2",
@@ -21,7 +26,12 @@
     "image": "/philodendron-pink-princess.webp",
     "category": "interior",
     "featured": true,
-    "stock": 3
+    "stock": 3,
+    "light": "indirecta",
+    "petFriendly": false,
+    "difficulty": "experto",
+    "water": "Semanal",
+    "growth": "moderado"
   },
   {
     "id": "p3",
@@ -33,7 +43,12 @@
     "image": "/monstera-deliciosa.webp",
     "category": "interior",
     "featured": true,
-    "stock": 8
+    "stock": 8,
+    "light": "indirecta",
+    "petFriendly": false,
+    "difficulty": "principiante",
+    "water": "Cada 10 días",
+    "growth": "rápido"
   },
   {
     "id": "p4",
@@ -45,7 +60,12 @@
     "image": "/sansevieria.webp",
     "category": "interior",
     "featured": true,
-    "stock": 20
+    "stock": 20,
+    "light": "sombra",
+    "petFriendly": false,
+    "difficulty": "principiante",
+    "water": "Cada 15-20 días",
+    "growth": "lento"
   },
   {
     "id": "p5",
@@ -57,7 +77,12 @@
     "image": "/anthurium.webp",
     "category": "interior",
     "featured": true,
-    "stock": 10
+    "stock": 10,
+    "light": "indirecta",
+    "petFriendly": false,
+    "difficulty": "experto",
+    "water": "2 veces por semana",
+    "growth": "lento"
   },
   {
     "id": "p6",
@@ -69,7 +94,12 @@
     "image": "/spathiphyllum.webp",
     "category": "interior",
     "featured": false,
-    "stock": 12
+    "stock": 12,
+    "light": "sombra",
+    "petFriendly": false,
+    "difficulty": "principiante",
+    "water": "2-3 veces por semana",
+    "growth": "moderado"
   },
   {
     "id": "p7",
@@ -81,7 +111,12 @@
     "image": "/ficus-elastica.webp",
     "category": "interior",
     "featured": false,
-    "stock": 7
+    "stock": 7,
+    "light": "indirecta",
+    "petFriendly": false,
+    "difficulty": "principiante",
+    "water": "Cada 10-12 días",
+    "growth": "rápido"
   },
   {
     "id": "p8",
@@ -93,7 +128,12 @@
     "image": "/peperomia-rugosa.webp",
     "category": "interior",
     "featured": false,
-    "stock": 25
+    "stock": 25,
+    "light": "indirecta",
+    "petFriendly": true,
+    "difficulty": "principiante",
+    "water": "Semanal",
+    "growth": "lento"
   },
   {
     "id": "p9",
@@ -105,7 +145,12 @@
     "image": "/bromelia-vriesea.webp",
     "category": "interior",
     "featured": false,
-    "stock": 6
+    "stock": 6,
+    "light": "indirecta",
+    "petFriendly": true,
+    "difficulty": "experto",
+    "water": "Cada 7-10 días",
+    "growth": "lento"
   },
   {
     "id": "p10",
@@ -117,7 +162,12 @@
     "image": "/alocacia-black-velvet.webp",
     "category": "interior",
     "featured": true,
-    "stock": 4
+    "stock": 4,
+    "light": "indirecta",
+    "petFriendly": false,
+    "difficulty": "experto",
+    "water": "Semanal",
+    "growth": "lento"
   },
   {
     "id": "p11",
@@ -129,6 +179,11 @@
     "image": "/palmera-areca.webp",
     "category": "interior",
     "featured": true,
-    "stock": 5
+    "stock": 5,
+    "light": "indirecta",
+    "petFriendly": true,
+    "difficulty": "principiante",
+    "water": "2 veces por semana",
+    "growth": "rápido"
   }
 ]
