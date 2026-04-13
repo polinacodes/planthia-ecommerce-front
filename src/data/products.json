@@ -56,7 +56,7 @@
     "description": "Destaca por sus flores rojas cerosas y hojas brillantes en forma de corazón. Un toque de color tropical.",
     "image": "/anthurium.webp",
     "category": "interior",
-    "featured": false,
+    "featured": true,
     "stock": 10
   },
   {
@@ -109,14 +109,14 @@
   },
   {
     "id": "p10",
-    "name": "Alocasia Black Velvet",
-    "commonName": "Alocasia Terciopelo",
+    "name": "Alocaia Black Velvet",
+    "commonName": "Alocacia Terciopelo",
     "tags": ["alocasia black velvet", "oreja de elefante", "planta negra", "terciopelo", "alocasia", "planta de coleccion"],
     "price": 8900,
     "description": "Hojas de textura aterciopelada casi negras con venas blancas muy marcadas. Una pieza de diseño natural.",
-    "image": "/alocasia-black-velvet.webp",
+    "image": "/alocacia-black-velvet.webp",
     "category": "interior",
-    "featured": false,
+    "featured": true,
     "stock": 4
   },
   {
@@ -128,7 +128,7 @@
     "description": "Palmera de aspecto ligero y plumoso. Ideal para crear un ambiente tropical relajado y aireado.",
     "image": "/palmera-areca.webp",
     "category": "interior",
-    "featured": false,
+    "featured": true,
     "stock": 5
   }
 ]

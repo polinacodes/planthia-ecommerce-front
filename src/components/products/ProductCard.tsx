@@ -4,11 +4,12 @@ import React from 'react';
 import { Eye, Heart } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 
 interface ProductCardProps {
   plant: any;
   isActive: boolean;
-  onClick: () => void;
+  onClick: (e: React.MouseEvent) => void;
 }
 
 const ProductCard = ({ plant, isActive, onClick }: ProductCardProps) => {
@@ -18,74 +19,132 @@ const ProductCard = ({ plant, isActive, onClick }: ProductCardProps) => {
   };
 
   return (
-    <div
+    <motion.div
       onClick={onClick}
-      className={`relative transition-all duration-500 cursor-pointer rounded-3xl p-6 group flex items-center justify-between ${isActive
-          ? 'bg-[#5B823B] text-white scale-105 z-20 shadow-[0_35px_60px_-15px_rgba(0,0,0,0.5)] h-[240px]' // Card activa: verde, apaisada, un poco más grande a escala
-          : 'bg-white text-gray-800 shadow-sm border border-gray-100 hover:shadow-lg h-[220px] z-10' // Card inactiva: blanca, apaisada
-        } ${!isActive && 'overflow-hidden'}`}
+      layout
+      transition={{
+        type: "spring",
+        stiffness: 400,
+        damping: 30,
+        mass: 0.8
+      }}
+      className={`relative cursor-pointer rounded-3xl p-4 sm:p-5 lg:p-6 group flex items-center ${
+        isActive
+          ? 'bg-[#5B823B] text-white lg:scale-105 z-20 shadow-lg sm:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.4)] lg:shadow-[0_35px_60px_-15px_rgba(0,0,0,0.5)] min-h-[180px] sm:min-h-[200px] lg:h-[240px]'
+          : 'bg-white text-gray-800 shadow-sm border border-gray-100 hover:shadow-lg min-h-[160px] sm:min-h-[180px] lg:h-[220px] z-10'
+      } ${!isActive && 'overflow-hidden'}`}
+      whileHover={!isActive ? { scale: 1.02, y: -2 } : {}}
+      whileTap={!isActive ? { scale: 0.98 } : {}}
     >
-      {/* Icono Favorito (Placeholder) */}
-      <button
+      {/* Icono Favorito */}
+      <motion.button
         onClick={handleFavorite}
         title="Próximamente: Agregar a favoritos"
-        className="absolute top-4 right-4 z-30"
+        className="absolute top-3 right-3 sm:top-4 sm:right-4 z-30"
+        whileHover={{ scale: 1.15 }}
+        whileTap={{ scale: 0.9 }}
       >
         <Heart
-          className={`w-6 h-6 transition-colors ${isActive ? 'text-white/70 hover:text-white' : 'text-gray-300 hover:text-red-400'
-            }`}
+          className={`w-5 h-5 sm:w-6 sm:h-6 transition-colors ${
+            isActive ? 'text-white/70 hover:text-white' : 'text-gray-300 hover:text-red-400'
+          }`}
         />
-      </button>
+      </motion.button>
 
-      {/* Contenedor principal*/}
-      <div className="flex items-center gap-4 h-full relative w-full">
+      {/* Contenedor principal */}
+      <div className="flex items-center gap-3 sm:gap-4 h-full relative w-full">
 
-        {/* Lado Izquierdo: Planta con efecto de crecimiento Desktop */}
-        <div className={`transition-all duration-500 ease-in-out z-20 flex-shrink-0 flex justify-center ${isActive
-            ? 'md:absolute md:-top-8 md:-left-12 md:scale-[1.7] scale-110' // Efecto "vuelo" desktop calibrado
-            : 'relative scale-100 -translate-x-4'
-          }`}>
+        {/* Lado Izquierdo: Planta */}
+        <motion.div 
+          layout
+          transition={{
+            type: "spring",
+            stiffness: 400,
+            damping: 30,
+            mass: 0.8
+          }}
+          className={`z-20 flex-shrink-0 flex justify-center ${
+            isActive
+              ? 'lg:absolute lg:-top-8 lg:-left-12 lg:scale-[1.7] scale-110 sm:scale-115'
+              : 'relative scale-90 sm:scale-100 -translate-x-2 sm:-translate-x-4'
+          }`}
+        >
           <Image
             src={plant.image}
             alt={plant.name}
-            width={160}
-            height={160}
-            className="object-contain"
+            width={isActive ? 130 : 110}
+            height={isActive ? 130 : 110}
+            className={`object-contain ${isActive ? 'sm:w-[140px] lg:w-[160px]' : 'sm:w-[120px] lg:w-[140px]'}`}
             priority={isActive}
           />
-        </div>
+        </motion.div>
 
         {/* Lado Derecho: Información */}
-        <div className={`flex-1 z-10 transition-all duration-500 pr-2 ${isActive ? 'md:ml-36' : '-ml-2' /* Dejamos espacio para la planta que crece */}`}>
-          <h3 className="text-xl font-extrabold leading-tight">{plant.name}</h3>
+        <div className={`flex-1 z-10 transition-all duration-300 ${
+          isActive ? 'lg:ml-36' : ''
+        }`}>
+          <h3 className={`font-extrabold leading-tight ${
+            isActive 
+              ? 'text-base sm:text-lg lg:text-xl' 
+              : 'text-sm sm:text-base lg:text-lg'
+          }`}>
+            {plant.name}
+          </h3>
 
-          {/* Descripción (Más visible al estar activa, limitada a 2 líneas para mantener proporción) */}
-          <p className={`text-xs leading-relaxed line-clamp-2 transition-opacity duration-300 ${isActive ? 'opacity-90 mt-2 mb-4' : 'opacity-0 h-0 pointer-events-none'}`}>
+          {/* Descripción */}
+          <motion.p 
+            initial={false}
+            animate={{ 
+              opacity: isActive ? 0.9 : 0,
+              height: isActive ? 'auto' : 0,
+              marginTop: isActive ? '0.25rem' : 0,
+              marginBottom: isActive ? '0.5rem' : 0
+            }}
+            transition={{ duration: 0.25, delay: isActive ? 0.1 : 0 }}
+            className={`text-[10px] sm:text-xs leading-relaxed line-clamp-2 ${
+              !isActive && 'pointer-events-none'
+            }`}
+          >
             {plant.description}
-          </p>
+          </motion.p>
 
-          {/* Precio (Siempre visible, cambia de color) */}
-          <span className={`text-2xl font-bold block my-2 ${isActive ? 'text-white' : 'text-[#5B823B]'}`}>
+          {/* Precio */}
+          <span className={`font-bold block my-1 sm:my-2 transition-colors duration-300 ${
+            isActive ? 'text-white' : 'text-[#5B823B]'
+          } ${isActive ? 'text-lg sm:text-xl lg:text-2xl' : 'text-base sm:text-lg lg:text-xl'}`}>
             ${plant.price}
           </span>
 
-          {/* Botones (Solo activos, alineados horizontalmente) */}
-          <div className={`flex items-center gap-3 transition-opacity duration-300 ${isActive ? 'opacity-100' : 'opacity-0 pointer-events-none h-0'}`}>
-            <button className="bg-white text-[#5B823B] px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-gray-100 transition-colors shadow-sm">
+          {/* Botones */}
+          <motion.div 
+            initial={false}
+            animate={{ 
+              opacity: isActive ? 1 : 0,
+              height: isActive ? 'auto' : 0
+            }}
+            transition={{ duration: 0.25, delay: isActive ? 0.15 : 0 }}
+            className={`flex items-center gap-2 sm:gap-3 ${
+              !isActive && 'pointer-events-none'
+            }`}
+          >
+            <motion.button 
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="bg-white text-[#5B823B] px-3 sm:px-4 lg:px-5 py-1.5 sm:py-2 lg:py-2.5 rounded-lg sm:rounded-xl text-xs sm:text-sm font-bold hover:bg-gray-100 transition-colors shadow-sm"
+            >
               Agregar
-            </button>
+            </motion.button>
             <Link
               href={`/product/${plant.id}`}
-              className="p-3 bg-white/20 rounded-xl hover:bg-white/30 transition-colors"
-              onClick={(e) => e.stopPropagation()} // Vital para el link
+              className="p-2 sm:p-2.5 lg:p-3 bg-white/20 rounded-lg sm:rounded-xl hover:bg-white/30 transition-colors"
+              onClick={(e) => e.stopPropagation()}
             >
-              <Eye className="w-5 h-5 text-white" />
+              <Eye className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
             </Link>
-          </div>
+          </motion.div>
         </div>
-
       </div>
-    </div>
+    </motion.div>
   );
 };
 
