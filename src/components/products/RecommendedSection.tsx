@@ -54,7 +54,7 @@ const RecommendedSection = ({ plants }: { plants: any[] }) => {
   const visiblePlants = plants.slice(currentIndex, currentIndex + visibleCount);
 
   const handleCardClick = (plantId: string | number, e: React.MouseEvent) => {
-    e.stopPropagation(); 
+    e.stopPropagation();
     setActiveId(activeId === plantId ? null : plantId);
   };
 
@@ -83,31 +83,29 @@ const RecommendedSection = ({ plants }: { plants: any[] }) => {
         </div>
       </div>
 
-      {/* VISTA TABLET/DESKTOP: Carrusel manual */}
+      {/* VISTA TABLET/DESKTOP: Carrusel horizontal */}
       <div className="hidden md:block relative">
         {/* Flecha Izquierda */}
         <button
           onClick={prevSlide}
           disabled={currentIndex === 0}
-          className={`absolute left-0 top-1/2 -translate-y-1/2 -translate-x-5 lg:-translate-x-6 z-20 w-10 h-10 lg:w-12 lg:h-12 bg-white rounded-full shadow-lg flex items-center justify-center text-[#5B823B] hover:bg-[#5B823B] hover:text-white transition-all duration-300 ${
-            currentIndex === 0 ? 'opacity-0 pointer-events-none' : 'opacity-100'
-          }`}
+          className={`absolute left-0 top-1/2 -translate-y-1/2 -translate-x-5 lg:-translate-x-6 z-20 w-10 h-10 lg:w-12 lg:h-12 bg-white rounded-full shadow-lg flex items-center justify-center text-[#5B823B] hover:bg-[#5B823B] hover:text-white transition-all duration-300 ${currentIndex === 0 ? 'opacity-0 pointer-events-none' : 'opacity-100'
+            }`}
         >
           <ChevronLeft className="w-5 h-5 lg:w-6 lg:h-6" />
         </button>
 
         {/* Grid de cards */}
         <div className="w-full">
-          <motion.div 
+          <motion.div
             key={currentIndex}
             initial={{ opacity: 0.6, x: 10 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ type: "spring", stiffness: 500, damping: 35, mass: 0.5 }}
-            className={`grid gap-4 lg:gap-6 ${
-              visibleCount === 2 ? 'grid-cols-2' : 
-              visibleCount === 3 ? 'grid-cols-3' : 
-              'grid-cols-4'
-            }`}
+            className={`grid gap-4 lg:gap-6 ${visibleCount === 2 ? 'grid-cols-2' :
+                visibleCount === 3 ? 'grid-cols-3' :
+                  'grid-cols-4'
+              }`}
           >
             {visiblePlants.map((plant) => (
               <div key={`carousel-${plant.id}`} className="py-14 w-full">
@@ -125,22 +123,20 @@ const RecommendedSection = ({ plants }: { plants: any[] }) => {
         <button
           onClick={nextSlide}
           disabled={currentIndex >= maxIndex}
-          className={`absolute right-0 top-1/2 -translate-y-1/2 translate-x-5 lg:translate-x-6 z-20 w-10 h-10 lg:w-12 lg:h-12 bg-white rounded-full shadow-lg flex items-center justify-center text-[#5B823B] hover:bg-[#5B823B] hover:text-white transition-all duration-300 ${
-            currentIndex >= maxIndex ? 'opacity-0 pointer-events-none' : 'opacity-100'
-          }`}
+          className={`absolute right-0 top-1/2 -translate-y-1/2 translate-x-5 lg:translate-x-6 z-20 w-10 h-10 lg:w-12 lg:h-12 bg-white rounded-full shadow-lg flex items-center justify-center text-[#5B823B] hover:bg-[#5B823B] hover:text-white transition-all duration-300 ${currentIndex >= maxIndex ? 'opacity-0 pointer-events-none' : 'opacity-100'
+            }`}
         >
           <ChevronRight className="w-5 h-5 lg:w-6 lg:h-6" />
         </button>
       </div>
 
       {/* Botón "Ver todos" */}
-      <div className="flex justify-end mt-16">
+      <div className="flex justify-end mt-8">
         <Link
           href="/tienda"
-          className="group flex items-center gap-3 text-lg font-bold text-[#555] hover:text-[#5B823B] transition-colors"
+          className="bg-planthia-green text-white px-8 py-3 rounded-full font-bold text-sm md:text-base hover:bg-opacity-90 transition-all shadow-lg shadow-planthia-green/20 active:scale-95"
         >
-          <span>Ver todos</span>
-          <div className="w-10 h-[2px] bg-[#555] group-hover:bg-[#5B823B] transition-colors mt-1" />
+          Ver toda la colección
         </Link>
       </div>
     </section>

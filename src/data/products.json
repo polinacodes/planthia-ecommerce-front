@@ -41,7 +41,7 @@
     "price": 5400,
     "description": "Famosa por sus grandes hojas con agujeros naturales. Aporta un look selvático instantáneo a cualquier living.",
     "image": "/monstera-deliciosa.webp",
-    "category": "interior",
+    "category": ["Interior", "Exterior"],
     "featured": true,
     "stock": 8,
     "light": "indirecta",

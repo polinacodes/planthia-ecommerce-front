@@ -24,7 +24,7 @@ const ProductCardShop = ({ product }: { product: Product }) => {
           className="object-cover group-hover:scale-105 transition-transform duration-500"
         />
 
-        {/* Badge de Dificultad (Top Left) */}
+        {/* Badge de Dificultad */}
         <div className="absolute top-3 left-3">
           <span className="bg-white/70 backdrop-blur-md px-2 py-1 rounded-md text-[10px] uppercase tracking-widest font-bold text-gray-700">
             {product.difficulty}

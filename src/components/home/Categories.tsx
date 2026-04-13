@@ -5,17 +5,17 @@ const categories = [
   { 
     title: "Interior", 
     img: "/interior.webp", 
-    link: "/productos?cat=interior" 
+    link: "/tienda?category=interior" 
   },
   { 
     title: "Exterior", 
     img: "/exterior-2.webp", 
-    link: "/productos?cat=macetas" 
+    link: "/tienda?category=exterior" 
   },
   { 
     title: "Aromáticas", 
     img: "/aromaticas.webp", 
-    link: "/productos?cat=cuidados" 
+    link: "/tienda?category=aromaticas" 
   },
 ];
 
@@ -37,7 +37,7 @@ export default function Categories() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           {categories.map((cat) => (
             <Link key={cat.title} href={cat.link} className="group cursor-pointer">
-              {/* Contenedor de imagen -  SACAR SI CORTA LA IMAGEN DE LA PLANTA EL oferfow.hidden*/}
+              {/* Contenedor de imagen */}
               <div className="relative aspect-[4/5] rounded-[32px] overflow-hidden transition-all duration-500 group-hover:shadow-2xl group-hover:shadow-planthia-green/10">
                 <Image
                   src={cat.img} 
