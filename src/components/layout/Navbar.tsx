@@ -2,10 +2,14 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { ShoppingCart, Search, User } from "lucide-react";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const pathname = usePathname();
+
+  const cartItemsCount = 0;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -14,6 +18,8 @@ export default function Navbar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const isActive = (path: string) => pathname === path;
 
   return (
     <nav
@@ -27,10 +33,18 @@ export default function Navbar() {
       </Link>
 
       <div className="hidden md:flex items-center gap-8 font-body text-sm font-semibold text-planthia-dark/70">
-        <Link href="/" className="text-planthia-green">Inicio</Link>
-        <Link href="/about" className="hover:text-planthia-green transition-colors">Tienda</Link>
-        <Link href="/products" className="hover:text-planthia-green transition-colors">Cuidados</Link>
-        <Link href="/news" className="hover:text-planthia-green transition-colors">Contacto</Link>
+        <Link href="/" className={`${isActive("/") ? "text-planthia-green" : "hover:text-planthia-green"} transition-colors`}>
+          Inicio
+        </Link>
+        <Link href="/tienda" className={`${isActive("/tienda") ? "text-planthia-green" : "hover:text-planthia-green"} transition-colors`}>
+          Tienda
+        </Link>
+        <Link href="/" className={`${isActive("/cuidados") ? "text-planthia-green" : "hover:text-planthia-green"} transition-colors`}>
+          Cuidados
+        </Link>
+        <Link href="/" className={`${isActive("/contacto") ? "text-planthia-green" : "hover:text-planthia-green"} transition-colors`}>
+          Contacto
+        </Link>
       </div>
 
       <div className="flex items-center gap-4 sm:gap-6 text-planthia-dark">
@@ -39,9 +53,12 @@ export default function Navbar() {
         </button>
         <button className="hover:text-planthia-green transition-colors cursor-pointer relative">
           <ShoppingCart size={20} className="sm:w-[22px] sm:h-[22px]" />
-          <span className="absolute -top-2 -right-2 bg-planthia-green text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
-            0
-          </span>
+
+          {cartItemsCount > 0 && (
+            <span className="absolute -top-2 -right-2 bg-planthia-green text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
+              {cartItemsCount}
+            </span>
+          )}
         </button>
         <button className="hover:text-planthia-green transition-colors cursor-pointer">
           <User size={20} className="sm:w-[22px] sm:h-[22px]" />

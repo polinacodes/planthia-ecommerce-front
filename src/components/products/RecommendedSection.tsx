@@ -136,7 +136,7 @@ const RecommendedSection = ({ plants }: { plants: any[] }) => {
       {/* Botón "Ver todos" */}
       <div className="flex justify-end mt-16">
         <Link
-          href="/shop"
+          href="/tienda"
           className="group flex items-center gap-3 text-lg font-bold text-[#555] hover:text-[#5B823B] transition-colors"
         >
           <span>Ver todos</span>

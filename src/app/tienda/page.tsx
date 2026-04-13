@@ -33,6 +33,7 @@ const TiendaPage = () => {
 	const indexOfLastProduct = currentPage * productsPerPage;
 	const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
 	const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+	const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
 
 	return (
 		<div className="min-h-screen bg-cream pt-24 pb-16 px-6 sm:px-12">
@@ -44,7 +45,7 @@ const TiendaPage = () => {
 						Nuestra Colección
 					</h1>
 					<p className="text-gray-600 max-w-2xl mx-auto">
-						Explorá nuestra selección premium de plantas curadas para transformar tu hogar en un refugio natural.
+						Explorá nuestra selección premium de plantas para transformar tu hogar en un refugio natural.
 					</p>
 				</header>
 
@@ -87,23 +88,52 @@ const TiendaPage = () => {
 					</div>
 				)}
 
-				{/* Paginación */}
-				<div className="mt-16 flex justify-center items-center gap-2">
-					<button className="p-2 text-gray-400 hover:text-[#5B823B]"> &lt; </button>
-
-					{[1, 2, 3].map((num) => (
+				{/* Paginación dinámica */}
+				{filteredProducts.length > productsPerPage && (
+					<div className="mt-16 flex justify-center items-center gap-2">
+						{/* Botón Anterior */}
 						<button
-							key={num}
-							className={`w-10 h-10 rounded-lg font-bold transition-colors ${num === 1 ? 'bg-[#5B823B] text-white' : 'text-gray-500 hover:bg-[#5B823B]/20'
-								}`}
+							onClick={() => {
+								setCurrentPage(prev => Math.max(prev - 1, 1));
+								window.scrollTo(0, 0); 
+							}}
+							disabled={currentPage === 1}
+							className="p-2 text-gray-400 hover:text-[#5B823B] disabled:opacity-30 disabled:cursor-not-allowed"
 						>
-							{num}
+							&lt;
 						</button>
-					))}
 
-					<button className="p-2 text-gray-400 hover:text-[#5B823B]"> &gt; </button>
-				</div>
+						{/* Números de página dinámicos */}
+						{Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
+							<button
+								key={num}
+								onClick={() => {
+									setCurrentPage(num);
+									window.scrollTo(0, 0);
+								}}
+								className={`w-10 h-10 rounded-lg font-bold transition-colors ${num === currentPage
+										? 'bg-[#5B823B] text-white'
+										: 'text-gray-500 hover:bg-[#5B823B]/20'
+									}`}
+							>
+								{num}
+							</button>
+						))}
 
+						{/* Botón Siguiente */}
+						<button
+							onClick={() => {
+								setCurrentPage(prev => Math.min(prev + 1, totalPages));
+								window.scrollTo(0, 0);
+							}}
+							disabled={currentPage === totalPages}
+							className="p-2 text-gray-400 hover:text-[#5B823B] disabled:opacity-30 disabled:cursor-not-allowed"
+						>
+							&gt;
+						</button>
+					</div>
+				)}
+				
 			</div>
 		</div>
 	);
