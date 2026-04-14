@@ -1,33 +1,20 @@
 "use client";
-import { motion } from "framer-motion";
+import React from 'react';
 
 const ProductSkeleton = () => {
   return (
-    <div className="flex flex-col gap-4 w-full">
-      {/* Contenedor de Imagen */}
-      <div className="relative aspect-[4/5] bg-gray-200 rounded-[32px] overflow-hidden">
-        <motion.div
-          initial={{ x: "-100%" }}
-          animate={{ x: "100%" }}
-          transition={{
-            repeat: Infinity,
-            duration: 1.5,
-            ease: "linear",
-          }}
-          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
-        />
-      </div>
+    <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex flex-col h-full animate-pulse">
+      
+      {/* LA FOTO */}
+      <div className="w-full aspect-square bg-gray-200 rounded-xl mb-4"></div>
 
-      {/* Textos del Skeleton */}
-      <div className="space-y-3 px-2">
-        <div className="h-3 w-20 bg-gray-200 rounded-full" /> 
-        <div className="h-6 w-3/4 bg-gray-200 rounded-lg" />  
-        <div className="h-4 w-full bg-gray-200 rounded-md" /> 
-        
-        <div className="flex justify-between items-center pt-2">
-          <div className="h-6 w-16 bg-gray-200 rounded-md" /> 
-          <div className="h-10 w-24 bg-gray-200 rounded-full" /> 
-        </div>
+      {/* EL TEXTO */}
+      <div className="h-5 bg-gray-200 rounded-full w-3/4 mb-2"></div>
+      <div className="h-4 bg-gray-200 rounded-full w-1/2 mb-6"></div>
+
+      <div className="flex justify-between items-center mt-auto">
+        <div className="h-7 bg-gray-200 rounded-full w-1/3"></div>
+        <div className="w-10 h-10 bg-[#5B823B]/20 rounded-xl"></div>
       </div>
     </div>
   );

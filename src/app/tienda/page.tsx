@@ -83,15 +83,32 @@ const TiendaPage = () => {
     return result;
   }, [searchQuery, categoryQuery, lightQuery, petQuery, diffQuery, sortQuery]);
 
-  // 3. Paginación (6 por página)
+  
+const [productsPerPage, setProductsPerPage] = useState(8);
+
+useEffect(() => {
+  const updateLimit = () => {
+    if (window.innerWidth >= 768 && window.innerWidth < 1024) {
+      setProductsPerPage(9);
+    } else {
+      setProductsPerPage(8); 
+    }
+  };
+
+  updateLimit(); 
+  window.addEventListener('resize', updateLimit);
+  return () => window.removeEventListener('resize', updateLimit);
+}, []);
+
+  // 3. Paginación (8 por página)
   const [currentPage, setCurrentPage] = useState(1);
-  const productsPerPage = 6;
+
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
 
-  useEffect(() => { setCurrentPage(1); }, [searchQuery, categoryQuery]);
+  useEffect(() => { setCurrentPage(1); }, [searchQuery, categoryQuery, productsPerPage]);
 
   return (
     <div className="min-h-screen bg-cream pt-24 pb-16 ">
@@ -124,6 +141,7 @@ const TiendaPage = () => {
           products={currentProducts}
           isLoading={isLoading}
           activeFiltersText={activeFiltersText}
+          productsPerPage={productsPerPage}
         />
 
         {/* Paginación dinámica */}
