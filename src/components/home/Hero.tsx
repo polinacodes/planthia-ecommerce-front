@@ -1,7 +1,11 @@
+"use client";
+import { useRouter } from 'next/navigation';
 import { Star } from "lucide-react";
 import Image from "next/image";
 
 export default function Hero() {
+  const router = useRouter();
+
   return (
     // <section className="relative bg-white py-20 px-6 md:px-12">
 
@@ -20,7 +24,9 @@ export default function Hero() {
         </p>
 
         <div className="flex flex-row items-center gap-2 sm:gap-4">
-          <button className="bg-planthia-green text-white px-4 sm:px-10 py-3 sm:py-5 font-bold hover:opacity-90 transition-all cursor-pointer
+          <button
+            onClick={() => router.push('/tienda')}
+            className="bg-planthia-green text-white px-4 sm:px-10 py-3 sm:py-5 font-bold hover:opacity-90 transition-all cursor-pointer
               rounded-tl-2xl rounded-bl-sm skew-x-[-15deg] origin-bottom overflow-hidden shadow-lg shadow-planthia-green/20 flex-1 sm:flex-none text-sm sm:text-base">
             <span className="inline-block skew-x-[15deg]">Coleccion</span>
           </button>
@@ -29,8 +35,6 @@ export default function Hero() {
             <span className="inline-block skew-x-[15deg]">Ver cuidados</span>
           </button>
         </div>
-
-
       </div>
 
       {/* Contenido Derecho */}
