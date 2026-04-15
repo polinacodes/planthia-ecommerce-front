@@ -1,6 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
-import { Heart, Plus, Eye } from 'lucide-react'; 
+import { Heart, Plus, Eye } from 'lucide-react';
+import Link from 'next/link';
 
 interface Product {
   id: string;
@@ -17,12 +18,14 @@ const ProductCardShop = ({ product }: { product: Product }) => {
 
       {/* Contenedor de Imagen */}
       <div className="relative aspect-square w-full bg-[#f9f9f9] overflow-hidden group">
-        <Image
-          src={product.image}
-          alt={product.name}
-          fill
-          className="object-cover group-hover:scale-105 transition-transform duration-500"
-        />
+        <Link href={`/tienda/${product.id}`}>
+          <Image
+            src={product.image}
+            alt={product.name}
+            fill
+            className="object-cover group-hover:scale-105 transition-transform duration-500"
+          />
+        </Link>
 
         {/* Badge de Dificultad */}
         <div className="absolute top-3 left-3">
@@ -36,12 +39,16 @@ const ProductCardShop = ({ product }: { product: Product }) => {
           <Heart size={18} />
         </button>
 
-        {/* Ícono de Ojo */}
-        <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 hidden md:flex">
-          <div className="bg-[#5B823B]/20 backdrop-blur-sm p-2 rounded-lg text-[#5B823B]">
-            <Eye size={20} /> 
+        <Link
+          href={`/tienda/${product.id}`}
+          className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 hidden md:flex z-10"
+        >
+          <div className="bg-[#5B823B]/20 backdrop-blur-sm p-2 rounded-lg text-[#5B823B] hover:bg-planthia-light-green hover:text-white transition-colors">
+            <Eye size={20} />
           </div>
-        </div>
+        </Link>
+
+
       </div>
 
       {/* Info del Producto */}

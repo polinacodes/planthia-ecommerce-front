@@ -1,6 +1,6 @@
 "use client";
 import React from 'react';
-import { SlidersHorizontal, ChevronDown, ArrowUpDown } from 'lucide-react';
+import { SlidersHorizontal, ChevronDown, ArrowUpDown, PawPrint } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface ShopToolbarProps {
@@ -100,7 +100,10 @@ const ShopToolbar = ({
                   {/* Pet Friendly */}
                   <div className="border-t border-gray-100 pt-4">
                     <label className="flex items-center justify-between cursor-pointer">
-                      <span className="text-sm font-bold text-gray-600">Pet Friendly 🐾</span>
+                      <div className="flex items-center gap-2">
+                        <PawPrint size={16} className={`transition-colors ${petQuery ? 'text-planthia-green' : 'text-gray-400 group-hover:text-gray-600'}`} />
+                        <span className="text-sm font-bold text-gray-600">Pet Friendly</span>
+                      </div>
                       <input
                         type="checkbox"
                         checked={petQuery}

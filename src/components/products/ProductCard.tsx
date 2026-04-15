@@ -135,7 +135,7 @@ const ProductCard = ({ plant, isActive, onClick }: ProductCardProps) => {
               Agregar
             </motion.button>
             <Link
-              href={`/product/${plant.id}`}
+              href={`/tienda/${plant.id}`}
               className="p-2 sm:p-2.5 lg:p-3 bg-white/20 rounded-lg sm:rounded-xl hover:bg-white/30 transition-colors"
               onClick={(e) => e.stopPropagation()}
             >
