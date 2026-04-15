@@ -14,7 +14,8 @@
     "petFriendly": false,
     "difficulty": "principiante",
     "water": "Cada 7-10 días",
-    "growth": "rápido"
+    "growth": "rápido",
+    "humidity": "Alta"
   },
   {
     "id": "p2",
@@ -31,7 +32,8 @@
     "petFriendly": false,
     "difficulty": "experto",
     "water": "Semanal",
-    "growth": "moderado"
+    "growth": "moderado",
+    "humidity": "Alta"
   },
   {
     "id": "p3",
@@ -48,7 +50,8 @@
     "petFriendly": false,
     "difficulty": "principiante",
     "water": "Cada 10 días",
-    "growth": "rápido"
+    "growth": "rápido",
+    "humidity": "Media"
   },
   {
     "id": "p4",
@@ -65,7 +68,8 @@
     "petFriendly": false,
     "difficulty": "principiante",
     "water": "Cada 15-20 días",
-    "growth": "lento"
+    "growth": "lento",
+    "humidity": "Baja"
   },
   {
     "id": "p5",
@@ -82,7 +86,8 @@
     "petFriendly": false,
     "difficulty": "experto",
     "water": "2 veces por semana",
-    "growth": "lento"
+    "growth": "lento",
+    "humidity": "Alta"
   },
   {
     "id": "p6",
@@ -99,7 +104,8 @@
     "petFriendly": false,
     "difficulty": "principiante",
     "water": "2-3 veces por semana",
-    "growth": "moderado"
+    "growth": "moderado",
+    "humidity": "Alta"
   },
   {
     "id": "p7",
@@ -116,7 +122,8 @@
     "petFriendly": false,
     "difficulty": "principiante",
     "water": "Cada 10-12 días",
-    "growth": "rápido"
+    "growth": "rápido",
+    "humidity": "Media"
   },
   {
     "id": "p8",
@@ -133,7 +140,8 @@
     "petFriendly": true,
     "difficulty": "principiante",
     "water": "Semanal",
-    "growth": "lento"
+    "growth": "lento",
+    "humidity": "Media"
   },
   {
     "id": "p9",
@@ -150,7 +158,8 @@
     "petFriendly": true,
     "difficulty": "experto",
     "water": "Cada 7-10 días",
-    "growth": "lento"
+    "growth": "lento",
+    "humidity": "Alta"
   },
   {
     "id": "p10",
@@ -167,7 +176,8 @@
     "petFriendly": false,
     "difficulty": "experto",
     "water": "Semanal",
-    "growth": "lento"
+    "growth": "lento",
+    "humidity": "Media"
   },
   {
     "id": "p11",
@@ -184,7 +194,8 @@
     "petFriendly": true,
     "difficulty": "principiante",
     "water": "2 veces por semana",
-    "growth": "rápido"
+    "growth": "rápido",
+    "humidity": "Alta"
   },
   {
     "id": "p12",
@@ -201,7 +212,8 @@
     "petFriendly": true,
     "difficulty": "principiante",
     "water": "Cada 7 días",
-    "growth": "moderado"
+    "growth": "moderado",
+    "humidity": "Baja"
   },
   {
     "id": "p13",
@@ -218,7 +230,8 @@
     "petFriendly": true,
     "difficulty": "principiante",
     "water": "2-3 veces por semana",
-    "growth": "rápido"
+    "growth": "rápido",
+    "humidity": "Media"
   },
   {
     "id": "p14",
@@ -235,7 +248,8 @@
     "petFriendly": true,
     "difficulty": "principiante",
     "water": "Cada 4-5 días",
-    "growth": "moderado"
+    "growth": "moderado",
+    "humidity": "Media"
   },
   {
     "id": "p15",
@@ -252,7 +266,8 @@
     "petFriendly": true,
     "difficulty": "principiante",
     "water": "Cada 7 días",
-    "growth": "moderado"
+    "growth": "moderado",
+    "humidity": "Baja"
   },
   {
     "id": "p16",
@@ -269,7 +284,8 @@
     "petFriendly": true,
     "difficulty": "principiante",
     "water": "Frecuente",
-    "growth": "rápido"
+    "growth": "rápido",
+    "humidity": "Media"
   },
   {
     "id": "p17",
@@ -286,7 +302,8 @@
     "petFriendly": true,
     "difficulty": "principiante",
     "water": "Moderado",
-    "growth": "moderado"
+    "growth": "moderado",
+    "humidity": "Baja"
   },
   {
     "id": "p18",
@@ -303,7 +320,8 @@
     "petFriendly": true,
     "difficulty": "principiante",
     "water": "Espaciado",
-    "growth": "moderado"
+    "growth": "moderado",
+    "humidity": "Baja"
   },
   {
     "id": "p19",
@@ -320,7 +338,8 @@
     "petFriendly": true,
     "difficulty": "principiante",
     "water": "Espaciado",
-    "growth": "lento"
+    "growth": "lento",
+    "humidity": "Baja"
   },
   {
     "id": "p20",
@@ -337,7 +356,8 @@
     "petFriendly": false,
     "difficulty": "principiante",
     "water": "Espaciado",
-    "growth": "moderado"
+    "growth": "moderado",
+    "humidity": "Baja"
   },
   {
     "id": "p21",
@@ -350,8 +370,8 @@
     "variants": [
       { "color": "naranja", "image": "/dimorfoteca-naranja.webp", "stock": 5 },
       { "color": "violeta", "image": "/dimorfoteca-violeta.webp", "stock": 8 },
-      { "color": "blanco", "image": "/dimorfoteca-blanco.webp", "stock": 4 },
-      { "color": "burdeos", "image": "/dimorfoteca-burdeos.webp", "stock": 3 }
+      { "color": "blanco", "image": "/dimorfoteca-blanca.webp", "stock": 4 },
+      { "color": "burdeos", "image": "/dimorfoteca-burdeus.webp", "stock": 3 }
     ],
     "category": "exterior",
     "featured": true,
@@ -359,7 +379,8 @@
     "petFriendly": true,
     "difficulty": "principiante",
     "water": "Moderado",
-    "growth": "rápido"
+    "growth": "rápido",
+    "humidity": "Baja"
   },
   {
     "id": "p22",
@@ -376,7 +397,8 @@
     "petFriendly": true,
     "difficulty": "principiante",
     "water": "Frecuente",
-    "growth": "rápido"
+    "growth": "rápido",
+    "humidity": "Media"
   },
   {
     "id": "p23",
@@ -398,7 +420,8 @@
     "petFriendly": false,
     "difficulty": "experto",
     "water": "Moderado (por inmersión)",
-    "growth": "lento"
+    "growth": "lento",
+    "humidity": "Media"
   },
   {
     "id": "p24",
@@ -415,7 +438,8 @@
     "petFriendly": false,
     "difficulty": "experto",
     "water": "Abundante",
-    "growth": "moderado"
+    "growth": "moderado",
+    "humidity": "Alta"
   },
   {
     "id": "p25",
@@ -435,7 +459,8 @@
     "petFriendly": true,
     "difficulty": "principiante",
     "water": "Moderado",
-    "growth": "moderado"
+    "growth": "moderado",
+    "humidity": "Media"
   },
   {
     "id": "p26",
@@ -457,7 +482,8 @@
     "petFriendly": false,
     "difficulty": "principiante",
     "water": "Escaso",
-    "growth": "rápido"
+    "growth": "rápido",
+    "humidity": "Baja"
   },
   {
     "id": "p27",
@@ -474,7 +500,8 @@
     "petFriendly": true,
     "difficulty": "principiante",
     "water": "Moderado",
-    "growth": "rápido"
+    "growth": "rápido",
+    "humidity": "Media"
   },
   {
     "id": "p28",
@@ -491,7 +518,8 @@
     "petFriendly": false,
     "difficulty": "principiante",
     "water": "Moderado",
-    "growth": "moderado"
+    "growth": "moderado",
+    "humidity": "Baja"
   },
   {
     "id": "p29",
@@ -508,7 +536,8 @@
     "petFriendly": false,
     "difficulty": "experto",
     "water": "Abundante",
-    "growth": "moderado"
+    "growth": "moderado",
+    "humidity": "Alta"
   },
   {
     "id": "p30",
@@ -530,6 +559,7 @@
     "petFriendly": false,
     "difficulty": "principiante",
     "water": "Escaso",
-    "growth": "moderado"
+    "growth": "moderado",
+    "humidity": "Baja"
   }
 ]
