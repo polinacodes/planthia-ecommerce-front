@@ -68,7 +68,7 @@ const ProductCardShop = ({ product }: { product: Product }) => {
 
           {/* Botón: "+" en mobile, "Agregar" en desktop */}
           <button className="bg-[#5B823B] text-white p-2 md:px-4 md:py-2 rounded-lg hover:bg-[#4a6b30] transition-colors flex items-center gap-2">
-            <Plus size={20} />
+            <Plus size={20} className="md:hidden"/>
             <span className="hidden md:block text-sm font-semibold">Agregar</span>
           </button>
         </div>

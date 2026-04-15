@@ -7,6 +7,8 @@ import { useParams } from 'next/navigation';
 import { motion, AnimatePresence } from "framer-motion";
 import { Sun, Droplets, Thermometer, ArrowUp, Heart, PawPrint } from "lucide-react";
 import Link from 'next/link'
+import ProductCardShop from '@/components/products/ProductCardShop';
+import EmptyState from '@/components/products/EmptyState';
 
 // --- SUB-COMPONENTES AUXILIARES ---
 
@@ -41,15 +43,30 @@ export default function ProductPage() {
     return colors[color.toLowerCase()] || "#cbd5e1";
   };
 
+  const relatedProducts = useMemo(() => {
+    if (!product) return [];
+    const currentCategory = Array.isArray(product.category) ? product.category[0] : product.category;
+
+    return products
+      .filter(p => {
+        const pCategory = Array.isArray(p.category) ? p.category[0] : p.category;
+        return pCategory === currentCategory && p.id !== product.id;
+      })
+      .slice(0, 4); 
+  }, [product, products]);
+
+
   if (!product) {
     return (
-      <div className="min-h-screen bg-planthia-cream flex items-center justify-center">
-        <p className="text-planthia-dark font-serif">Planta no encontrada</p>
-      </div>
+      <main className="min-h-screen bg-planthia-cream">
+      <EmptyState 
+        title="La planta que buscas no está en nuestro jardín."
+        description={<p>El ID <span className="font-bold text-[#5B823B]">{id}</span> no existe o fue movido,</p>}
+      />
+    </main>
     );
   }
 
-  // Componente interno para no repetir lógica de variantes
   const VariantSelector = () => {
     if (!product?.variants || product.variants.length === 0) return null;
     return (
@@ -59,11 +76,10 @@ export default function ProductPage() {
             <button
               key={variant.color}
               onClick={() => setSelectedImage(variant.image)}
-              className={`w-5 h-5 rounded-full border shadow-md transition-all duration-300 ${
-                selectedImage === variant.image
+              className={`w-5 h-5 rounded-full border shadow-md transition-all duration-300 ${selectedImage === variant.image
                   ? 'scale-125 border-planthia-dark/30 '
                   : 'border-transparent opacity-70 hover:opacity-100 hover:scale-110'
-              }`}
+                }`}
               style={{ backgroundColor: getHexColor(variant.color) }}
               title={variant.color}
             />
@@ -79,7 +95,7 @@ export default function ProductPage() {
   return (
     <main className="min-h-screen bg-planthia-cream pt-6 md:pt-12">
       <div className="max-w-7xl mx-auto px-8">
-        
+
         {/* 1. BREADCRUMBS */}
         <nav className="text-[10px] uppercase tracking-[0.2em] text-planthia-dark/60 mb-4">
           <Link href="/tienda" className="hover:text-planthia-green transition-colors">Tienda</Link>
@@ -96,7 +112,7 @@ export default function ProductPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 min-h-[600px] items-start">
 
-          {/* 2. COLUMNA IZQUIERDA: VISUALS */}
+          {/*COLUMNA IZQUIERDA: VISUALS */}
           <div className="flex flex-col p-2">
             <div className="relative w-full h-[400px] md:h-[650px] bg-planthia-cream rounded-[3rem] overflow-hidden">
               {product.petFriendly && (
@@ -131,7 +147,7 @@ export default function ProductPage() {
             </div>
           </div>
 
-          {/* 3. COLUMNA DERECHA: INFO & COMPRA */}
+          {/* COLUMNA DERECHA: INFO y COMPRA */}
           <div className="flex flex-col -mt-8 md:mt-16 justify-center space-y-8 lg:pl-12">
             <div className="space-y-4">
               <h1 className="text-5xl md:text-6xl font-manrope text-planthia-dark leading-tight">
@@ -142,7 +158,7 @@ export default function ProductPage() {
               </p>
             </div>
 
-            {/* Grid de Cuidados (Refactorizado con CareItem) */}
+            {/* Grid de Cuidados */}
             <div className="grid grid-cols-2 gap-y-10 gap-x-8 py-10 border-y border-planthia-dark/10">
               <CareItem icon={Sun} label="Luz" value={product.light} />
               <CareItem icon={Droplets} label="Riego" value={product.water} />
@@ -170,12 +186,26 @@ export default function ProductPage() {
           </div>
         </div>
 
-        {/* 4. SECCIÓN: PODRÍA INTERESARTE (PRÓXIMAMENTE) */}
-        <section className="mt-32 pb-20 border-t border-planthia-dark/5 pt-20">
-            <h2 className="text-3xl font-serif text-planthia-dark mb-12">Podría interesarte</h2>
-            {/* Aquí iría el componente de recomendaciones */}
-        </section>
+        {/* SECCIÓN: PODRÍA INTERESARTE */}
+        {relatedProducts.length > 0 && (
+          <section className="mt-32 pb-20 border-t border-planthia-dark/5 pt-20">
+            <h2 className="text-3xl font-manrope text-planthia-dark mb-12">Podría interesarte</h2>
 
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
+              {relatedProducts.map((relatedP, index) => (
+                <div
+                  key={relatedP.id}
+                  className={`
+                   ${index === 2 ? "hidden md:block" : "block"} 
+                   ${index === 3 ? "hidden lg:block" : "block"}
+                 `}
+                >
+                  <ProductCardShop product={relatedP} />
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
       </div>
     </main>
   );
