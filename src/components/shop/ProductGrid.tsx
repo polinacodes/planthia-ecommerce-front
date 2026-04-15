@@ -24,7 +24,7 @@ const ProductGrid = ({ products, isLoading, activeFiltersText, productsPerPage }
         </div>
 
         <p className="text-2xl font-headline font-bold text-planthia-dark text-center">
-          Uy, parece que esa especie todavía no llegó a nuestra selva.
+          Uy, parece que esa plantita todavía no llegó a nuestra selva.
         </p>
         <p className="mt-2 text-gray-500 text-center max-w-md">
           No encontramos nada para <span className="font-bold text-[#5B823B]">{activeFiltersText}</span>,
