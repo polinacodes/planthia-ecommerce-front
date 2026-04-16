@@ -63,7 +63,7 @@ const SearchBar = () => {
       onClick={() => setIsExpanded(!isExpanded)}
       className={`hover:text-planthia-green transition-colors p-1 z-20 ${isExpanded ? 'text-planthia-green' : 'text-planthia-dark'}`}
     >
-      <Search size={20} className="sm:w-[22px] sm:h-[22px]" />
+      <Search size={20} className="sm:w-[22px] sm:h-[22px] cursor-pointer" />
     </button>
   </div>
 

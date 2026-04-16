@@ -33,7 +33,7 @@ const ShopToolbar = ({
         <div className="relative">
           <button
             onClick={() => setIsFilterOpen(!isFilterOpen)}
-            className="flex items-center gap-2 text-sm font-bold text-gray-700 hover:text-[#5B823B] transition-colors focus:outline-none"
+            className="flex items-center gap-2 text-sm font-bold text-gray-700 hover:text-[#5B823B] transition-colors cursor-pointer focus:outline-none"
           >
             <SlidersHorizontal size={18} />
             FILTRAR
@@ -128,7 +128,7 @@ const ShopToolbar = ({
       <div className="relative">
         <button
           onClick={() => setIsSortOpen(!isSortOpen)}
-          className="flex items-center gap-2 text-sm font-bold text-gray-700 hover:text-[#5B823B] transition-all uppercase tracking-wider focus:outline-none"
+          className="flex items-center gap-2 text-sm font-bold text-gray-700 hover:text-[#5B823B] transition-all uppercase tracking-wider focus:outline-none cursor-pointer"
         >
           <ArrowUpDown size={18} className="text-gray-500" />
           <span>{sortLabels[sortQuery]}</span>
@@ -154,7 +154,7 @@ const ShopToolbar = ({
                       updateFilter('sort', value);
                       setIsSortOpen(false);
                     }}
-                    className={`w-full text-left px-4 py-3 text-sm rounded-xl transition-colors ${sortQuery === value ? 'bg-[#5B823B]/10 text-[#5B823B] font-bold' : 'text-gray-600 hover:bg-gray-50'
+                    className={`w-full text-left px-4 py-3 text-sm rounded-xl transition-colors cursor-pointer ${sortQuery === value ? 'bg-[#5B823B]/10 text-[#5B823B] font-bold' : 'text-gray-600 hover:bg-gray-50'
                       }`}
                   >
                     {label}

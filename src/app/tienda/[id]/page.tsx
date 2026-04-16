@@ -27,7 +27,7 @@ export default function ProductPage() {
   const id = params.id;
 
   const product = useMemo(() => products.find((p) => p.id === id), [id]);
-  const [selectedImage, setSelectedImage] = useState("");
+  const [selectedImage, setSelectedImage] = useState<string>(product?.image || "");
 
   useEffect(() => {
     if (product) setSelectedImage(product.image);
@@ -52,18 +52,18 @@ export default function ProductPage() {
         const pCategory = Array.isArray(p.category) ? p.category[0] : p.category;
         return pCategory === currentCategory && p.id !== product.id;
       })
-      .slice(0, 4); 
+      .slice(0, 4);
   }, [product, products]);
 
 
   if (!product) {
     return (
       <main className="min-h-screen bg-planthia-cream">
-      <EmptyState 
-        title="La planta que buscas no está en nuestro jardín."
-        description={<p>El ID <span className="font-bold text-[#5B823B]">{id}</span> no existe o fue movido,</p>}
-      />
-    </main>
+        <EmptyState
+          title="La planta que buscas no está en nuestro jardín."
+          description={<p>El ID <span className="font-bold text-[#5B823B]">{id}</span> no existe o fue movido,</p>}
+        />
+      </main>
     );
   }
 
@@ -77,8 +77,8 @@ export default function ProductPage() {
               key={variant.color}
               onClick={() => setSelectedImage(variant.image)}
               className={`w-5 h-5 rounded-full border shadow-md transition-all duration-300 ${selectedImage === variant.image
-                  ? 'scale-125 border-planthia-dark/30 '
-                  : 'border-transparent opacity-70 hover:opacity-100 hover:scale-110'
+                ? 'scale-125 border-planthia-dark/30 '
+                : 'border-transparent opacity-70 hover:opacity-100 hover:scale-110'
                 }`}
               style={{ backgroundColor: getHexColor(variant.color) }}
               title={variant.color}
@@ -131,14 +131,18 @@ export default function ProductPage() {
                   transition={{ duration: 0.3, ease: "easeOut" }}
                   className="relative w-full h-full"
                 >
-                  <Image
-                    src={selectedImage}
-                    alt={product.name}
-                    fill
-                    priority
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    className="object-contain p-2 transition-transform duration-500 ease-in-out hover:scale-105"
-                  />
+                  {selectedImage ? (
+                    <Image
+                      src={selectedImage}
+                      alt={product.name}
+                      fill
+                      priority
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      className="object-contain p-2 transition-transform duration-500 ease-in-out hover:scale-105"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-planthia-cream/50 animate-pulse rounded-[3rem]" />
+                  )}
                 </motion.div>
               </AnimatePresence>
             </div>
@@ -174,7 +178,7 @@ export default function ProductPage() {
 
             <div className="flex items-center gap-6 pt-6">
               <span className="text-4xl font-light text-planthia-dark">
-                ${product.price.toLocaleString()}
+                ${product.price.toLocaleString('es-AR')}
               </span>
               <button className="flex-1 bg-planthia-dark text-planthia-cream py-5 px-8 uppercase text-[10px] tracking-[0.2em] font-bold hover:bg-planthia-green transition-all duration-300">
                 Agregar

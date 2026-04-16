@@ -32,7 +32,7 @@ const Pagination = ({ currentPage, totalPages, setCurrentPage }: PaginationProps
         <button
           key={num}
           onClick={() => handlePageChange(num)}
-          className={`w-10 h-10 rounded-lg font-bold transition-colors ${num === currentPage
+          className={`w-10 h-10 rounded-lg font-bold cursor-pointer transition-colors ${num === currentPage
               ? 'bg-[#5B823B] text-white'
               : 'text-gray-500 hover:bg-[#5B823B]/20'
             }`}
