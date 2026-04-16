@@ -2,6 +2,9 @@ import React from 'react';
 import Image from 'next/image';
 import { Heart, Plus, Eye } from 'lucide-react';
 import Link from 'next/link';
+import { useCart } from '@/hooks/useCart';
+import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
 
 interface Product {
   id: string;
@@ -10,9 +13,40 @@ interface Product {
   description: string;
   image: string;
   difficulty: string;
+  variants?: any[];
 }
 
 const ProductCardShop = ({ product }: { product: Product }) => {
+  const { addItem, cart, openCart } = useCart();
+  const router = useRouter();
+
+  const hasVariants = product.variants && product.variants.length > 0;
+
+  const quantityInCart = cart
+    .filter((item: any) => item.id.startsWith(product.id))
+    .reduce((acc: number, item: any) => acc + item.quantity, 0);
+
+  const isAlreadyInCart = quantityInCart > 0;
+
+  const handleAction = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (hasVariants) {
+      router.push(`/tienda/${product.id}`);
+    } else {
+      addItem({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        image: product.image,
+        quantity: 1
+      });
+      toast.success(`${product.name} agregada`);
+      openCart();
+    }
+  };
+
   return (
     <div className="group relative bg-[#FFFFFF] rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 flex flex-col">
 
@@ -47,8 +81,6 @@ const ProductCardShop = ({ product }: { product: Product }) => {
             <Eye size={20} />
           </div>
         </Link>
-
-
       </div>
 
       {/* Info del Producto */}
@@ -66,10 +98,24 @@ const ProductCardShop = ({ product }: { product: Product }) => {
             ${product.price.toLocaleString('es-AR')}
           </span>
 
-          {/* Botón: "+" en mobile, "Agregar" en desktop */}
-          <button className="bg-[#5B823B] text-white p-2 md:px-4 md:py-2 rounded-lg hover:bg-[#4a6b30] transition-colors flex items-center gap-2">
-            <Plus size={20} className="md:hidden"/>
-            <span className="hidden md:block text-sm font-semibold">Agregar</span>
+          <button
+            onClick={handleAction}
+            className={`text-white p-2 md:px-4 md:py-2 rounded-lg transition-all flex items-center justify-center gap-2 min-w-[40px] ${isAlreadyInCart ? "bg-planthia-light-green" : "bg-planthia-green hover:bg-planthia-light-green"
+              }`}
+          >
+            {/* VISTA MOBILE */}
+            <div className="md:hidden flex items-center justify-center font-bold">
+              {isAlreadyInCart ? (
+                <span className="text-sm">{quantityInCart}</span>
+              ) : (
+                <Plus size={20} />
+              )}
+            </div>
+
+            {/* VISTA DESKTOP*/}
+            <span className="hidden md:block text-sm font-semibold">
+              {isAlreadyInCart ? "Agregado" : "Agregar"}
+            </span>
           </button>
         </div>
       </div>

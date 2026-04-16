@@ -43,7 +43,7 @@
     "price": 5400,
     "description": "Famosa por sus grandes hojas con agujeros naturales. Aporta un look selvático instantáneo a cualquier living.",
     "image": "/monstera-deliciosa.webp",
-    "category": ["Interior", "Exterior"],
+    "category": "Interior",
     "featured": true,
     "stock": 8,
     "light": "indirecta",
@@ -368,8 +368,8 @@
     "description": "Flores vibrantes que se cierran al anochecer. Muy resistente al sol y perfecta para canteros o macetas grandes.",
     "image": "/dimorfoteca-violeta.webp",
     "variants": [
-      { "color": "naranja", "image": "/dimorfoteca-naranja.webp", "stock": 5 },
       { "color": "violeta", "image": "/dimorfoteca-violeta.webp", "stock": 8 },
+      { "color": "naranja", "image": "/dimorfoteca-naranja.webp", "stock": 5 },
       { "color": "blanco", "image": "/dimorfoteca-blanca.webp", "stock": 4 },
       { "color": "burdeos", "image": "/dimorfoteca-burdeus.webp", "stock": 3 }
     ],

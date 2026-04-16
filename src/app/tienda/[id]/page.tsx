@@ -9,9 +9,10 @@ import { Sun, Droplets, Thermometer, ArrowUp, Heart, PawPrint } from "lucide-rea
 import Link from 'next/link'
 import ProductCardShop from '@/components/products/ProductCardShop';
 import EmptyState from '@/components/products/EmptyState';
+import { useCart } from '@/hooks/useCart';
+import { toast } from 'sonner';
 
 // --- SUB-COMPONENTES AUXILIARES ---
-
 const CareItem = ({ icon: Icon, label, value }: any) => (
   <div className="flex gap-4 items-start">
     <Icon size={20} strokeWidth={1.5} className="text-planthia-dark/50" />
@@ -28,9 +29,19 @@ export default function ProductPage() {
 
   const product = useMemo(() => products.find((p) => p.id === id), [id]);
   const [selectedImage, setSelectedImage] = useState<string>(product?.image || "");
+  const [selectedVariant, setSelectedVariant] = useState<any>(
+    product?.variants && product.variants.length > 0 ? product.variants[0] : null
+  );
 
   useEffect(() => {
-    if (product) setSelectedImage(product.image);
+    if (product) {
+      setSelectedImage(product.image);
+      if (product.variants && product.variants.length > 0) {
+        setSelectedVariant(product.variants[0]);
+      } else {
+        setSelectedVariant(null);
+      }
+    }
   }, [product]);
 
   const getHexColor = (color: string) => {
@@ -55,7 +66,6 @@ export default function ProductPage() {
       .slice(0, 4);
   }, [product, products]);
 
-
   if (!product) {
     return (
       <main className="min-h-screen bg-planthia-cream">
@@ -75,7 +85,10 @@ export default function ProductPage() {
           {product.variants.map((variant) => (
             <button
               key={variant.color}
-              onClick={() => setSelectedImage(variant.image)}
+              onClick={() => {
+                setSelectedImage(variant.image);
+                setSelectedVariant(variant);
+              }}
               className={`w-5 h-5 rounded-full border shadow-md transition-all duration-300 ${selectedImage === variant.image
                 ? 'scale-125 border-planthia-dark/30 '
                 : 'border-transparent opacity-70 hover:opacity-100 hover:scale-110'
@@ -90,6 +103,37 @@ export default function ProductPage() {
         </span>
       </div>
     );
+  };
+
+
+  const { addItem, cart, removeItem, updateQuantity } = useCart();
+
+  const currentUniqueId = selectedVariant
+    ? `${product.id}-${selectedVariant.color.toLowerCase()}`
+    : product.id;
+
+  const cartItem = cart.find((item: any) => item.id === currentUniqueId);
+  const quantityInCart = cartItem ? cartItem.quantity : 0;
+
+  const handleAddToCart = () => {
+    const uniqueId = selectedVariant
+      ? `${product.id}-${selectedVariant.color.toLowerCase()}`
+      : product.id;
+
+    addItem({
+      id: uniqueId,
+      name: product.name,
+      color: selectedVariant?.color,
+      price: product.price,
+      image: selectedImage || product.image,
+      quantity: 1
+    });
+
+    toast.success(`${product.name} agregada`, {
+      description: selectedVariant
+        ? `Color: ${selectedVariant.color}. Ya podés verla en tu carrito.`
+        : "Ya podés verla en tu carrito.",
+    });
   };
 
   return (
@@ -180,10 +224,54 @@ export default function ProductPage() {
               <span className="text-4xl font-light text-planthia-dark">
                 ${product.price.toLocaleString('es-AR')}
               </span>
-              <button className="flex-1 bg-planthia-dark text-planthia-cream py-5 px-8 uppercase text-[10px] tracking-[0.2em] font-bold hover:bg-planthia-green transition-all duration-300">
-                Agregar
-              </button>
-              <button className="p-4 rounded-full border border-planthia-dark/10 hover:bg-planthia-dark hover:text-planthia-cream transition-all group">
+              {/* BOTÓN ÚNICO CON LÓGICA DUAL */}
+              <div className="flex-1 flex items-center bg-planthia-green text-planthia-cream transition-all duration-300 min-h-[60px]">
+                {quantityInCart > 0 ? (
+                  <div className="flex w-full items-center justify-between px-2 sm:px-4">
+                    <button
+                      onClick={() => {
+                        if (quantityInCart > 1) {
+                          updateQuantity(currentUniqueId, quantityInCart - 1);
+                          toast.info(`${product.name}: actualizada`);
+                        } else {
+                          removeItem(currentUniqueId);
+                          toast.error(`${product.name}: eliminada`);
+                        }
+                      }}
+                      className="p-4 hover:scale-110 transition-transform font-bold text-xl"
+                    >
+                      -
+                    </button>
+
+                    {/* CONTENIDO CENTRAL */}
+                    <div className="flex flex-col items-center">
+                      <span className="md:hidden text-lg font-bold">
+                        {quantityInCart}
+                      </span>
+
+                      <span className="hidden md:block text-[10px] font-bold tracking-[0.2em]">
+                        {quantityInCart} EN EL CARRITO
+                      </span>
+                    </div>
+
+                    <button
+                      onClick={handleAddToCart}
+                      className="p-4 hover:scale-110 transition-transform font-bold text-xl"
+                    >
+                      +
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    onClick={handleAddToCart}
+                    className="w-full py-5 px-8 uppercase text-[10px] tracking-[0.2em] font-bold hover:bg-planthia-light-green transition-all"
+                  >
+                    Agregar
+                  </button>
+                )}
+              </div>
+
+              <button className="p-4 rounded-full border border-planthia-dark/10 hover:bg-planthia-green hover:text-planthia-cream transition-all group">
                 <Heart size={20} strokeWidth={1.5} className="group-hover:fill-current" />
               </button>
             </div>

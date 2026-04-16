@@ -7,11 +7,12 @@ import { motion } from 'framer-motion';
 import ProductCard from './ProductCard';
 
 const RecommendedSection = ({ plants }: { plants: any[] }) => {
+  const featuredPlants = plants.slice(0, 6);
   const [activeId, setActiveId] = useState<string | number | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [visibleCount, setVisibleCount] = useState(4);
 
-  const mobilePlants = plants.slice(0, 6);
+  const mobilePlants = plants.slice(0, 3);
 
   useEffect(() => {
     const handleClickOutside = () => {
@@ -37,7 +38,7 @@ const RecommendedSection = ({ plants }: { plants: any[] }) => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const maxIndex = plants.length - visibleCount;
+  const maxIndex = featuredPlants.length - visibleCount;
 
   const nextSlide = () => {
     if (currentIndex < maxIndex) {
@@ -51,7 +52,7 @@ const RecommendedSection = ({ plants }: { plants: any[] }) => {
     }
   };
 
-  const visiblePlants = plants.slice(currentIndex, currentIndex + visibleCount);
+  const visiblePlants = featuredPlants.slice(currentIndex, currentIndex + visibleCount);
 
   const handleCardClick = (plantId: string | number, e: React.MouseEvent) => {
     e.stopPropagation();

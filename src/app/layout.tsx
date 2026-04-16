@@ -3,6 +3,8 @@ import { Manrope, Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
+import { Toaster } from 'sonner';
+import { CartDrawer } from "@/components/shop/CartDrawer";
 
 const manrope = Manrope({
   subsets: ["latin"],
@@ -27,11 +29,22 @@ export default function RootLayout({
   return (
     <html lang="es" className={`${manrope.variable} ${inter.variable}`}>
       <body className=" relative font-body antialiased bg-planthia-cream text-planthia-dark">
-        <Navbar />
+        <Navbar /> <CartDrawer/>
         <main className="relative">
           {children}
         </main>
         <Footer />
+        <Toaster
+          position="bottom-right"
+          toastOptions={{
+            style: {
+              background: '#FDFCF0',
+              color: '#1C1C1C',
+              border: '1px solid rgba(28, 28, 28, 0.1)',
+              fontFamily: 'var(--font-manrope)',
+            },
+          }}
+        />
       </body>
     </html>
   );
