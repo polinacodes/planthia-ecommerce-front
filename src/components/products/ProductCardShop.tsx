@@ -23,7 +23,7 @@ const ProductCardShop = ({ product }: { product: Product }) => {
   const hasVariants = product.variants && product.variants.length > 0;
 
   const quantityInCart = cart
-    .filter((item: any) => item.id.startsWith(product.id))
+    .filter((item: any) => String(item.id).startsWith(String(product.id)))
     .reduce((acc: number, item: any) => acc + item.quantity, 0);
 
   const isAlreadyInCart = quantityInCart > 0;

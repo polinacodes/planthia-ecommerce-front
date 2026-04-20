@@ -5,7 +5,7 @@ import HeroTienda from '@/components/shop/HeroTienda';
 import Pagination from '@/components/shop/Pagination';
 import ProductGrid from '@/components/shop/ProductGrid';
 import ShopToolbar from '@/components/shop/ShopToolbar';
-import productsData from '@/data/products.json';
+import { usePlants } from '@/hooks/usePlants';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 
@@ -14,8 +14,8 @@ const TiendaPage = () => {
   const router = useRouter();
   const pathname = usePathname();
 
+  const { plants, loading } = usePlants();
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-
   const [isSortOpen, setIsSortOpen] = useState(false);
   //para el skeleton loading
   const [isLoading, setIsLoading] = useState(false);
@@ -28,7 +28,7 @@ const TiendaPage = () => {
     'precio-alto': 'Mayor precio'
   };
 
-  // 1. Obtener filtros de la URL
+  //  Obtener filtros de la URL
   const searchQuery = searchParams.get('search')?.toLowerCase() || '';
   const categoryQuery = searchParams.get('category') || 'todas';
   const lightQuery = searchParams.get('light') || '';
@@ -60,14 +60,16 @@ const TiendaPage = () => {
 
   //Lógica de filtrado
   const filteredProducts = useMemo(() => {
-    let result = productsData.filter((product) => {
-      const matchesSearch = product.name.toLowerCase().includes(searchQuery) ||
-        product.tags.some(tag => tag.toLowerCase().includes(searchQuery));
+    if (!plants) return []; // Seguridad por si aún no cargó nada
+
+    let result = plants.filter((product) => {
+      const matchesSearch = product.name?.toLowerCase().includes(searchQuery) ||
+        (product.tags && product.tags.some((tag: string) => tag.toLowerCase().includes(searchQuery)));
 
       const matchesCategory = categoryQuery === 'todas' ||
-        (Array.isArray(product.category)
-          ? product.category.some(cat => cat.toLowerCase() === categoryQuery.toLowerCase())
-          : product.category.toLowerCase() === categoryQuery.toLowerCase());
+        (product.subcategory &&
+          product.subcategory.name?.toLowerCase() === categoryQuery.toLowerCase());
+
       const matchesLight = !lightQuery || lightQuery.split(',').includes(product.light);
       const matchesPet = !petQuery || product.petFriendly === true;
       const matchesDiff = !diffQuery || diffQuery.split(',').includes(product.difficulty);
@@ -76,31 +78,33 @@ const TiendaPage = () => {
     });
 
     if (sortQuery === 'precio-bajo') {
-      result.sort((a, b) => a.price - b.price);
+      result.sort((a, b) => (a.price || 0) - (b.price || 0));
     } else if (sortQuery === 'precio-alto') {
-      result.sort((a, b) => b.price - a.price);
+      result.sort((a, b) => (b.price || 0) - (a.price || 0));
     }
     return result;
-  }, [searchQuery, categoryQuery, lightQuery, petQuery, diffQuery, sortQuery]);
+  }, [plants, searchQuery, categoryQuery, lightQuery, petQuery, diffQuery, sortQuery]);
 
-  
-const [productsPerPage, setProductsPerPage] = useState(8);
 
-useEffect(() => {
-  const updateLimit = () => {
-    if (window.innerWidth >= 768 && window.innerWidth < 1024) {
-      setProductsPerPage(9);
-    } else {
-      setProductsPerPage(8); 
-    }
-  };
 
-  updateLimit(); 
-  window.addEventListener('resize', updateLimit);
-  return () => window.removeEventListener('resize', updateLimit);
-}, []);
+  const [productsPerPage, setProductsPerPage] = useState(8);
 
-  // 3. Paginación (8 por página)
+
+  useEffect(() => {
+    const updateLimit = () => {
+      if (window.innerWidth >= 768 && window.innerWidth < 1024) {
+        setProductsPerPage(9);
+      } else {
+        setProductsPerPage(8);
+      }
+    };
+
+    updateLimit();
+    window.addEventListener('resize', updateLimit);
+    return () => window.removeEventListener('resize', updateLimit);
+  }, []);
+
+  // Paginación (8 por página)
   const [currentPage, setCurrentPage] = useState(1);
 
   const indexOfLastProduct = currentPage * productsPerPage;
@@ -137,12 +141,21 @@ useEffect(() => {
         />
 
         {/* Grilla de Productos */}
-        <ProductGrid
-          products={currentProducts}
-          isLoading={isLoading}
-          activeFiltersText={activeFiltersText}
-          productsPerPage={productsPerPage}
-        />
+        {loading ? (
+          <ProductGrid
+            products={Array(8).fill({})}
+            isLoading={true}
+            activeFiltersText={activeFiltersText}
+            productsPerPage={productsPerPage}
+          />
+        ) : (
+          <ProductGrid
+            products={currentProducts}
+            isLoading={false}
+            activeFiltersText={activeFiltersText}
+            productsPerPage={productsPerPage}
+          />
+        )}
 
         {/* Paginación dinámica */}
         <Pagination

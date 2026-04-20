@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo, useEffect } from 'react';
 import Image from 'next/image';
-import products from '@/data/products.json';
+import { usePlants } from '@/hooks/usePlants';
 import { useParams } from 'next/navigation';
 import { motion, AnimatePresence } from "framer-motion";
 import { Sun, Droplets, Thermometer, ArrowUp, Heart, PawPrint } from "lucide-react";
@@ -26,12 +26,16 @@ const CareItem = ({ icon: Icon, label, value }: any) => (
 export default function ProductPage() {
   const params = useParams();
   const id = params.id;
+  const { plants, loading } = usePlants();
+  const { addItem, cart, removeItem, updateQuantity } = useCart();
 
-  const product = useMemo(() => products.find((p) => p.id === id), [id]);
-  const [selectedImage, setSelectedImage] = useState<string>(product?.image || "");
-  const [selectedVariant, setSelectedVariant] = useState<any>(
-    product?.variants && product.variants.length > 0 ? product.variants[0] : null
-  );
+  const [selectedImage, setSelectedImage] = useState<string>("");
+  const [selectedVariant, setSelectedVariant] = useState<any>(null);
+
+  const product = useMemo(() => {
+    if (!plants) return undefined;
+    return plants.find((p) => p.id.toString() === id?.toString());
+  }, [plants, id]);
 
   useEffect(() => {
     if (product) {
@@ -49,22 +53,20 @@ export default function ProductPage() {
       rojo: "#e11d48", rosa: "#fb7185", "rosa intenso": "#be123c",
       "rosa palido": "#fda4af", violeta: "#7c3aed", magenta: "#d946ef",
       blanco: "#ffffff", naranja: "#f97316", amarillo: "#facc15",
-      salmon: "#fa8072", burdeos: "#800020",
+      salmon: "#fa8072", burdeus: "#800020",
     };
     return colors[color.toLowerCase()] || "#cbd5e1";
   };
 
   const relatedProducts = useMemo(() => {
-    if (!product) return [];
-    const currentCategory = Array.isArray(product.category) ? product.category[0] : product.category;
-
-    return products
-      .filter(p => {
-        const pCategory = Array.isArray(p.category) ? p.category[0] : p.category;
-        return pCategory === currentCategory && p.id !== product.id;
-      })
+    if (!product || !plants) return [];
+    const currentSub = product.subcategory?.name;
+    return plants
+      .filter(p => p.subcategory?.name === currentSub && p.id !== product.id)
       .slice(0, 4);
-  }, [product, products]);
+  }, [product, plants]);
+
+  if (loading) return null;
 
   if (!product) {
     return (
@@ -82,7 +84,7 @@ export default function ProductPage() {
     return (
       <div className="flex items-center gap-6">
         <div className="flex gap-4">
-          {product.variants.map((variant) => (
+          {product.variants.map((variant: any) => (
             <button
               key={variant.color}
               onClick={() => {
@@ -105,8 +107,6 @@ export default function ProductPage() {
     );
   };
 
-
-  const { addItem, cart, removeItem, updateQuantity } = useCart();
 
   const currentUniqueId = selectedVariant
     ? `${product.id}-${selectedVariant.color.toLowerCase()}`
@@ -145,10 +145,10 @@ export default function ProductPage() {
           <Link href="/tienda" className="hover:text-planthia-green transition-colors">Tienda</Link>
           <span className="mx-2 text-planthia-dark/30">/</span>
           <Link
-            href={`/tienda?category=${Array.isArray(product.category) ? product.category[0].toLowerCase() : product.category.toLowerCase()}`}
+            href={`/tienda?category=${product.subcategory?.name?.toLowerCase() || 'todas'}`}
             className="hover:text-planthia-green transition-colors"
           >
-            {Array.isArray(product.category) ? product.category[0] : product.category}
+            {product.subcategory?.name || 'Sin categoría'}
           </Link>
           <span className="mx-2 text-planthia-dark/30">/</span>
           <span className="text-planthia-dark font-bold">{product.name}</span>
@@ -208,10 +208,10 @@ export default function ProductPage() {
 
             {/* Grid de Cuidados */}
             <div className="grid grid-cols-2 gap-y-10 gap-x-8 py-10 border-y border-planthia-dark/10">
-              <CareItem icon={Sun} label="Luz" value={product.light} />
-              <CareItem icon={Droplets} label="Riego" value={product.water} />
-              <CareItem icon={ArrowUp} label="Crecimiento" value={product.growth} />
-              <CareItem icon={Thermometer} label="Humedad" value={product.humidity || "Media"} />
+              <CareItem icon={Sun} label="Luz" value={product.metadata?.light || "No especificado"} />
+              <CareItem icon={Droplets} label="Riego" value={product.metadata?.water || "No especificado"} />
+              <CareItem icon={ArrowUp} label="Crecimiento" value={product.metadata?.growth || "No especificado"} />
+              <CareItem icon={Thermometer} label="Humedad" value={product.metadata?.humidity || "No especificado"} />
             </div>
 
             {product.variants && (

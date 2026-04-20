@@ -59,6 +59,8 @@ const RecommendedSection = ({ plants }: { plants: any[] }) => {
     setActiveId(activeId === plantId ? null : plantId);
   };
 
+  console.log("Plantas recibidas en RecommendedSection:", plants);
+
   return (
     <section className="pt-12 pb-12 px-4 sm:px-6 lg:px-12 max-w-[1600px] mx-auto bg-[#F7F5F0]">
       {/* Encabezado */}
@@ -110,6 +112,7 @@ const RecommendedSection = ({ plants }: { plants: any[] }) => {
           >
             {visiblePlants.map((plant) => (
               <div key={`carousel-${plant.id}`} className="py-14 w-full">
+                
                 <ProductCard
                   plant={plant}
                   isActive={activeId === plant.id}

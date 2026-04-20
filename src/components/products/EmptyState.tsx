@@ -2,7 +2,8 @@
 import React from 'react';
 import { SearchX } from 'lucide-react';
 import ProductCardShop from './ProductCardShop';
-import productsData from '@/data/products.json';
+import { usePlants } from '@/hooks/usePlants';
+
 
 interface EmptyStateProps {
   title?: string;
@@ -10,12 +11,10 @@ interface EmptyStateProps {
   className?: string;
 }
 
-const EmptyState = ({
-  title = "Uy, parece que esa plantita todavía no llegó a nuestra selva.",
-  description,
-  className = "py-16"
-}: EmptyStateProps) => {
-  const suggestions = productsData.slice(0, 4);
+
+const EmptyState = ({ title = "Uy, parece que esa plantita todavía no llegó a nuestra selva.", description, className = "py-16" }: any) => {
+  const { plants } = usePlants(); 
+  const suggestions = plants ? plants.slice(0, 4) : []; 
 
   return (
     <div className={`flex flex-col items-center w-full max-w-7xl mx-auto px-8 ${className}`}>

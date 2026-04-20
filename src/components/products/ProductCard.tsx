@@ -39,7 +39,9 @@ const ProductCard = ({ plant, isActive, onClick }: ProductCardProps) => {
     toast.success(`${plant.name} agregada`);
   };
 
-  const isAlreadyInCart = cart.some((item: any) => item.id.startsWith(plant.id));
+  const isAlreadyInCart = cart.some((item: any) => 
+  String(item.id).startsWith(String(plant.id))
+);
 
   return (
     <motion.div
