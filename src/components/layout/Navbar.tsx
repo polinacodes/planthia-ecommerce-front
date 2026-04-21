@@ -41,10 +41,10 @@ export default function Navbar() {
         <Link href="/" className={`${isActive("/") ? "text-planthia-green" : "hover:text-planthia-green"} transition-colors`}>
           Inicio
         </Link>
-        <Link href="/tienda" className={`${isActive("/tienda") ? "text-planthia-green" : "hover:text-planthia-green"} transition-colors`}>
-          Tienda
+        <Link href="/tienda?type=plantas" className={`${isActive("/tienda?type=plantas") ? "text-planthia-green" : "hover:text-planthia-green"} transition-colors`}>
+          Plantas
         </Link>
-        <Link href="/" className={`${isActive("/cuidados") ? "text-planthia-green" : "hover:text-planthia-green"} transition-colors`}>
+        <Link href="/tienda?type=cuidados" className={`${isActive("/tienda?type=cuidados") ? "text-planthia-green" : "hover:text-planthia-green"} transition-colors`}>
           Cuidados
         </Link>
       </div>

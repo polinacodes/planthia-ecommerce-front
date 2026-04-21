@@ -46,7 +46,7 @@ const HeroTienda = () => {
     </motion.h1>
     <div className="w-16 h-[1px] bg-[#FDFBF7]/50 my-4" />
     <p className="text-[#FDFBF7]/80 font-light tracking-wide italic">
-      Explorá nuestra selección premium de plantas
+      Explorá nuestra selección premium de plantas y todo para su cuidado.
     </p>
   </div>
 </section>

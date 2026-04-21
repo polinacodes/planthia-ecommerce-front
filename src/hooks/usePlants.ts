@@ -5,12 +5,19 @@ export function usePlants() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/products')
-      .then((res) => res.json())
-      .then((res) => {
-        setPlants(res.data || []);
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch('http://localhost:1337/api/products?populate=subcategory&populate=metadata');
+        const result = await response.json();
+        setPlants(result.data || []);
         setLoading(false);
-      });
+      } catch (error) {
+        console.error("Error fetching products:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
   }, []);
 
   return { plants, loading };
