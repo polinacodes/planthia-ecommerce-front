@@ -7,7 +7,7 @@ export function usePlants() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch('http://localhost:1337/api/products?populate=subcategory&populate=metadata');
+        const response = await fetch('http://localhost:1337/api/products?populate=subcategory&populate=metadata&populate=variants');
         const result = await response.json();
         setPlants(result.data || []);
         setLoading(false);

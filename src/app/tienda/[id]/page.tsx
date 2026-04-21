@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { usePlants } from '@/hooks/usePlants';
 import { useParams } from 'next/navigation';
 import { motion, AnimatePresence } from "framer-motion";
-import { Sun, Droplets, Thermometer, ArrowUp, Heart, PawPrint } from "lucide-react";
+import { Sun, Droplets, Thermometer, ArrowUp, Heart, PawPrint, Ruler, Package, HandHeart } from "lucide-react";
 import Link from 'next/link'
 import ProductCardShop from '@/components/products/ProductCardShop';
 import EmptyState from '@/components/products/EmptyState';
@@ -18,7 +18,7 @@ const CareItem = ({ icon: Icon, label, value }: any) => (
     <Icon size={20} strokeWidth={1.5} className="text-planthia-dark/50" />
     <div className="flex flex-col">
       <span className="text-[10px] uppercase tracking-widest text-planthia-dark/50 mb-1">{label}</span>
-      <span className="text-xs font-bold text-planthia-dark uppercase">{value}</span>
+      <span className="text-xs font-bold text-planthia-dark/80 uppercase">{value}</span>
     </div>
   </div>
 );
@@ -53,7 +53,8 @@ export default function ProductPage() {
       rojo: "#e11d48", rosa: "#fb7185", "rosa intenso": "#be123c",
       "rosa palido": "#fda4af", violeta: "#7c3aed", magenta: "#d946ef",
       blanco: "#ffffff", naranja: "#f97316", amarillo: "#facc15",
-      salmon: "#fa8072", burdeus: "#800020",
+      salmon: "#fa8072", burdeus: "#800020", beige: "#D4C1A9",
+    "rosa pastel": "#DBB5B1","verde pastel": "#90A67F", floral:"#D36658",
     };
     return colors[color.toLowerCase()] || "#cbd5e1";
   };
@@ -139,13 +140,17 @@ export default function ProductPage() {
   return (
     <main className="min-h-screen bg-planthia-cream pt-6 md:pt-12">
       <div className="max-w-7xl mx-auto px-8">
-
         {/* 1. BREADCRUMBS */}
         <nav className="text-[10px] uppercase tracking-[0.2em] text-planthia-dark/60 mb-4">
-          <Link href="/tienda" className="hover:text-planthia-green transition-colors">Tienda</Link>
+          <Link
+            href={`/tienda?type=${product.type}`}
+            className="hover:text-planthia-green transition-colors"
+          >
+            {product.type === 'plantas' ? 'Plantas' : 'Cuidados'}
+          </Link>
           <span className="mx-2 text-planthia-dark/30">/</span>
           <Link
-            href={`/tienda?category=${product.subcategory?.name?.toLowerCase() || 'todas'}`}
+            href={`/tienda?type=${product.type}&category=${product.subcategory?.name?.toLowerCase() || 'todas'}`}
             className="hover:text-planthia-green transition-colors"
           >
             {product.subcategory?.name || 'Sin categoría'}
@@ -155,7 +160,6 @@ export default function ProductPage() {
         </nav>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 min-h-[600px] items-start">
-
           {/*COLUMNA IZQUIERDA: VISUALS */}
           <div className="flex flex-col p-2">
             <div className="relative w-full h-[400px] md:h-[650px] bg-planthia-cream rounded-[3rem] overflow-hidden">
@@ -206,12 +210,25 @@ export default function ProductPage() {
               </p>
             </div>
 
-            {/* Grid de Cuidados */}
-            <div className="grid grid-cols-2 gap-y-10 gap-x-8 py-10 border-y border-planthia-dark/10">
-              <CareItem icon={Sun} label="Luz" value={product.metadata?.light || "No especificado"} />
-              <CareItem icon={Droplets} label="Riego" value={product.metadata?.water || "No especificado"} />
-              <CareItem icon={ArrowUp} label="Crecimiento" value={product.metadata?.growth || "No especificado"} />
-              <CareItem icon={Thermometer} label="Humedad" value={product.metadata?.humidity || "No especificado"} />
+            {/* GRID DE INFO */}
+            <div className={`py-10 border-y border-planthia-dark/10 ${product.type === 'plantas'
+              ? 'grid grid-cols-2 gap-y-10 gap-x-8'
+              : 'grid grid-cols-1 md:grid-cols-3 gap-8'
+              }`}>
+              {product.type === 'plantas' ? (
+                <>
+                  <CareItem icon={Sun} label="Luz" value={product.metadata?.light || "No especificado"} />
+                  <CareItem icon={Droplets} label="Riego" value={product.metadata?.water || "No especificado"} />
+                  <CareItem icon={ArrowUp} label="Crecimiento" value={product.metadata?.growth || "No especificado"} />
+                  <CareItem icon={Thermometer} label="Humedad" value={product.metadata?.humidity || "No especificado"} />
+                </>
+              ) : (
+                <>
+                  <CareItem icon={Ruler} label="Dimensiones" value={product.metadata?.dimensions || "No especificado"} />
+                  <CareItem icon={Package} label="Material" value={product.metadata?.material || "No especificado"} />
+                  <CareItem icon={HandHeart} label="Tips de cuidado" value={product.metadata?.care_tips || "No especificado"} />
+                </>
+              )}
             </div>
 
             {product.variants && (
