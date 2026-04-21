@@ -5,6 +5,7 @@ import HeroTienda from '@/components/shop/HeroTienda';
 import Pagination from '@/components/shop/Pagination';
 import ProductGrid from '@/components/shop/ProductGrid';
 import ShopToolbar from '@/components/shop/ShopToolbar';
+import TypeSelector from '@/components/shop/TypeSelector';
 import { usePlants } from '@/hooks/usePlants';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
@@ -14,6 +15,17 @@ const TiendaPage = () => {
   const router = useRouter();
   const pathname = usePathname();
   const { plants, loading } = usePlants();
+
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams.toString());
+    const hasFilters = params.get('light') || params.get('difficulty') || params.get('petFriendly') || params.get('sort');
+
+    if (hasFilters) {
+      const type = params.get('type') || 'plantas';
+      const category = params.get('category') || 'todas';
+      router.replace(`/tienda?type=${type}&category=${category}`, { scroll: false });
+    }
+  }, []);
 
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isSortOpen, setIsSortOpen] = useState(false);
@@ -46,6 +58,9 @@ const TiendaPage = () => {
 
   const updateFilter = (key: string, value: string) => {
     const params = new URLSearchParams(searchParams.toString());
+    if (key !== 'search') {
+      params.delete('search');
+    }
 
     if (key === 'type') {
       params.set('type', value);
@@ -60,37 +75,38 @@ const TiendaPage = () => {
 
   const filteredProducts = useMemo(() => {
     if (!plants?.length) return [];
+    let results = plants;
 
-    return plants.filter((product) => {
-      // 1. FILTRO POR TIPO (Plantas/Cuidados)
-      if (typeQuery !== 'todas' && product.type !== typeQuery) return false;
-      // 2. FILTRO POR SUBCATEGORÍA
-      if (categoryQuery !== 'todas' &&
-        product.subcategory?.name?.toLowerCase() !== categoryQuery.toLowerCase()) return false;
-      // 3. FILTRO POR BÚSQUEDA
-      if (searchQuery) {
+    if (searchQuery) {
+      results = results.filter((product) => {
         const matchesName = product.name?.toLowerCase().includes(searchQuery);
         const matchesTags = product.tags?.some((tag: string) =>
           tag.toLowerCase().includes(searchQuery)
         );
-        if (!matchesName && !matchesTags) return false;
-      }
-      // 4. FILTRO POR LUZ (light)
-      if (lightQuery) {
-        const lightValues = lightQuery.split(',');
-        if (!lightValues.includes(product.metadata?.light)) return false;
-      }
-      // 5. FILTRO PET FRIENDLY
-      if (petQuery && !product.metadata?.pet_friendly) return false;
-      // 6. FILTRO POR DIFICULTAD (difficulty)
-      if (diffQuery) {
-        const diffValues = diffQuery.split(',');
-        if (!diffValues.includes(product.metadata?.difficulty)) return false;
-      }
-      
+        return matchesName || matchesTags;
+      });
+    }
 
-      return true;
-    }).sort((a, b) => {
+    if (!searchQuery) {
+      results = results.filter((product) => {
+        if (typeQuery !== 'todas' && product.type !== typeQuery) return false;
+        if (categoryQuery !== 'todas' &&
+          product.subcategory?.name?.toLowerCase() !== categoryQuery.toLowerCase()) return false;
+        if (lightQuery) {
+          const lightValues = lightQuery.split(',');
+          if (!lightValues.includes(product.metadata?.light)) return false;
+        }
+        if (petQuery && !product.metadata?.pet_friendly) return false;
+        if (diffQuery) {
+          const diffValues = diffQuery.split(',');
+          if (!diffValues.includes(product.metadata?.difficulty)) return false;
+        }
+
+        return true;
+      });
+    }
+    // Ordenamiento
+    return results.sort((a, b) => {
       if (sortQuery === 'precio-bajo') return (a.price || 0) - (b.price || 0);
       if (sortQuery === 'precio-alto') return (b.price || 0) - (a.price || 0);
       return 0;
@@ -125,29 +141,20 @@ const TiendaPage = () => {
     <div className="min-h-screen bg-cream pt-24 pb-16 ">
       <HeroTienda />
       <div className="max-w-[1400px] mx-auto px-6 sm:px-12">
-        {/* Selector de Planta vs Cuidado */}
-        <div className="flex gap-4 justify-center my-6">
-          <button
-            onClick={() => updateFilter('type', 'plantas')}
-            className={`px-4 py-1.5 md:px-6 md:py-2 rounded-full cursor-pointer text-xs md:text-sm font-bold transition-all border ${typeQuery === 'plantas' ? 'bg-[#5B823B] text-white border-[#5B823B]' : 'bg-white text-gray-500 border-gray-200 hover:border-[#5B823B] hover:text-[#5B823B]'}`}
-          >
-            Plantas
-          </button>
-          <button
-            onClick={() => updateFilter('type', 'cuidados')}
-            className={`px-4 py-1.5 md:px-6 md:py-2 rounded-full cursor-pointer text-xs md:text-sm font-bold transition-all border ${typeQuery === 'cuidados' ? 'bg-[#5B823B] text-white border-[#5B823B]' : 'bg-white text-gray-500 border-gray-200 hover:border-[#5B823B] hover:text-[#5B823B]'}`}
-          >
-            Cuidados
-          </button>
-        </div>
+
+        <TypeSelector
+          typeQuery={typeQuery}
+          searchQuery={searchQuery}
+          onTypeChange={(type) => updateFilter('type', type)}
+        />
 
         <CategoryFilters
           type={typeQuery}
           categoryQuery={categoryQuery}
           onFilterChange={updateFilter}
+          hasSearch={!!searchQuery}
         />
 
-        {/* BARRA DE HERRAMIENTAS */}
         <ShopToolbar
           isFilterOpen={isFilterOpen}
           setIsFilterOpen={setIsFilterOpen}
@@ -157,7 +164,7 @@ const TiendaPage = () => {
           diffQuery={diffQuery}
           petQuery={petQuery}
           sortQuery={sortQuery}
-          typeQuery={typeQuery} 
+          typeQuery={typeQuery}
           totalProducts={filteredProducts.length}
           updateFilter={updateFilter}
           sortLabels={sortLabels}
@@ -180,7 +187,7 @@ const TiendaPage = () => {
           />
         )}
 
-        {/* Paginación dinámica */}
+        {/* Paginación */}
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
