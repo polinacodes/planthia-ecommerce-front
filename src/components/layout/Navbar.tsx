@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { ShoppingCart, User } from "lucide-react";
 import SearchBar from "./SearchBar";
 import { useCart } from '@/hooks/useCart';
@@ -10,7 +10,7 @@ import { useCart } from '@/hooks/useCart';
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
-
+  const searchParams = useSearchParams();
 
   const cart = useCart((state) => state.cart);
   const toggleCart = useCart((state) => state.toggleCart);
@@ -24,7 +24,20 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const isActive = (path: string) => pathname === path;
+  // const isActive = (path: string) => pathname === path;
+
+  const isActive = (href: string) => {
+    if (href === "/") {
+      return pathname === "/";
+    }
+    if (href === "/tienda?type=plantas") {
+      return pathname === "/tienda" && searchParams.get("type") === "plantas";
+    }
+    if (href === "/tienda?type=cuidados") {
+      return pathname === "/tienda" && searchParams.get("type") === "cuidados";
+    }
+    return false;
+  };
 
   return (
     <nav

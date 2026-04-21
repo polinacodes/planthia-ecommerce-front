@@ -19,6 +19,7 @@ export function usePlants() {
 
     fetchProducts();
   }, []);
+  
 
   return { plants, loading };
 }

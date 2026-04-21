@@ -27,11 +27,11 @@ export default function Hero() {
           <button
             onClick={() => router.push('/tienda')}
             className="bg-planthia-green text-white px-4 sm:px-10 py-3 sm:py-5 font-bold hover:opacity-90 transition-all cursor-pointer
-              rounded-tl-2xl rounded-bl-sm skew-x-[-15deg] origin-bottom overflow-hidden shadow-lg shadow-planthia-green/20 flex-1 sm:flex-none text-sm sm:text-base">
+              rounded-tl-2xl rounded-bl-sm skew-x-[-15deg] origin-bottom overflow-hidden shadow-lg shadow-planthia-green/20 flex-1 sm:flex-none text-base sm:text-lg">
             <span className="inline-block skew-x-[15deg]">Coleccion</span>
           </button>
           <button className="bg-white border border-gray-100 px-4 sm:px-10 py-3 sm:py-5 font-bold text-planthia-green hover:bg-gray-50 transition-all cursor-pointer
-              rounded-tr-sm rounded-br-2xl skew-x-[-15deg] origin-bottom shadow-sm flex-1 sm:flex-none text-sm sm:text-base">
+              rounded-tr-sm rounded-br-2xl skew-x-[-15deg] origin-bottom shadow-sm flex-1 sm:flex-none text-base sm:text-lg">
             <span className="inline-block skew-x-[15deg]">Ver cuidados</span>
           </button>
         </div>
@@ -76,9 +76,9 @@ export default function Hero() {
             </div>
 
             <div className="flex flex-col">
-              <h4 className="font-headline font-bold text-planthia-dark text-sm sm:text-base leading-tight">
+              <p className="font-headline font-bold text-planthia-dark text-sm sm:text-base leading-tight">
                 La más vendida
-              </h4>
+              </p>
               <p className="font-body text-[10px] sm:text-xs text-planthia-dark/50 mt-1 leading-snug">
                 Marble Queen pothus
               </p>
