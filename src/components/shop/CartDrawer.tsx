@@ -2,9 +2,11 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '@/hooks/useCart';
 import { X, Trash2, Plus, Minus } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 export const CartDrawer = () => {
   const { cart, isOpen, closeCart, removeItem, updateQuantity, getTotalPrice } = useCart();
+  const router = useRouter();
 
   return (
     <AnimatePresence>
@@ -91,7 +93,12 @@ export const CartDrawer = () => {
                 <span className="text-xs font-bold uppercase">Total</span>
                 <span className="text-xs font-bold">${getTotalPrice()}</span>
               </div>
-              <button className="w-full bg-planthia-green text-white py-4 text-[10px] font-bold uppercase tracking-widest hover:bg-planthia-green transition-colors cursor-pointer">
+              <button
+                onClick={() => {
+                  closeCart();
+                  router.push('/checkout');
+                }}
+                className="w-full bg-planthia-green text-white py-4 text-[10px] font-bold uppercase tracking-widest hover:bg-planthia-green transition-colors cursor-pointer">
                 Finalizar Compra
               </button>
             </div>
