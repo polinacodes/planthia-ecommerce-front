@@ -5,6 +5,7 @@ import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
 import { Toaster } from 'sonner';
 import { CartDrawer } from "@/components/shop/CartDrawer";
+import NewsletterPopup from "@/components/layout/NewsletterPopup";
 
 const manrope = Manrope({
   subsets: ["latin"],
@@ -34,6 +35,7 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
+        <NewsletterPopup />
         <Toaster
           position="bottom-right"
           toastOptions={{
