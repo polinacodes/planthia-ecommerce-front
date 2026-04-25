@@ -13,6 +13,7 @@ interface Product {
   description: string;
   image: string;
   difficulty: string;
+  stock?: number;
   variants?: any[];
 }
 
@@ -40,12 +41,15 @@ const ProductCardShop = ({ product }: { product: Product }) => {
         name: product.name,
         price: product.price,
         image: product.image,
-        quantity: 1
+        quantity: 1,
+        stock: product.stock || 0 
       });
       toast.success(`${product.name} agregada`);
       openCart();
     }
   };
+
+  const isOutOfStock = !hasVariants && (product.stock === undefined || product.stock <= 0);
 
   return (
     <div className="group relative bg-[#FFFFFF] rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 flex flex-col">

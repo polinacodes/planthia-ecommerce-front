@@ -9,6 +9,7 @@ interface CartItem {
   image: string;
   quantity: number;
   color?: string;
+  stock: number;
 }
 
 interface CartStore {
@@ -35,42 +36,65 @@ export const useCart = create<CartStore>()(
         const currentCart = get().cart;
         const existingItem = currentCart.find((item) => item.id === newItem.id);
 
-        if (existingItem) {
+       if (existingItem) {
+          const currentStock = existingItem.stock || 0;
+          
+          if (existingItem.quantity + 1 > currentStock) {
+            console.warn(`Límite de stock alcanzado (${currentStock}) para ${existingItem.name}`);
+            return; 
+          }
+          
           set({
             cart: currentCart.map((item) =>
-              item.id === newItem.id
-                ? { ...item, quantity: item.quantity + 1 }
+              item.id === newItem.id 
+                ? { ...item, quantity: item.quantity + 1 } 
                 : item
             ),
           });
         } else {
-          set({ cart: [...currentCart, { ...newItem, quantity: 1 }] });
+          const stockValue = newItem.stock || 0;
+          
+          if (stockValue === 0) {
+            console.warn(`Producto sin stock: ${newItem.name}`);
+            return; 
+          }
+          
+          set({ 
+            cart: [...currentCart, { ...newItem, quantity: 1, stock: stockValue }] 
+          });
         }
       },
 
       updateQuantity: (id, quantity) => {
-        set({
-          cart: get().cart.map((item) =>
-            item.id === id ? { ...item, quantity: Math.max(0, quantity) } : item
-          ).filter(item => item.quantity > 0)
+        set((state) => {
+          const item = state.cart.find((i) => i.id === id);
+          if (!item) return state;
+
+          const maxStock = item.stock || 0;
+          
+          const validatedQuantity = Math.min(Math.max(1, quantity), maxStock);
+
+          if (maxStock === 0) {
+            console.warn(`Producto sin stock definido: ${item.name}`);
+            return state;
+          }
+
+          return {
+            cart: state.cart.map((i) =>
+              i.id === id ? { ...i, quantity: validatedQuantity } : i
+            )
+          };
         });
       },
 
-      removeItem: (id) => {
-        set({ cart: get().cart.filter((item) => item.id !== id) });
-      },
-
+      removeItem: (id) => set({ cart: get().cart.filter((i) => i.id !== id) }),
       clearCart: () => set({ cart: [] }),
-
       totalItems: () => get().cart.reduce((acc, item) => acc + item.quantity, 0),
       getTotalPrice: () => get().cart.reduce((acc, item) => acc + (item.price * item.quantity), 0),
-
       openCart: () => set({ isOpen: true }),
       closeCart: () => set({ isOpen: false }),
       toggleCart: () => set((state) => ({ isOpen: !state.isOpen })),
     }),
-    {
-      name: 'planthia-cart-storage',
-    }
+    { name: 'planthia-cart-storage' }
   )
 );

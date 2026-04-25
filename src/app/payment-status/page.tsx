@@ -1,104 +1,99 @@
 'use client';
+import { useEffect } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { CheckCircle2, Mail, ArrowRight, Home } from 'lucide-react';
+import { useCart } from '@/hooks/useCart';
+import { CheckCircle, AlertCircle, ArrowRight, Home, ShoppingBag } from 'lucide-react';
 
 export default function PaymentStatusPage() {
+
   const searchParams = useSearchParams();
   const router = useRouter();
+  const { clearCart } = useCart();
 
-  const paymentId = searchParams.get('payment_id') || searchParams.get('collection_id') || searchParams.get('preference_id');
-  const status = searchParams.get('status') || searchParams.get('collection_status');
+  const paymentId = searchParams.get('payment_id') || searchParams.get('preference_id');
+  const status = searchParams.get('status'); 
 
   const orderNumber = paymentId ? `#PL-${paymentId.toString().slice(-5)}` : '82931';
 
-  const isError = status === 'failure' || status === 'rejected';
-  const isPending = status === 'pending';
+  const isError = status === 'failure';
 
-  if (isError) {
-    return (
-      <main className="min-h-screen bg-planthia-cream flex items-center justify-center p-6">
-        <div className="text-center">
-          <div className="text-red-500 text-6xl mb-4">❌</div>
-          <h1 className="text-3xl font-bold mb-4">Hubo un problema con tu pago</h1>
-          <p className="mb-6">Podés intentar nuevamente desde el checkout.</p>
-          <button onClick={() => router.push('/checkout')} className="bg-planthia-green text-white px-6 py-3 rounded-full">
-            Volver al checkout
-          </button>
-        </div>
-      </main>
-    );
-  }
+  useEffect(() => {
+    if (status === 'approved') {
+      console.log("✅ Pago aprobado: Limpiando carrito...");
+      clearCart();
+    }
+  }, [status, clearCart]);
 
-  if (isPending) {
-    return (
-      <main className="min-h-screen bg-planthia-cream flex items-center justify-center p-6">
-        <div className="text-center">
-          <div className="text-yellow-500 text-6xl mb-4">⏳</div>
-          <h1 className="text-3xl font-bold mb-4">Tu pago está siendo procesado</h1>
-          <p>En breve recibirás un email con la confirmación.</p>
-        </div>
-      </main>
-    );
-  }
+  const statusConfig = {
+    success: {
+      icon: CheckCircle,
+      iconColor: "text-planthia-green",
+      bgColor: "bg-planthia-green/10",
+      title: "¡Pago exitoso!",
+      message: "Gracias por tu compra. Te enviamos un correo con los detalles de envío.",
+      buttonText: "Tu cuenta"
+    },
+    error: {
+      icon: AlertCircle,
+      iconColor: "text-red-500",
+      bgColor: "bg-red-500/10",
+      title: "Hubo un problema",
+      message: "No pudimos procesar tu pago. Podés intentar nuevamente desde el checkout.",
+      buttonText: "Volver al checkout"
+    },
+    // pending: {
+    //   icon: Clock,
+    //   iconColor: "text-yellow-500",
+    //   bgColor: "bg-yellow-500/10",
+    //   title: "Procesando pago",
+    //   message: "Tu pago está siendo verificado. Te avisaremos por correo en breve.",
+    //   buttonText: "Ir a la tienda"
+    // }
+  };
 
-  // Pantalla de éxito 
+  const current = isError ? statusConfig.error  : statusConfig.success;
+  const Icon = current.icon;
+
   return (
-    <main className="min-h-screen bg-planthia-cream font-body text-planthia-dark flex items-center justify-center p-6 md:p-12 relative overflow-hidden">
-      {/* Elementos orgánicos de fondo */}
-      <div className="absolute -top-24 -right-24 w-96 h-96 bg-planthia-light-green/20 rounded-full blur-3xl" />
-      <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-planthia-green/10 rounded-full blur-3xl" />
+    <main className="min-h-screen bg-planthia-gradient font-body text-planthia-dark flex items-center justify-center p-6 md:p-12 relative overflow-hidden">
+      <div className="w-full max-w-lg bg-white rounded-3xl shadow-xl p-8 md:p-10 z-10 flex flex-col items-center text-center">
+        {/* Icono Grande */}
+        <div className={`${current.bgColor} p-4 rounded-full mb-6`}>
+          <Icon className={`w-16 h-16 ${current.iconColor}`} strokeWidth={1.5} />
+        </div>
 
-      <div className="w-full max-w-2xl bg-planthia-ice rounded-xl overflow-hidden relative z-10">
-        <div className="p-8 md:p-12 lg:p-16 flex flex-col justify-center">
-          {/* Badge */}
-          <div className="flex items-center gap-2 mb-6">
-            <div className="bg-planthia-green/10 text-planthia-green p-2 rounded-full">
-              <CheckCircle2 className="w-5 h-5" />
-            </div>
-            <span className="text-planthia-green font-headline font-bold text-xs uppercase tracking-widest">
-              Pedido Confirmado
-            </span>
+        <h1 className="text-3xl md:text-4xl font-headline font-extrabold text-planthia-dark mb-4">
+          {current.title}
+        </h1>
+
+        <p className="text-planthia-dark/70 mb-8 max-w-sm">
+          {current.message}
+        </p>
+
+        {/* Sección de Orden (Solo si es éxito) */}
+        {!isError &&  (
+          <div className="bg-planthia-cream/50 w-full p-4 rounded-2xl mb-8 border border-planthia-dark/5">
+            <p className="text-sm text-planthia-dark/50 mb-1">Número de orden</p>
+            <span className="font-headline font-bold text-lg text-planthia-green">{orderNumber}</span>
           </div>
+        )}
 
-          <h1 className="text-4xl lg:text-5xl font-headline font-extrabold text-planthia-dark tracking-tighter leading-none mb-4">
-            ¡Gracias por tu compra!
-          </h1>
-
-          <div className="space-y-4 mb-10">
-            <p className="text-planthia-dark/60 font-body text-lg leading-relaxed">
-              Tu pedido ha sido confirmado con éxito. Estamos preparando tus plantas para que lleguen perfectas.
-            </p>
-
-            <div className="bg-planthia-cream p-4 rounded-lg flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-              <span className="text-sm">Número de orden:</span>
-              <span className="font-headline font-bold text-planthia-green">{orderNumber}</span>
-            </div>
-
-            <div className="flex items-start gap-3 pt-4 border-t border-planthia-dark/10">
-              <Mail className="w-5 h-5 text-planthia-green flex-shrink-0 mt-0.5" />
-              <p className="text-planthia-dark/60 text-sm">
-                Recibirás un correo con los detalles de tu envío pronto.
-              </p>
-            </div>
-          </div>
-
-          {/* Botones */}
-          <div className="flex flex-col sm:flex-row gap-4">
-            <button
-              onClick={() => router.push('/mi-cuenta')}
-              className="inline-flex items-center justify-center bg-planthia-green text-white font-bold px-8 py-4 rounded-full shadow-lg shadow-planthia-green/20 hover:scale-[1.02] transition-transform"
-            >
-              Ver estado del pedido
-              <ArrowRight className="ml-2 w-4 h-4" />
-            </button>
-            <button
-              onClick={() => router.push('/tienda')}
-              className="inline-flex items-center justify-center bg-white text-planthia-green font-bold px-8 py-4 rounded-full border border-planthia-green/20 hover:bg-planthia-green/5 transition-colors"
-            >
-              <Home className="mr-2 w-4 h-4" />
-              Volver al Inicio
-            </button>
-          </div>
+        <div className="flex flex-col w-full gap-3">
+          <button
+            onClick={() => isError ? router.push('/checkout') : router.push('/mi-cuenta')}
+            className="w-full flex items-center justify-center bg-planthia-dark text-white font-bold py-4 rounded-full hover:bg-planthia-dark/90 transition-all shadow-lg shadow-planthia-dark/20"
+          >
+            {current.buttonText}
+            <ArrowRight className="ml-2 w-4 h-4" />
+          </button>
+          
+          <button
+            onClick={() => router.push('/tienda')}
+            className="w-full flex items-center justify-center bg-transparent text-planthia-dark font-bold py-4 rounded-full border border-planthia-dark/10 hover:bg-planthia-dark/5 transition-all"
+          >
+            <Home className="mr-2 w-4 h-4" />
+            Volver a la tienda
+          </button>
         </div>
       </div>
     </main>

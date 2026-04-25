@@ -37,6 +37,19 @@ export default function ProductPage() {
     return plants.find((p) => p.id.toString() === id?.toString());
   }, [plants, id]);
 
+const stockDisponible = useMemo(() => {
+  if (!product) return 0;
+  
+  const p = product.attributes || product; 
+  
+  if (selectedVariant) {
+    return selectedVariant.stock || 0;
+  }
+  return p.stock || 0;
+}, [product, selectedVariant]);
+
+  const isOutOfStock = stockDisponible <= 0;
+
   useEffect(() => {
     if (product) {
       setSelectedImage(product.image);
@@ -54,7 +67,7 @@ export default function ProductPage() {
       "rosa palido": "#fda4af", violeta: "#7c3aed", magenta: "#d946ef",
       blanco: "#ffffff", naranja: "#f97316", amarillo: "#facc15",
       salmon: "#fa8072", burdeus: "#800020", beige: "#D4C1A9",
-    "rosa pastel": "#DBB5B1","verde pastel": "#90A67F", floral:"#D36658",
+      "rosa pastel": "#DBB5B1", "verde pastel": "#90A67F", floral: "#D36658",
     };
     return colors[color.toLowerCase()] || "#cbd5e1";
   };
@@ -117,6 +130,11 @@ export default function ProductPage() {
   const quantityInCart = cartItem ? cartItem.quantity : 0;
 
   const handleAddToCart = () => {
+    if (quantityInCart >= stockDisponible) {
+      toast.error("No hay más stock disponible");
+      return;
+    }
+
     const uniqueId = selectedVariant
       ? `${product.id}-${selectedVariant.color.toLowerCase()}`
       : product.id;
@@ -127,7 +145,8 @@ export default function ProductPage() {
       color: selectedVariant?.color,
       price: product.price,
       image: selectedImage || product.image,
-      quantity: 1
+      quantity: 1,
+      stock: stockDisponible 
     });
 
     toast.success(`${product.name} agregada`, {
@@ -242,7 +261,8 @@ export default function ProductPage() {
                 ${product.price.toLocaleString('es-AR')}
               </span>
               {/* BOTÓN ÚNICO CON LÓGICA DUAL */}
-              <div className="flex-1 flex items-center bg-planthia-green text-planthia-cream transition-all duration-300 min-h-[60px]">
+              <div className={`flex-1 flex items-center bg-planthia-green text-planthia-cream transition-all duration-300 min-h-[60px]
+                ${isOutOfStock ? "bg-gray-300 cursor-not-allowed" : "bg-planthia-green text-planthia-cream"}`}>
                 {quantityInCart > 0 ? (
                   <div className="flex w-full items-center justify-between px-2 sm:px-4">
                     <button
@@ -273,6 +293,7 @@ export default function ProductPage() {
 
                     <button
                       onClick={handleAddToCart}
+                      disabled={quantityInCart >= stockDisponible}
                       className="p-4 hover:scale-110 transition-transform font-bold text-xl"
                     >
                       +
@@ -281,9 +302,10 @@ export default function ProductPage() {
                 ) : (
                   <button
                     onClick={handleAddToCart}
+                    disabled={quantityInCart >= stockDisponible}
                     className="w-full py-5 px-8 uppercase text-[10px] tracking-[0.2em] font-bold hover:bg-planthia-light-green transition-all"
                   >
-                    Agregar
+                    {isOutOfStock ? "Sin Stock" : "Agregar"}
                   </button>
                 )}
               </div>

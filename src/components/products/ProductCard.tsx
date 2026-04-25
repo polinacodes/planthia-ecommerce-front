@@ -21,11 +21,14 @@ const ProductCard = ({ plant, isActive, onClick }: ProductCardProps) => {
     e.stopPropagation();
     console.log("Future: Add to favorites logic for", plant.id);
   };
+
   const handleAddToCart = (e: React.MouseEvent) => {
     e.stopPropagation();
 
     const selectedVariant = plant.variants && plant.variants.length > 0 ? plant.variants[0] : null;
     const uniqueId = selectedVariant ? `${plant.id}-${selectedVariant.color.toLowerCase()}` : plant.id;
+
+    const stockValue = selectedVariant ? selectedVariant.stock : (plant.stock || 0);
 
     addItem({
       id: uniqueId,
@@ -33,15 +36,16 @@ const ProductCard = ({ plant, isActive, onClick }: ProductCardProps) => {
       color: selectedVariant?.color,
       price: plant.price,
       image: selectedVariant?.image || plant.image,
-      quantity: 1
+      quantity: 1,
+      stock: stockValue
     });
 
     toast.success(`${plant.name} agregada`);
   };
 
-  const isAlreadyInCart = cart.some((item: any) => 
-  String(item.id).startsWith(String(plant.id))
-);
+  const isAlreadyInCart = cart.some((item: any) =>
+    String(item.id).startsWith(String(plant.id))
+  );
 
   return (
     <motion.div

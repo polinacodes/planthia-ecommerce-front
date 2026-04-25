@@ -66,18 +66,23 @@ export const CartDrawer = () => {
 
                       <p className="text-[11px] font-medium text-planthia-dark/60">${item.price}</p>
 
-                      {/* Selector de cantidad */}
                       <div className="flex items-center border border-planthia-dark/10 w-fit mt-2 rounded-full px-2 py-1">
                         <button
                           onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                          className="p-1 hover:text-planthia-green transition-colors cursor-pointer"
+                          disabled={item.quantity <= 1}
+                          className="p-1 hover:text-planthia-green transition-colors cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
                         >
                           <Minus size={12} />
                         </button>
-                        <span className="text-[10px] font-bold px-3 min-w-[30px] text-center">{item.quantity}</span>
+
+                        <span className="text-[10px] font-bold px-3 min-w-[30px] text-center">
+                          {item.quantity}
+                        </span>
+
                         <button
                           onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                          className="p-1 hover:text-planthia-green transition-colors cursor-pointer"
+                          disabled={!item.stock || item.quantity >= (item.stock || 0)}
+                          className="p-1 hover:text-planthia-green transition-colors cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
                         >
                           <Plus size={12} />
                         </button>
