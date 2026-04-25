@@ -56,9 +56,8 @@ function InputField({ label, placeholder, type = "text", value, onChange, onBlur
         value={value}
         onChange={(e) => onChange(e.target.value)}
         onBlur={onBlur}
-        className={`w-full px-4 py-3 bg-planthia-cream border-none rounded-xl focus:ring-2 focus:ring-planthia-green outline-none text-planthia-dark placeholder:text-planthia-dark/30 transition-all ${
-          error ? 'ring-2 ring-red-500 bg-red-50' : ''
-        }`}
+        className={`w-full px-4 py-3 bg-planthia-cream border-none rounded-xl focus:ring-2 focus:ring-planthia-green outline-none text-planthia-dark placeholder:text-planthia-dark/30 transition-all ${error ? 'ring-2 ring-red-500 bg-red-50' : ''
+          }`}
       />
       {error && <p className="text-red-500 text-sm mt-1 field-error">{error}</p>}
     </div>
@@ -69,9 +68,8 @@ function PaymentOption({ label, description, icon, selected, onSelect }: Payment
   return (
     <div
       onClick={onSelect}
-      className={`relative flex flex-col items-center justify-center p-8 bg-white border rounded-xl cursor-pointer transition-all ${
-        selected ? 'border-planthia-green shadow-lg scale-[1.02]' : 'border-planthia-dark/10 hover:border-planthia-green/50 hover:shadow-md'
-      }`}
+      className={`relative flex flex-col items-center justify-center p-8 bg-white border rounded-xl cursor-pointer transition-all ${selected ? 'border-planthia-green shadow-lg scale-[1.02]' : 'border-planthia-dark/10 hover:border-planthia-green/50 hover:shadow-md'
+        }`}
     >
       <div className="absolute top-4 right-4">
         <div className={`w-4 h-4 rounded-full border-2 ${selected ? 'bg-planthia-green border-planthia-green' : 'border-gray-300'}`} />
@@ -86,7 +84,7 @@ function PaymentOption({ label, description, icon, selected, onSelect }: Payment
 export default function CheckoutPage() {
   const { cart, getTotalPrice, clearCart } = useCart();
   const router = useRouter();
-  
+
   // Estados
   const [paymentMethod, setPaymentMethod] = useState<'mercadopago' | 'stripe'>('mercadopago');
   const [formData, setFormData] = useState<FormData>({
@@ -190,7 +188,7 @@ export default function CheckoutPage() {
     }
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/validate-discount`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/validate-discount`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ code: discountCode }),
@@ -223,6 +221,10 @@ export default function CheckoutPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    //console.log borrar
+    const apiUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
+    console.log('🔍 STRAPI_URL desde env:', process.env.NEXT_PUBLIC_STRAPI_URL);
+    console.log('🔍 Todas las variables:', process.env);
 
     const allFields = new Set(Object.keys(formData) as Array<keyof FormData>);
     setTouchedFields(allFields);
@@ -236,35 +238,49 @@ export default function CheckoutPage() {
 
     setLoading(true);
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/checkout`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/orders/checkout`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          ...formData,
-          cart,
-          paymentMethod,
-          subtotal,
-          shippingCost,
+          email: formData.email,
+          nombre: formData.nombre,
+          apellido: formData.apellido,
+          telefono: formData.telefono,
+          direccion: formData.direccion,
+          ciudad: formData.ciudad,
+          codigoPostal: formData.codigoPostal,
+          cart: cart.map(item => ({
+            name: item.name,
+            quantity: item.quantity,
+            price: item.price,
+          })),
+          paymentMethod: paymentMethod,
+          subtotal: subtotal,
+          shippingCost: shippingCost,
           discountCode: discountAmount > 0 ? discountCode : null,
-          discountAmount,
-          total,
+          discountAmount: discountAmount,
+          total: total,
         }),
       });
 
       const data = await res.json();
 
-      if (res.ok) {
-        if (paymentMethod === 'mercadopago') {
-          window.location.href = data.initPoint;
-        } else {
-          window.location.href = data.url;
+      if (data.ok) {
+        if (paymentMethod === 'mercadopago' && data.mercadoPagoUrl) {
+          const mpWindow = window.open(data.mercadoPagoUrl, '_blank');
+          router.push(`/payment-waiting?orderId=${data.orderId}`);
+          return;
         }
+
+        toast.success('¡Pedido creado!');
         clearCart();
+        router.push(`/payment-status?orderId=${data.orderId}&status=approved`);
+
       } else {
-        alert(data.message || 'Error al procesar el pedido');
+        toast.error('Error al procesar el pedido');
       }
     } catch (error) {
-      alert('Error de conexión');
+      toast.error('Error de conexión');
     } finally {
       setLoading(false);
     }
@@ -365,7 +381,7 @@ export default function CheckoutPage() {
                   <span>${shippingCost.toFixed(2)}</span>
                 </div>
                 {discountAmount > 0 && (
-                  <div className="flex justify-between text-green-600">
+                  <div className="flex justify-between text-planthia-green">
                     <span>Descuento</span>
                     <span>-${discountAmount.toFixed(2)}</span>
                   </div>

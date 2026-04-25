@@ -28,7 +28,9 @@ const handleSubmit = async (e: React.FormEvent) => {
   setLoading(true);
 
   try {
-    const res = await fetch(`http://localhost:1337/api/newsletter/subscribe`, {
+    const url = `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/newsletter/subscribe`;
+console.log('🔍 URL del fetch newsletter:', url);
+    const res = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/newsletter/subscribe`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -89,7 +91,7 @@ const handleSubmit = async (e: React.FormEvent) => {
                 Bienvenido a Planthia<span className="text-planthia-green">.</span>
               </h2>
               <p className="font-body text-planthia-dark/70 text-lg mb-6">
-                Suscribite a nuestro newsletter y recibí un código exclusivo.
+                Suscribite a nuestro newsletter y recibí un beneficio exclusivo.
               </p>
 
               <form onSubmit={handleSubmit} className="space-y-3">
@@ -105,7 +107,7 @@ const handleSubmit = async (e: React.FormEvent) => {
                   disabled={loading}
                   className="w-full bg-planthia-green text-white font-headline font-bold py-3 px-6 rounded-full hover:bg-planthia-light-green transition-all flex items-center justify-center"
                 >
-                  {loading ? 'Enviando...' : 'Quiero mi descuento →'}
+                  {loading ? 'Enviando...' : 'Quiero mi regalo →'}
                 </button>
               </form>
             </div>

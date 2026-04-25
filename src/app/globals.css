@@ -7,6 +7,8 @@
   --color-planthia-cream: #F6F6F6;
   --color-planthia-ice: #FFFFFF;
 
+  --background-image-planthia-gradient: linear-gradient(315deg, #325f36 0%, #447b48 20%, #5b985d 40%, #77b474 60%, #94ce8d 80%, #afe5a5 100%);
+
   /* Tipografías */
   --font-headline: var(--font-manrope);
   --font-body: var(--font-inter);
