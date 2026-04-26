@@ -8,38 +8,8 @@ export default function PaymentWaitingPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const orderId = searchParams.get('orderId');
-  
 
   const [showError, setShowError] = useState(false);
-
-  // useEffect(() => {
-  //   const interval = setInterval(async () => {
-  //     try {
-  //       const res = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/orders/${orderId}`, {
-  //         cache: 'no-cache'
-  //       });
-  //       const response = await res.json();
-
-  //       const data = response.data || response;
-  //       const attributes = data.attributes || data;
-
-  //       if (attributes.order_status === 'paid') {
-  //         clearInterval(interval);
-  //         router.push(`/payment-status?payment_id=${orderId}&status=approved`);
-  //       } else if (attributes.order_status === 'pending') {
-  //         clearInterval(interval);
-  //         router.push(`/payment-status?payment_id=${orderId}&status=pending`);
-  //       }
-  //       else if (attributes.order_status === 'failure' || attributes.order_status === 'rejected') {
-  //         clearInterval(interval);
-  //         router.push(`/payment-status?payment_id=${orderId}&status=failure`);
-  //       }
-  //     } catch (err) {
-  //       console.error("Error:", err);
-  //     }
-  //   }, 3000);
-  //   return () => clearInterval(interval);
-  // }, [orderId, router]);
 
   useEffect(() => {
     const interval = setInterval(async () => {
@@ -49,18 +19,13 @@ export default function PaymentWaitingPage() {
         const data = response.data || response;
         const attributes = data.attributes || data;
 
-        // SOLO redireccionamos si el pago es final
         if (attributes.order_status === 'paid') {
           clearInterval(interval);
           router.push(`/payment-status?payment_id=${orderId}&status=approved`);
         }
         else if (attributes.order_status === 'failure' || attributes.order_status === 'rejected') {
-          // clearInterval(interval);
-          // router.push(`/payment-status?payment_id=${orderId}&status=failure`);
-          // console.log("Pago rechazado, esperando nuevo intento...");
           setShowError(true);
         }
-        // Si sigue en 'pending', no hacemos nada, el usuario sigue viendo la plantita
       } catch (err) {
         console.error("Error:", err);
       }
@@ -77,24 +42,24 @@ export default function PaymentWaitingPage() {
           </div>
           <h1 className="text-3xl md:text-4xl font-headline font-extrabold text-planthia-dark mb-4">Hubo un problema</h1>
           <p className="text-planthia-dark/70 mb-8 max-w-sm">El pago fue rechazado. Podés intentar nuevamente en la ventana de Mercado Pago.</p>
-          
+
           <div className="flex flex-col w-full gap-3">
-          <button
-            onClick={() => router.push('/checkout')}
-            className="w-full flex items-center justify-center bg-planthia-dark text-white font-bold py-4 rounded-full hover:bg-planthia-dark/90 transition-all shadow-lg shadow-planthia-dark/20"
-          >
-            Volver al Checkout
-            <ArrowRight className="ml-2 w-4 h-4" />
-          </button>
-          
-          <button
-            onClick={() => router.push('/tienda')}
-            className="w-full flex items-center justify-center bg-transparent text-planthia-dark font-bold py-4 rounded-full border border-planthia-dark/10 hover:bg-planthia-dark/5 transition-all"
-          >
-            <Home className="mr-2 w-4 h-4" />
-            Volver a la tienda
-          </button>
-        </div>
+            <button
+              onClick={() => router.push('/checkout')}
+              className="w-full flex items-center justify-center bg-planthia-dark text-white font-bold py-4 rounded-full hover:bg-planthia-dark/90 transition-all shadow-lg shadow-planthia-dark/20"
+            >
+              Volver al Checkout
+              <ArrowRight className="ml-2 w-4 h-4" />
+            </button>
+
+            <button
+              onClick={() => router.push('/tienda')}
+              className="w-full flex items-center justify-center bg-transparent text-planthia-dark font-bold py-4 rounded-full border border-planthia-dark/10 hover:bg-planthia-dark/5 transition-all"
+            >
+              <Home className="mr-2 w-4 h-4" />
+              Volver a la tienda
+            </button>
+          </div>
         </div>
       </main>
     );

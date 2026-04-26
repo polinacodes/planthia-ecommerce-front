@@ -341,7 +341,7 @@ export default function CheckoutPage() {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <PaymentOption label="Mercado Pago" description="Paga con saldo o tarjeta local" icon={<img src="/icons/mercadopago.svg" alt="Mercado Pago" className="w-30 h-30 object-contain" />} selected={paymentMethod === 'mercadopago'} onSelect={() => setPaymentMethod('mercadopago')} />
-                <PaymentOption label="Stripe" description="Tarjetas de crédito internacionales" icon={<img src="/icons/stripe.svg" alt="Stripe" className="w-30 h-30 object-contain" />} selected={paymentMethod === 'stripe'} onSelect={() => setPaymentMethod('stripe')} />
+                <PaymentOption label="PayPal" description="Tarjetas de crédito internacionales" icon={<img src="/icons/paypal.svg" alt="PayPal" className="w-30 h-30 object-contain" />} selected={paymentMethod === 'stripe'} onSelect={() => setPaymentMethod('stripe')} />
               </div>
             </section>
           </div>
