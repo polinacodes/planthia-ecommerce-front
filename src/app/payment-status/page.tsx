@@ -11,18 +11,45 @@ export default function PaymentStatusPage() {
   const { clearCart } = useCart();
 
   const paymentId = searchParams.get('payment_id') || searchParams.get('preference_id');
-  const status = searchParams.get('status'); 
+  const status = searchParams.get('status');
 
   const orderNumber = paymentId ? `#PL-${paymentId.toString().slice(-5)}` : '82931';
 
   const isError = status === 'failure';
 
   useEffect(() => {
-    if (status === 'approved') {
-      console.log("✅ Pago aprobado: Limpiando carrito...");
-      clearCart();
-    }
-  }, [status, clearCart]);
+    const handlePaymentSuccess = async () => {
+      if (status === 'approved' || status === 'success') {
+        
+        if (status === 'success') {
+          const orderId = searchParams.get('order');
+          if (orderId) {
+            try {
+              console.log('🔄 Actualizando orden a paid:', orderId);
+              await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/orders/${orderId}/status`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  
+                    order_status: 'paid'
+                  
+                })
+              });
+              console.log('✅ Orden actualizada correctamente');
+            } catch (error) {
+              console.error('❌ Error actualizando orden:', error);
+            }
+          }
+        }
+
+        // Limpiar carrito
+        console.log("✅ Pago aprobado: Limpiando carrito...");
+        clearCart();
+      }
+    };
+
+    handlePaymentSuccess();
+  }, [status, clearCart, searchParams]);
 
   const statusConfig = {
     success: {
@@ -31,7 +58,7 @@ export default function PaymentStatusPage() {
       bgColor: "bg-planthia-green/10",
       title: "¡Pago exitoso!",
       message: "Gracias por tu compra. Te enviamos un correo con los detalles de envío.",
-      buttonText: "Tu cuenta"
+      buttonText: "Mi cuenta"
     },
     error: {
       icon: AlertCircle,
@@ -41,23 +68,16 @@ export default function PaymentStatusPage() {
       message: "No pudimos procesar tu pago. Podés intentar nuevamente desde el checkout.",
       buttonText: "Volver al checkout"
     },
-    // pending: {
-    //   icon: Clock,
-    //   iconColor: "text-yellow-500",
-    //   bgColor: "bg-yellow-500/10",
-    //   title: "Procesando pago",
-    //   message: "Tu pago está siendo verificado. Te avisaremos por correo en breve.",
-    //   buttonText: "Ir a la tienda"
-    // }
+
   };
 
-  const current = isError ? statusConfig.error  : statusConfig.success;
+  const current = isError ? statusConfig.error : statusConfig.success;
   const Icon = current.icon;
 
   return (
     <main className="min-h-screen bg-planthia-gradient font-body text-planthia-dark flex items-center justify-center p-6 md:p-12 relative overflow-hidden">
       <div className="w-full max-w-lg bg-white rounded-3xl shadow-xl p-8 md:p-10 z-10 flex flex-col items-center text-center">
-        {/* Icono Grande */}
+
         <div className={`${current.bgColor} p-4 rounded-full mb-6`}>
           <Icon className={`w-16 h-16 ${current.iconColor}`} strokeWidth={1.5} />
         </div>
@@ -70,8 +90,8 @@ export default function PaymentStatusPage() {
           {current.message}
         </p>
 
-        {/* Sección de Orden (Solo si es éxito) */}
-        {!isError &&  (
+        {/* Sección de Orden */}
+        {!isError && (
           <div className="bg-planthia-cream/50 w-full p-4 rounded-2xl mb-8 border border-planthia-dark/5">
             <p className="text-sm text-planthia-dark/50 mb-1">Número de orden</p>
             <span className="font-headline font-bold text-lg text-planthia-green">{orderNumber}</span>
@@ -86,10 +106,10 @@ export default function PaymentStatusPage() {
             {current.buttonText}
             <ArrowRight className="ml-2 w-4 h-4" />
           </button>
-          
+
           <button
             onClick={() => router.push('/tienda')}
-            className="w-full flex items-center justify-center bg-transparent text-planthia-dark font-bold py-4 rounded-full border border-planthia-dark/10 hover:bg-planthia-dark/5 transition-all"
+            className="w-full flex items-center justify-center bg-transparent text-planthia-dark font-bold py-4 rounded-full border border-planthia-dark/10 shadow-lg shadow-planthia-dark/5 hover:bg-planthia-dark/5 transition-all"
           >
             <Home className="mr-2 w-4 h-4" />
             Volver a la tienda

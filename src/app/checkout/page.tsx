@@ -79,14 +79,13 @@ function PaymentOption({ label, description, icon, selected, onSelect }: Payment
   );
 }
 
-
 //  COMPONENTE PRINCIPAL
 export default function CheckoutPage() {
   const { cart, getTotalPrice, clearCart } = useCart();
   const router = useRouter();
 
   // Estados
-  const [paymentMethod, setPaymentMethod] = useState<'mercadopago' | 'paypal'>('mercadopago');
+  const [paymentMethod, setPaymentMethod] = useState<'mercadopago' | 'paypal'>('paypal');
   const [formData, setFormData] = useState<FormData>({
     first_name: '',
     last_name: '',
@@ -198,73 +197,6 @@ export default function CheckoutPage() {
     setDiscountTouched(true);
   };
 
-  // const handleSubmit = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   //console.log borrar
-  //   const apiUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
-  //   console.log('🔍 STRAPI_URL desde env:', process.env.NEXT_PUBLIC_STRAPI_URL);
-  //   console.log('🔍 Todas las variables:', process.env);
-
-  //   const allFields = new Set(Object.keys(formData) as Array<keyof FormData>);
-  //   setTouchedFields(allFields);
-
-  //   const isValid = validateAllFields();
-  //   if (!isValid) {
-  //     const firstError = document.querySelector('.field-error');
-  //     firstError?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  //     return;
-  //   }
-
-  //   setLoading(true);
-  //   try {
-  //     const res = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/orders/checkout`, {
-  //       method: 'POST',
-  //       headers: { 'Content-Type': 'application/json' },
-  //       body: JSON.stringify({
-  //         email: formData.email,
-  //         nombre: formData.nombre,
-  //         apellido: formData.apellido,
-  //         telefono: formData.telefono,
-  //         direccion: formData.direccion,
-  //         ciudad: formData.ciudad,
-  //         codigoPostal: formData.codigoPostal,
-  //         cart: cart.map(item => ({
-  //           name: item.name,
-  //           quantity: item.quantity,
-  //           price: item.price,
-  //         })),
-  //         paymentMethod: paymentMethod,
-  //         subtotal: subtotal,
-  //         shippingCost: shippingCost,
-  //         discountCode: discountAmount > 0 ? discountCode : null,
-  //         discountAmount: discountAmount,
-  //         total: total,
-  //       }),
-  //     });
-
-  //     const data = await res.json();
-
-  //     if (data.ok) {
-  //       if (paymentMethod === 'mercadopago' && data.mercadoPagoUrl) {
-  //         const mpWindow = window.open(data.mercadoPagoUrl, '_blank');
-  //         router.push(`/payment-waiting?orderId=${data.orderId}`);
-  //         return;
-  //       }
-
-  //       toast.success('¡Pedido creado!');
-  //       clearCart();
-  //       router.push(`/payment-status?orderId=${data.orderId}&status=approved`);
-
-  //     } else {
-  //       toast.error('Error al procesar el pedido');
-  //     }
-  //   } catch (error) {
-  //     toast.error('Error de conexión');
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -304,14 +236,13 @@ export default function CheckoutPage() {
       const data = await res.json();
 
       if (data.ok) {
-        // Lógica Mercado Pago: abre pop-up y va a página de espera
+      
         if (paymentMethod === 'mercadopago' && data.mercadoPagoUrl) {
           window.open(data.mercadoPagoUrl, '_blank');
           router.push(`/payment-waiting?orderId=${data.orderId}`);
           return;
         }
 
-        // 🛡️ Lógica PayPal: Redirige directamente al usuario
         if (paymentMethod === 'paypal' && data.paypalUrl) {
           window.location.href = data.paypalUrl;
           return;
@@ -435,8 +366,8 @@ export default function CheckoutPage() {
                 <h2 className="text-2xl font-bold font-headline tracking-tight">Método de Pago</h2>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <PaymentOption label="Mercado Pago" description="Paga con saldo o tarjeta local" icon={<img src="/icons/mercadopago.svg" alt="Mercado Pago" className="w-30 h-30 object-contain" />} selected={paymentMethod === 'mercadopago'} onSelect={() => setPaymentMethod('mercadopago')} />
                 <PaymentOption label="PayPal" description="Tarjetas de crédito internacionales" icon={<img src="/icons/paypal.svg" alt="PayPal" className="w-30 h-30 object-contain" />} selected={paymentMethod === 'paypal'} onSelect={() => setPaymentMethod('paypal')} />
+                <PaymentOption label="Mercado Pago" description="Paga con saldo o tarjeta local" icon={<img src="/icons/mercadopago.svg" alt="Mercado Pago" className="w-30 h-30 object-contain" />} selected={paymentMethod === 'mercadopago'} onSelect={() => setPaymentMethod('mercadopago')} />
               </div>
             </section>
           </div>
