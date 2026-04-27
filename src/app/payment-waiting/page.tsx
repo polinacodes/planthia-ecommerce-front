@@ -12,24 +12,28 @@ export default function PaymentWaitingPage() {
   const [showError, setShowError] = useState(false);
 
   useEffect(() => {
-    const interval = setInterval(async () => {
+    if (!orderId) return;
+
+    const checkOrderStatus = async () => {
       try {
         const res = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/orders/${orderId}`);
-        const response = await res.json();
-        const data = response.data || response;
-        const attributes = data.attributes || data;
+        const data = await res.json();
+        const status = data.order_status;
 
-        if (attributes.order_status === 'paid') {
-          clearInterval(interval);
+        if (status === 'paid') {
           router.push(`/payment-status?payment_id=${orderId}&status=approved`);
-        }
-        else if (attributes.order_status === 'failure' || attributes.order_status === 'rejected') {
+        } else if (status === 'failure' || status === 'rejected') {
           setShowError(true);
         }
       } catch (err) {
-        console.error("Error:", err);
+        console.error("Error consultando estado de pago:", err);
       }
-    }, 3000);
+    };
+
+    checkOrderStatus();
+
+    const interval = setInterval(checkOrderStatus, 3000);
+
     return () => clearInterval(interval);
   }, [orderId, router]);
 

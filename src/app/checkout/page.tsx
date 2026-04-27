@@ -7,23 +7,23 @@ import { toast } from 'sonner';
 
 // INTERFACES
 interface FormData {
-  nombre: string;
-  apellido: string;
+  first_name: string;
+  last_name: string;
   email: string;
-  telefono: string;
-  direccion: string;
-  ciudad: string;
-  codigoPostal: string;
+  phone: string;
+  address: string;
+  city: string;
+  zip_code: string;
 }
 
 interface FormErrors {
-  nombre?: string;
-  apellido?: string;
+  first_name?: string;
+  last_name?: string;
   email?: string;
-  telefono?: string;
-  direccion?: string;
-  ciudad?: string;
-  codigoPostal?: string;
+  phone?: string;
+  address?: string;
+  city?: string;
+  zip_code?: string;
 }
 
 interface InputFieldProps {
@@ -86,15 +86,15 @@ export default function CheckoutPage() {
   const router = useRouter();
 
   // Estados
-  const [paymentMethod, setPaymentMethod] = useState<'mercadopago' | 'stripe'>('mercadopago');
+  const [paymentMethod, setPaymentMethod] = useState<'mercadopago' | 'paypal'>('mercadopago');
   const [formData, setFormData] = useState<FormData>({
-    nombre: '',
-    apellido: '',
+    first_name: '',
+    last_name: '',
     email: '',
-    telefono: '',
-    direccion: '',
-    ciudad: '',
-    codigoPostal: '',
+    phone: '',
+    address: '',
+    city: '',
+    zip_code: ''
   });
   const [formErrors, setFormErrors] = useState<FormErrors>({});
   const [touchedFields, setTouchedFields] = useState<Set<keyof FormData>>(new Set());
@@ -116,35 +116,14 @@ export default function CheckoutPage() {
 
   const validateField = (name: keyof FormData, value: string): string | undefined => {
     switch (name) {
-      case 'nombre':
-        if (!value.trim()) return 'El nombre es obligatorio';
-        if (value.trim().length < 2) return 'El nombre debe tener al menos 2 caracteres';
-        return undefined;
-      case 'apellido':
-        if (!value.trim()) return 'El apellido es obligatorio';
-        if (value.trim().length < 2) return 'El apellido debe tener al menos 2 caracteres';
-        return undefined;
-      case 'email':
-        if (!value.trim()) return 'El email es obligatorio';
-        if (!validateEmail(value)) return 'Ingresá un email válido (ej: nombre@dominio.com)';
-        return undefined;
-      case 'telefono':
-        if (!value.trim()) return 'El teléfono es obligatorio';
-        if (!/^[\d\s\-\(\)\+]{8,20}$/.test(value.trim())) return 'Ingresá un número de teléfono válido';
-        return undefined;
-      case 'direccion':
-        if (!value.trim()) return 'La dirección es obligatoria';
-        if (value.trim().length < 5) return 'Ingresá una dirección completa';
-        return undefined;
-      case 'ciudad':
-        if (!value.trim()) return 'La ciudad es obligatoria';
-        return undefined;
-      case 'codigoPostal':
-        if (!value.trim()) return 'El código postal es obligatorio';
-        if (!/^\d{4,5}$/.test(value.trim())) return 'Ingresá un código postal válido (4 o 5 dígitos)';
-        return undefined;
-      default:
-        return undefined;
+      case 'first_name': return !value.trim() ? 'El nombre es obligatorio' : undefined;
+      case 'last_name': return !value.trim() ? 'El apellido es obligatorio' : undefined;
+      case 'email': return !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ? 'Email inválido' : undefined;
+      case 'phone': return !value.trim() ? 'El teléfono es obligatorio' : undefined;
+      case 'address': return !value.trim() ? 'La dirección es obligatoria' : undefined;
+      case 'city': return !value.trim() ? 'La ciudad es obligatoria' : undefined;
+      case 'zip_code': return !/^\d{4,5}$/.test(value.trim()) ? 'CP inválido' : undefined;
+      default: return undefined;
     }
   };
 
@@ -219,12 +198,75 @@ export default function CheckoutPage() {
     setDiscountTouched(true);
   };
 
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   //console.log borrar
+  //   const apiUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
+  //   console.log('🔍 STRAPI_URL desde env:', process.env.NEXT_PUBLIC_STRAPI_URL);
+  //   console.log('🔍 Todas las variables:', process.env);
+
+  //   const allFields = new Set(Object.keys(formData) as Array<keyof FormData>);
+  //   setTouchedFields(allFields);
+
+  //   const isValid = validateAllFields();
+  //   if (!isValid) {
+  //     const firstError = document.querySelector('.field-error');
+  //     firstError?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  //     return;
+  //   }
+
+  //   setLoading(true);
+  //   try {
+  //     const res = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/orders/checkout`, {
+  //       method: 'POST',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify({
+  //         email: formData.email,
+  //         nombre: formData.nombre,
+  //         apellido: formData.apellido,
+  //         telefono: formData.telefono,
+  //         direccion: formData.direccion,
+  //         ciudad: formData.ciudad,
+  //         codigoPostal: formData.codigoPostal,
+  //         cart: cart.map(item => ({
+  //           name: item.name,
+  //           quantity: item.quantity,
+  //           price: item.price,
+  //         })),
+  //         paymentMethod: paymentMethod,
+  //         subtotal: subtotal,
+  //         shippingCost: shippingCost,
+  //         discountCode: discountAmount > 0 ? discountCode : null,
+  //         discountAmount: discountAmount,
+  //         total: total,
+  //       }),
+  //     });
+
+  //     const data = await res.json();
+
+  //     if (data.ok) {
+  //       if (paymentMethod === 'mercadopago' && data.mercadoPagoUrl) {
+  //         const mpWindow = window.open(data.mercadoPagoUrl, '_blank');
+  //         router.push(`/payment-waiting?orderId=${data.orderId}`);
+  //         return;
+  //       }
+
+  //       toast.success('¡Pedido creado!');
+  //       clearCart();
+  //       router.push(`/payment-status?orderId=${data.orderId}&status=approved`);
+
+  //     } else {
+  //       toast.error('Error al procesar el pedido');
+  //     }
+  //   } catch (error) {
+  //     toast.error('Error de conexión');
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    //console.log borrar
-    const apiUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
-    console.log('🔍 STRAPI_URL desde env:', process.env.NEXT_PUBLIC_STRAPI_URL);
-    console.log('🔍 Todas las variables:', process.env);
 
     const allFields = new Set(Object.keys(formData) as Array<keyof FormData>);
     setTouchedFields(allFields);
@@ -243,22 +285,18 @@ export default function CheckoutPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           email: formData.email,
-          nombre: formData.nombre,
-          apellido: formData.apellido,
-          telefono: formData.telefono,
-          direccion: formData.direccion,
-          ciudad: formData.ciudad,
-          codigoPostal: formData.codigoPostal,
-          cart: cart.map(item => ({
-            name: item.name,
-            quantity: item.quantity,
-            price: item.price,
-          })),
-          paymentMethod: paymentMethod,
+          first_name: formData.first_name,
+          last_name: formData.last_name,
+          phone: formData.phone,
+          address: formData.address,
+          city: formData.city,
+          zip_code: formData.zip_code,
+          cart: cart.map(item => ({ name: item.name, quantity: item.quantity, price: item.price })),
+          payment_method: paymentMethod,
           subtotal: subtotal,
-          shippingCost: shippingCost,
-          discountCode: discountAmount > 0 ? discountCode : null,
-          discountAmount: discountAmount,
+          shipping_cost: shippingCost,
+          discount_code: discountAmount > 0 ? discountCode : null,
+          discount_amount: discountAmount,
           total: total,
         }),
       });
@@ -266,9 +304,16 @@ export default function CheckoutPage() {
       const data = await res.json();
 
       if (data.ok) {
+        // Lógica Mercado Pago: abre pop-up y va a página de espera
         if (paymentMethod === 'mercadopago' && data.mercadoPagoUrl) {
-          const mpWindow = window.open(data.mercadoPagoUrl, '_blank');
+          window.open(data.mercadoPagoUrl, '_blank');
           router.push(`/payment-waiting?orderId=${data.orderId}`);
+          return;
+        }
+
+        // 🛡️ Lógica PayPal: Redirige directamente al usuario
+        if (paymentMethod === 'paypal' && data.paypalUrl) {
+          window.location.href = data.paypalUrl;
           return;
         }
 
@@ -318,17 +363,67 @@ export default function CheckoutPage() {
               </div>
               <div className="bg-white p-8 rounded-2xl space-y-6 shadow-sm border border-planthia-dark/5">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <InputField label="Nombre" placeholder="Ana" value={formData.nombre} onChange={(val) => updateField('nombre', val)} onBlur={() => handleBlur('nombre')} error={touchedFields.has('nombre') ? formErrors.nombre : undefined} />
-                  <InputField label="Apellido" placeholder="García" value={formData.apellido} onChange={(val) => updateField('apellido', val)} onBlur={() => handleBlur('apellido')} error={touchedFields.has('apellido') ? formErrors.apellido : undefined} />
+                  <InputField
+                    label="Nombre"
+                    placeholder="Ana"
+                    value={formData.first_name}
+                    onChange={(val) => updateField('first_name', val)}
+                    onBlur={() => handleBlur('first_name')}
+                    error={touchedFields.has('first_name') ? formErrors.first_name : undefined}
+                  />
+                  <InputField
+                    label="Apellido"
+                    placeholder="García"
+                    value={formData.last_name}
+                    onChange={(val) => updateField('last_name', val)}
+                    onBlur={() => handleBlur('last_name')}
+                    error={touchedFields.has('last_name') ? formErrors.last_name : undefined}
+                  />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <InputField label="Email" placeholder="ana@ejemplo.com" type="email" value={formData.email} onChange={(val) => updateField('email', val)} onBlur={() => handleBlur('email')} error={touchedFields.has('email') ? formErrors.email : undefined} />
-                  <InputField label="Teléfono" placeholder="11 1234 5678" value={formData.telefono} onChange={(val) => updateField('telefono', val)} onBlur={() => handleBlur('telefono')} error={touchedFields.has('telefono') ? formErrors.telefono : undefined} />
+                  <InputField
+                    label="Email"
+                    placeholder="ana@ejemplo.com"
+                    type="email"
+                    value={formData.email}
+                    onChange={(val) => updateField('email', val)}
+                    onBlur={() => handleBlur('email')}
+                    error={touchedFields.has('email') ? formErrors.email : undefined}
+                  />
+                  <InputField
+                    label="Teléfono"
+                    placeholder="11 1234 5678"
+                    value={formData.phone}
+                    onChange={(val) => updateField('phone', val)}
+                    onBlur={() => handleBlur('phone')}
+                    error={touchedFields.has('phone') ? formErrors.phone : undefined}
+                  />
                 </div>
-                <InputField label="Dirección" placeholder="Calle de las Flores 123" value={formData.direccion} onChange={(val) => updateField('direccion', val)} onBlur={() => handleBlur('direccion')} error={touchedFields.has('direccion') ? formErrors.direccion : undefined} />
+                <InputField
+                  label="Dirección"
+                  placeholder="Calle de las Flores 123"
+                  value={formData.address}
+                  onChange={(val) => updateField('address', val)}
+                  onBlur={() => handleBlur('address')}
+                  error={touchedFields.has('address') ? formErrors.address : undefined}
+                />
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <InputField label="Ciudad" placeholder="Buenos Aires" value={formData.ciudad} onChange={(val) => updateField('ciudad', val)} onBlur={() => handleBlur('ciudad')} error={touchedFields.has('ciudad') ? formErrors.ciudad : undefined} />
-                  <InputField label="Código Postal" placeholder="1234" value={formData.codigoPostal} onChange={(val) => updateField('codigoPostal', val)} onBlur={() => handleBlur('codigoPostal')} error={touchedFields.has('codigoPostal') ? formErrors.codigoPostal : undefined} />
+                  <InputField
+                    label="Ciudad"
+                    placeholder="Buenos Aires"
+                    value={formData.city}
+                    onChange={(val) => updateField('city', val)}
+                    onBlur={() => handleBlur('city')}
+                    error={touchedFields.has('city') ? formErrors.city : undefined}
+                  />
+                  <InputField
+                    label="Código Postal"
+                    placeholder="1234"
+                    value={formData.zip_code}
+                    onChange={(val) => updateField('zip_code', val)}
+                    onBlur={() => handleBlur('zip_code')}
+                    error={touchedFields.has('zip_code') ? formErrors.zip_code : undefined}
+                  />
                 </div>
               </div>
             </section>
@@ -341,7 +436,7 @@ export default function CheckoutPage() {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <PaymentOption label="Mercado Pago" description="Paga con saldo o tarjeta local" icon={<img src="/icons/mercadopago.svg" alt="Mercado Pago" className="w-30 h-30 object-contain" />} selected={paymentMethod === 'mercadopago'} onSelect={() => setPaymentMethod('mercadopago')} />
-                <PaymentOption label="PayPal" description="Tarjetas de crédito internacionales" icon={<img src="/icons/paypal.svg" alt="PayPal" className="w-30 h-30 object-contain" />} selected={paymentMethod === 'stripe'} onSelect={() => setPaymentMethod('stripe')} />
+                <PaymentOption label="PayPal" description="Tarjetas de crédito internacionales" icon={<img src="/icons/paypal.svg" alt="PayPal" className="w-30 h-30 object-contain" />} selected={paymentMethod === 'paypal'} onSelect={() => setPaymentMethod('paypal')} />
               </div>
             </section>
           </div>
