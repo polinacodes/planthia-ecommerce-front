@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { toast } from 'sonner';
 
 interface CartItem {
   id: string;
@@ -15,7 +16,7 @@ interface CartItem {
 interface CartStore {
   cart: CartItem[];
   isOpen: boolean;
-  addItem: (item: CartItem) => void;
+  addItem: (item: CartItem) => boolean; 
   removeItem: (id: string) => void;
   updateQuantity: (id: string, quantity: number) => void;
   clearCart: () => void;
@@ -26,6 +27,8 @@ interface CartStore {
   toggleCart: () => void;
 }
 
+const MAX_LIMIT = 10;
+
 export const useCart = create<CartStore>()(
   persist(
     (set, get) => ({
@@ -33,61 +36,60 @@ export const useCart = create<CartStore>()(
       isOpen: false,
 
       addItem: (newItem) => {
-        const currentCart = get().cart;
-        const existingItem = currentCart.find((item) => item.id === newItem.id);
+        const existingItem = get().cart.find((item) => item.id === newItem.id);
 
-       if (existingItem) {
-          const currentStock = existingItem.stock || 0;
-          
-          if (existingItem.quantity + 1 > currentStock) {
-            console.warn(`Límite de stock alcanzado (${currentStock}) para ${existingItem.name}`);
-            return; 
+        if (existingItem) {
+          if (existingItem.quantity >= MAX_LIMIT) {
+            toast.error("Cantidad máxima permitida");
+            return false;
           }
-          
-          set({
-            cart: currentCart.map((item) =>
-              item.id === newItem.id 
-                ? { ...item, quantity: item.quantity + 1 } 
+
+          if (existingItem.quantity + 1 > (existingItem.stock || 0)) {
+            toast.error("Stock insuficiente");
+            return false;
+          }
+
+          set((state) => ({
+            cart: state.cart.map((item) =>
+              item.id === newItem.id
+                ? { ...item, quantity: item.quantity + 1 }
                 : item
             ),
-          });
+          }));
         } else {
-          const stockValue = newItem.stock || 0;
-          
-          if (stockValue === 0) {
-            console.warn(`Producto sin stock: ${newItem.name}`);
-            return; 
+          if ((newItem.stock || 0) <= 0) {
+            toast.error("Producto sin stock");
+            return false;
           }
-          
-          set({ 
-            cart: [...currentCart, { ...newItem, quantity: 1, stock: stockValue }] 
-          });
+
+          set((state) => ({
+            cart: [...state.cart, { ...newItem, quantity: 1 }],
+          }));
         }
+        return true;
       },
 
       updateQuantity: (id, quantity) => {
+        if (quantity > MAX_LIMIT) {
+          toast.error("Cantidad máxima permitida");
+          return;
+        }
+
         set((state) => {
           const item = state.cart.find((i) => i.id === id);
           if (!item) return state;
 
-          const maxStock = item.stock || 0;
-          
-          const validatedQuantity = Math.min(Math.max(1, quantity), maxStock);
-
-          if (maxStock === 0) {
-            console.warn(`Producto sin stock definido: ${item.name}`);
-            return state;
-          }
+          const validatedQuantity = Math.min(Math.max(1, quantity), item.stock || 0);
 
           return {
             cart: state.cart.map((i) =>
               i.id === id ? { ...i, quantity: validatedQuantity } : i
-            )
+            ),
           };
         });
       },
 
-      removeItem: (id) => set({ cart: get().cart.filter((i) => i.id !== id) }),
+      removeItem: (id) => set((state) => ({ cart: state.cart.filter((i) => i.id !== id) })),
       clearCart: () => set({ cart: [] }),
       totalItems: () => get().cart.reduce((acc, item) => acc + item.quantity, 0),
       getTotalPrice: () => get().cart.reduce((acc, item) => acc + (item.price * item.quantity), 0),

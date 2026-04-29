@@ -22,15 +22,18 @@ const ProductCard = ({ plant, isActive, onClick }: ProductCardProps) => {
     console.log("Future: Add to favorites logic for", plant.id);
   };
 
+  const cartItem = cart.find((item: any) => String(item.id).startsWith(String(plant.id)));
+  const quantityInCart = cartItem ? cartItem.quantity : 0;
+  const isLimitReached = quantityInCart >= 10;
+
   const handleAddToCart = (e: React.MouseEvent) => {
     e.stopPropagation();
 
     const selectedVariant = plant.variants && plant.variants.length > 0 ? plant.variants[0] : null;
     const uniqueId = selectedVariant ? `${plant.id}-${selectedVariant.color.toLowerCase()}` : plant.id;
-
     const stockValue = selectedVariant ? selectedVariant.stock : (plant.stock || 0);
 
-    addItem({
+    const wasAdded = addItem({
       id: uniqueId,
       name: plant.name,
       color: selectedVariant?.color,
@@ -40,12 +43,10 @@ const ProductCard = ({ plant, isActive, onClick }: ProductCardProps) => {
       stock: stockValue
     });
 
-    toast.success(`${plant.name} agregada`);
+    if (wasAdded) {
+      toast.success(`${plant.name} agregada`);
+    }
   };
-
-  const isAlreadyInCart = cart.some((item: any) =>
-    String(item.id).startsWith(String(plant.id))
-  );
 
   return (
     <motion.div
@@ -150,9 +151,13 @@ const ProductCard = ({ plant, isActive, onClick }: ProductCardProps) => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={handleAddToCart}
-              className="bg-white text-[#5B823B] px-3 sm:px-4 lg:px-5 py-1.5 sm:py-2 lg:py-2.5 rounded-lg sm:rounded-xl text-xs sm:text-sm font-bold hover:bg-gray-100 transition-colors shadow-sm"
+              disabled={isLimitReached}
+              className={`px-3 sm:px-4 lg:px-5 py-1.5 sm:py-2 lg:py-2.5 rounded-lg sm:rounded-xl text-xs sm:text-sm font-bold transition-colors shadow-sm
+                  ${isLimitReached
+                  ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                  : "bg-white text-[#5B823B] hover:bg-gray-100"}`}
             >
-              {isAlreadyInCart ? 'Agregado' : 'Agregar'}
+              {isLimitReached ? 'Máximo alcanzado' : (cartItem ? 'Agregado' : 'Agregar')}
             </motion.button>
             <Link
               href={`/tienda/${plant.id}`}

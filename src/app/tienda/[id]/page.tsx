@@ -130,31 +130,24 @@ const stockDisponible = useMemo(() => {
   const quantityInCart = cartItem ? cartItem.quantity : 0;
 
   const handleAddToCart = () => {
-    if (quantityInCart >= stockDisponible) {
-      toast.error("No hay más stock disponible");
-      return;
-    }
+  const uniqueId = selectedVariant
+    ? `${product.id}-${selectedVariant.color.toLowerCase()}`
+    : product.id;
 
-    const uniqueId = selectedVariant
-      ? `${product.id}-${selectedVariant.color.toLowerCase()}`
-      : product.id;
+  const wasAdded = addItem({
+    id: uniqueId,
+    name: product.name,
+    color: selectedVariant?.color,
+    price: product.price,
+    image: selectedImage || product.image,
+    quantity: 1,
+    stock: stockDisponible 
+  });
 
-    addItem({
-      id: uniqueId,
-      name: product.name,
-      color: selectedVariant?.color,
-      price: product.price,
-      image: selectedImage || product.image,
-      quantity: 1,
-      stock: stockDisponible 
-    });
-
-    toast.success(`${product.name} agregada`, {
-      description: selectedVariant
-        ? `Color: ${selectedVariant.color}. Ya podés verla en tu carrito.`
-        : "Ya podés verla en tu carrito.",
-    });
-  };
+  if (wasAdded) {
+    toast.success(`${product.name} agregada`);
+  }
+};
 
   return (
     <main className="min-h-screen bg-planthia-cream pt-6 md:pt-12">
@@ -260,33 +253,33 @@ const stockDisponible = useMemo(() => {
               <span className="text-4xl font-light text-planthia-dark">
                 ${product.price.toLocaleString('es-AR')}
               </span>
+
               {/* BOTÓN ÚNICO CON LÓGICA DUAL */}
               <div className={`flex-1 flex items-center bg-planthia-green text-planthia-cream transition-all duration-300 min-h-[60px]
-                ${isOutOfStock ? "bg-gray-300 cursor-not-allowed" : "bg-planthia-green text-planthia-cream"}`}>
+                ${isOutOfStock ? "bg-gray-300 cursor-not-allowed" : "bg-planthia-green hover:bg-planthia-dark text-planthia-cream"}`}>
                 {quantityInCart > 0 ? (
-                  <div className="flex w-full items-center justify-between px-2 sm:px-4">
+                  <div className="flex w-full items-center px-2 sm:px-4">
                     <button
                       onClick={() => {
                         if (quantityInCart > 1) {
                           updateQuantity(currentUniqueId, quantityInCart - 1);
-                          toast.info(`${product.name}: actualizada`);
+                          toast.info(`${product.name} actualizada`);
                         } else {
                           removeItem(currentUniqueId);
-                          toast.error(`${product.name}: eliminada`);
+                          toast.error(`${product.name} eliminada`);
                         }
                       }}
-                      className="p-4 hover:scale-110 transition-transform font-bold text-xl"
+                      className="p-4 hover:scale-110 transition-transform cursor-pointer font-bold text-xl"
                     >
                       -
                     </button>
 
-                    {/* CONTENIDO CENTRAL */}
-                    <div className="flex flex-col items-center">
+                    <div className="flex-1 flex flex-col items-center justify-center">
                       <span className="md:hidden text-lg font-bold">
                         {quantityInCart}
                       </span>
 
-                      <span className="hidden md:block text-[10px] font-bold tracking-[0.2em]">
+                      <span className="hidden md:block text-[10px] font-bold tracking-[0.2em] whitespace-nowrap">
                         {quantityInCart} EN EL CARRITO
                       </span>
                     </div>
@@ -294,7 +287,7 @@ const stockDisponible = useMemo(() => {
                     <button
                       onClick={handleAddToCart}
                       disabled={quantityInCart >= stockDisponible}
-                      className="p-4 hover:scale-110 transition-transform font-bold text-xl"
+                      className="p-4 hover:scale-110 transition-transform cursor-pointer font-bold text-xl"
                     >
                       +
                     </button>
@@ -302,15 +295,15 @@ const stockDisponible = useMemo(() => {
                 ) : (
                   <button
                     onClick={handleAddToCart}
-                    disabled={quantityInCart >= stockDisponible}
-                    className="w-full py-5 px-8 uppercase text-[10px] tracking-[0.2em] font-bold hover:bg-planthia-light-green transition-all"
+                    disabled={isOutOfStock}
+                    className="w-full py-5 px-8 cursor-pointer uppercase text-[10px] tracking-[0.2em] font-bold  transition-all"
                   >
                     {isOutOfStock ? "Sin Stock" : "Agregar"}
                   </button>
                 )}
               </div>
 
-              <button className="p-4 rounded-full border border-planthia-dark/10 hover:bg-planthia-green hover:text-planthia-cream transition-all group">
+              <button className="p-4 rounded-full cursor-pointer border border-planthia-dark/10 hover:bg-planthia-green hover:text-planthia-cream transition-all group">
                 <Heart size={20} strokeWidth={1.5} className="group-hover:fill-current" />
               </button>
             </div>

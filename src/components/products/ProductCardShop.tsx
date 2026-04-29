@@ -28,6 +28,9 @@ const ProductCardShop = ({ product }: { product: Product }) => {
     .reduce((acc: number, item: any) => acc + item.quantity, 0);
 
   const isAlreadyInCart = quantityInCart > 0;
+  const isLimitReached = quantityInCart >= 10;
+  const isOutOfStock = !hasVariants && (product.stock === undefined || product.stock <= 0);
+
 
   const handleAction = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -36,7 +39,7 @@ const ProductCardShop = ({ product }: { product: Product }) => {
     if (hasVariants) {
       router.push(`/tienda/${product.id}`);
     } else {
-      addItem({
+      const wasAdded = addItem({
         id: product.id,
         name: product.name,
         price: product.price,
@@ -44,12 +47,14 @@ const ProductCardShop = ({ product }: { product: Product }) => {
         quantity: 1,
         stock: product.stock || 0 
       });
-      toast.success(`${product.name} agregada`);
-      openCart();
+
+      if (wasAdded) {
+        toast.success(`${product.name} agregada`);
+        openCart();
+      }
     }
   };
 
-  const isOutOfStock = !hasVariants && (product.stock === undefined || product.stock <= 0);
 
   return (
     <div className="group relative bg-[#FFFFFF] rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 flex flex-col">
@@ -66,11 +71,11 @@ const ProductCardShop = ({ product }: { product: Product }) => {
         </Link>
 
         {/* Badge de Dificultad */}
-        <div className="absolute top-3 left-3">
+        {/* <div className="absolute top-3 left-3">
           <span className="bg-white/70 backdrop-blur-md px-2 py-1 rounded-md text-[10px] uppercase tracking-widest font-bold text-gray-700">
-            {product.difficulty}
+            {product.metadata?.difficulty}
           </span>
-        </div>
+        </div> */}
 
         {/* Favorito  */}
         <button className="absolute top-3 right-3 p-2 bg-white/50 hover:bg-white backdrop-blur-md rounded-full transition-colors text-gray-600 hover:text-[#5B823B]">
@@ -104,23 +109,26 @@ const ProductCardShop = ({ product }: { product: Product }) => {
 
           <button
             onClick={handleAction}
-            className={`text-white p-2 md:px-4 md:py-2 rounded-lg transition-all flex items-center justify-center gap-2 min-w-[40px] ${isAlreadyInCart ? "bg-planthia-light-green" : "bg-planthia-green hover:bg-planthia-light-green"
+            disabled={isOutOfStock}
+            className={`text-white p-2 md:px-4 md:py-2 rounded-lg transition-all flex items-center justify-center gap-2 min-w-[40px]
+              ${isOutOfStock 
+                ? "bg-gray-400 cursor-not-allowed" 
+                : isAlreadyInCart 
+                  ? "bg-planthia-light-green hover:bg-planthia-green" 
+                  : "bg-planthia-green hover:bg-planthia-light-green"
               }`}
           >
             {/* VISTA MOBILE */}
             <div className="md:hidden flex items-center justify-center font-bold">
-              {isAlreadyInCart ? (
-                <span className="text-sm">{quantityInCart}</span>
-              ) : (
-                <Plus size={20} />
-              )}
+              {isAlreadyInCart ? <span className="text-sm">{quantityInCart}</span> : <Plus size={20} />}
             </div>
 
-            {/* VISTA DESKTOP*/}
+            {/* VISTA DESKTOP */}
             <span className="hidden md:block text-sm font-semibold">
-              {isAlreadyInCart ? "Agregado" : "Agregar"}
+              {isOutOfStock ? "Sin stock" :isAlreadyInCart ? "Agregado" : "Agregar"}
             </span>
           </button>
+          
         </div>
       </div>
     </div>

@@ -223,7 +223,7 @@ export default function CheckoutPage() {
           address: formData.address,
           city: formData.city,
           zip_code: formData.zip_code,
-          cart: cart.map(item => ({ name: item.name, quantity: item.quantity, price: item.price })),
+          cart: cart.map(item => ({ name: item.name, quantity: item.quantity, price: item.price,  productId: item.id })),
           payment_method: paymentMethod,
           subtotal: subtotal,
           shipping_cost: shippingCost,
