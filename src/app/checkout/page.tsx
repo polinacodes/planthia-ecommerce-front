@@ -173,10 +173,13 @@ export default function CheckoutPage() {
       });
       const data = await res.json();
       if (res.ok) {
-        setDiscountAmount(data.discountAmount);
+        const calculatedDiscount = (subtotal * data.discountAmount) / 100;
+
+        setDiscountAmount(calculatedDiscount); 
         setDiscountError('');
+
         toast.success('¡Código aplicado!', {
-          description: `Se han descontado $${data.discountAmount.toFixed(2)} de tu total.`,
+          description: `Se ha aplicado un ${data.discountAmount}% de descuento (-$${calculatedDiscount.toFixed(2)})`,
         });
       } else {
         setDiscountError(data.message || 'Código inválido');
@@ -223,7 +226,7 @@ export default function CheckoutPage() {
           address: formData.address,
           city: formData.city,
           zip_code: formData.zip_code,
-          cart: cart.map(item => ({ name: item.name, quantity: item.quantity, price: item.price,  productId: item.id })),
+          cart: cart.map(item => ({ name: item.name, quantity: item.quantity, price: item.price, productId: item.id })),
           payment_method: paymentMethod,
           subtotal: subtotal,
           shipping_cost: shippingCost,
@@ -236,7 +239,7 @@ export default function CheckoutPage() {
       const data = await res.json();
 
       if (data.ok) {
-      
+
         if (paymentMethod === 'mercadopago' && data.mercadoPagoUrl) {
           window.open(data.mercadoPagoUrl, '_blank');
           router.push(`/payment-waiting?orderId=${data.orderId}`);
@@ -402,16 +405,16 @@ export default function CheckoutPage() {
                     <button type="button" onClick={applyDiscount} className="px-4 sm:px-4 py-3 bg-planthia-green text-white rounded-xl font-bold hover:bg-planthia-light-green transition-all cursor-pointer">Aplicar</button>
                   </div>
                 </div>
-                <div className="flex justify-between text-planthia-dark/70">
-                  <span>Envío</span>
-                  <span>${shippingCost.toFixed(2)}</span>
-                </div>
                 {discountAmount > 0 && (
                   <div className="flex justify-between text-planthia-green">
                     <span>Descuento</span>
                     <span>-${discountAmount.toFixed(2)}</span>
                   </div>
                 )}
+                <div className="flex justify-between text-planthia-dark/70">
+                  <span>Envío</span>
+                  <span>${shippingCost.toFixed(2)}</span>
+                </div>
                 <div className="flex justify-between items-center pt-4">
                   <span className="text-lg font-bold">Total</span>
                   <span className="text-2xl font-extrabold text-planthia-green">${total.toFixed(2)}</span>
