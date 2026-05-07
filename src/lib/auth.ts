@@ -83,7 +83,7 @@ export async function login(input: LoginInput): Promise<AuthResponse> {
 }
 
 export async function forgotPassword(email: string): Promise<{ ok: boolean }> {
-  const res = await fetch(`${STRAPI_URL}/api/auth/forgot-password`, {
+  const res = await fetch(`${STRAPI_URL}/api/auth/custom-forgot-password`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email }),

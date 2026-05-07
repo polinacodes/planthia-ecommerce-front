@@ -100,7 +100,7 @@ export default function PaymentStatusPage() {
 
         <div className="flex flex-col w-full gap-3">
           <button
-            onClick={() => isError ? router.push('/checkout') : router.push('/mi-cuenta')}
+            onClick={() => isError ? router.push('/checkout') : router.push('/account')}
             className="w-full flex items-center justify-center bg-planthia-dark text-white font-bold py-4 rounded-full hover:bg-planthia-dark/90 transition-all shadow-lg shadow-planthia-dark/20"
           >
             {current.buttonText}
