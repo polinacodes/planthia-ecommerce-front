@@ -1,7 +1,7 @@
-import LoginForm from '@/components/auth/LoginForm';
+import RegisterForm from '@/components/auth/RegisterForm';
 import { Leaf } from 'lucide-react';
 
-export default function LoginPage() {
+export default function RegisterPage() {
   return (
     <main className="min-h-screen bg-planthia-gradient font-body text-planthia-dark flex items-center justify-center p-6 relative overflow-hidden">
       <div className="w-full max-w-lg bg-white rounded-3xl shadow-xl p-8 md:p-12 z-10 flex flex-col items-center">
@@ -9,12 +9,12 @@ export default function LoginPage() {
           <Leaf className="w-12 h-12 text-planthia-green" strokeWidth={1.5} />
         </div>
         <div className="text-center mb-10">
-          <h1 className="text-3xl font-headline font-extrabold mb-2">Ingresa a Planthia</h1>
+          <h1 className="text-3xl font-headline font-extrabold mb-2">Crea tu cuenta</h1>
         </div>
-        <LoginForm />
+        <RegisterForm />
         <div className="text-center mt-6">
           <p className="text-xs text-planthia-dark/40">
-            ¿No tenés cuenta? <a href="/register" className="text-planthia-green underline">Registrate</a>
+            ¿Ya tenés cuenta? <a href="/login" className="text-planthia-green underline">Iniciá sesión</a>
           </p>
         </div>
       </div>

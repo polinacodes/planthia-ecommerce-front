@@ -2,9 +2,9 @@
 
 const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
 
-// ============================================
+// ========
 // TIPOS
-// ============================================
+// ========
 
 export interface RegisterInput {
   username: string;
@@ -42,12 +42,12 @@ export interface UserData {
   blocked: boolean;
 }
 
-// ============================================
-// AUTENTICACIÓN (ENDPOINTS NATIVOS DE STRAPI)
-// ============================================
+// ==============
+// AUTENTICACIÓN 
+// ==============
 
 export async function register(input: RegisterInput): Promise<AuthResponse> {
-  const res = await fetch(`${STRAPI_URL}/api/auth/local/register`, {
+  const res = await fetch(`${STRAPI_URL}/api/auth/custom-register`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(input),

@@ -46,7 +46,7 @@ export default function SetPasswordForm({ code }: { code: string | null }) {
       localStorage.setItem('user', JSON.stringify(data.user));
       
       toast.success('¡Contraseña configurada con éxito!');
-      router.push('/');
+      router.push('/account');
     } catch (error) {
       toast.error(error instanceof Error ? error.message : 'Error al configurar la contraseña');
     } finally {

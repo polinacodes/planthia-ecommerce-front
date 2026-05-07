@@ -12,7 +12,7 @@ export default function ForgotPasswordPage() {
           </div>
           <h1 className="text-3xl font-headline font-extrabold mb-2">Recuperar contraseña</h1>
           <p className="text-planthia-dark/60 font-body text-lg">
-            Ingresá tu email y te enviaremos un código para restablecerla.
+            Ingresá tu email y te ayudamos a restablecerla.
           </p>
         </div>
         <ForgotPasswordForm />

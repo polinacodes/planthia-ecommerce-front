@@ -77,7 +77,7 @@ export default function ForgotPasswordForm() {
       <button
         type="submit"
         disabled={loading}
-        className="w-full flex items-center justify-center bg-planthia-dark text-white font-bold py-4 rounded-full hover:bg-planthia-dark/90 transition-all shadow-lg disabled:opacity-50"
+        className="w-full flex items-center justify-center bg-planthia-dark text-white font-bold py-4 rounded-full hover:bg-planthia-dark/90 transition-all shadow-lg disabled:opacity-50 cursor-pointer"
       >
         {loading ? 'Enviando...' : 'Enviar código'}
         {!loading && <ArrowRight className="ml-2 w-4 h-4" />}
