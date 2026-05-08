@@ -184,3 +184,21 @@ export async function fetchWithAuth<T = any>(
 
   return data;
 }
+
+export function getUser(): UserData | null {
+  if (typeof window === 'undefined') return null;
+  const user = localStorage.getItem('user');
+  return user ? JSON.parse(user) : null;
+}
+
+export function setUser(user: UserData): void {
+  if (typeof window !== 'undefined') {
+    localStorage.setItem('user', JSON.stringify(user));
+  }
+}
+
+export function removeUser(): void {
+  if (typeof window !== 'undefined') {
+    localStorage.removeItem('user');
+  }
+}
