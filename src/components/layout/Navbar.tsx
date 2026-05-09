@@ -61,11 +61,12 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className={`flex items-center justify-between px-3 md:px-8 lg:px-12 py-6 sticky top-0 z-50 transition-all duration-300 ${isScrolled
+        className={` sticky top-0 z-50 transition-all duration-300 ${isScrolled
           ? "bg-planthia-cream/60 backdrop-blur-md shadow-sm"
           : "bg-transparent"
           }`}
       >
+        <div className="max-w-[1600px] mx-auto flex items-center justify-between px-6 sm:px-12 py-6">
         <div className="flex items-center">
           <button
             onClick={() => setIsMobileMenuOpen(true)}
@@ -95,7 +96,7 @@ export default function Navbar() {
 
            <button
             // onClick={}
-            className="hover:text-planthia-green transition-colors cursor-pointer relative">
+            className="hidden md:block hover:text-planthia-green transition-colors cursor-pointer relative">
             <Heart size={20} className="sm:w-[22px] sm:h-[22px]" />
           </button>
 
@@ -169,6 +170,7 @@ export default function Navbar() {
               </>
             )}
           </div>
+        </div>
         </div>
       </nav>
 

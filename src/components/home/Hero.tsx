@@ -33,16 +33,26 @@ export default function Hero() {
           </button>
           <button className="bg-white border border-gray-100 px-4 sm:px-10 py-3 sm:py-5 font-bold text-planthia-green hover:bg-gray-50 transition-all cursor-pointer
               rounded-tr-sm rounded-br-2xl skew-x-[-15deg] origin-bottom shadow-sm flex-1 sm:flex-none text-base sm:text-lg">
-            <span className="inline-block skew-x-[15deg]">Ver cuidados</span>
+            <span className="inline-block skew-x-[15deg]">Cuidados</span>
           </button>
         </div>
       </div>
 
       {/* Contenido Derecho */}
-      <div className="col-span-12 lg:col-span-7 relative h-auto lg:h-full min-h-[550px] sm:min-h-[650px] lg:min-h-[700px] order-first lg:order-last max-[1366px]:order-first">
+      <div className="col-span-12 lg:col-span-7 relative h-auto lg:h-full min-h-[550px] sm:min-h-[650px] lg:min-h-[700px] xl:min-h-[850px] order-first lg:order-last max-[1366px]:order-first">
 
         {/* CONTENEDOR DE CÍRCULOS */}
-        <div className="absolute top-[36%] md:top-[40%] lg:top-1/2 max-[1366px]:top-[40%] left-1/2 -translate-y-1/2 -translate-x-1/2 lg:-translate-x-[60%] max-[1366px]:-translate-x-1/2 w-[90vw] h-[90vw] min-[400px]:w-[400px] min-[400px]:h-[400px] sm:w-[500px] sm:h-[500px] lg:w-[680px] lg:h-[680px] z-0 flex items-center justify-center">
+        <div className="absolute 
+             top-[36%] md:top-[40%] lg:top-1/2 max-[1366px]:top-[40%] 
+             left-1/2  
+             -translate-x-1/2 lg:-translate-x-[60%] max-[1366px]:-translate-x-1/2 
+             -translate-y-60 xl:-translate-y-[60%]
+             w-[90vw] h-[90vw] 
+             min-[400px]:w-[400px] min-[400px]:h-[400px] 
+             sm:w-[500px] sm:h-[500px] 
+             lg:w-[680px] lg:h-[680px] 
+             xl:w-[820px] xl:h-[820px]
+             z-0 flex items-center justify-center">
           {/* Círculo Exterior */}
           <div className="absolute inset-0 border-[4px] sm:border-[6px] border-white rounded-full shadow-md"></div>
           {/* Círculo Interior */}
@@ -50,7 +60,13 @@ export default function Hero() {
         </div>
 
         {/* CONTENEDOR DE PLANTA */}
-        <div className="absolute -top-40 sm:-top-40 lg:-top-40 max-[1366px]:-top-28 -left-4 -right-4 sm:-left-6 sm:-right-6 md:left-0 md:right-0 lg:-left-10 lg:right-auto xl:-left-16 xl:right-auto max-[1366px]:left-0 max-[1366px]:right-0  z-10 w-auto md:w-full h-[120%] lg:h-[140%] xl:h-[150%] flex items-start justify-center lg:justify-start max-[1366px]:justify-center z-10">
+        <div className="absolute 
+             -translate-y-6 xl:-translate-y-40
+             -top-52 sm:-top-40 lg:-top-40 max-[1366px]:-top-28 -left-4 
+             -right-4 sm:-left-6 sm:-right-6 md:left-0 md:right-0 lg:-left-10 lg:right-auto xl:-left-16 xl:right-auto max-[1366px]:left-0 max-[1366px]:right-0  
+             z-10 w-auto md:w-full 
+             h-[120%] lg:h-[140%] xl:h-[160%] 
+             flex items-start justify-center lg:justify-start max-[1366px]:justify-center z-10">
           <div className="relative w-full lg:w-[110%] max-[1366px]:w-full h-full">
             <Image
               src="/heroo.webp"
@@ -58,18 +74,18 @@ export default function Hero() {
               fill
               priority
               className="object-cover object-top transition-transform duration-700 ease-out hover:scale-110"
-              sizes="(max-width: 640px) 100vw, (max-width: 1366px) 100vw, 80vw"
+              sizes="(max-width: 640px) 100vw, (max-width: 1200px) 100vw, 80vw"
             />
           </div>
 
           {/* CARD */}
-          <div className="absolute bottom-40 sm:bottom-40 lg:bottom-80 left-4 sm:left-10 lg:left-30 z-20
+          <div className="absolute bottom-40 sm:bottom-40 lg:bottom-80 xl:bottom-110 left-4 sm:left-10 lg:left-30 z-20
               bg-white/60
               backdrop-blur-md
               border border-white/80
               p-4 sm:p-5 rounded-2xl
               flex items-center gap-3 sm:gap-4
-              max-w-[260px] sm:max-w-[300px]
+              max-w-[260px] sm:max-w-[300px] lg:max-w-[350px] xl:max-w-[450px]
               shadow-[0_12px_40px_0_rgba(0,0,0,0.06)]">
 
             <div className="bg-white p-2 sm:p-3 rounded-xl shadow-sm flex-shrink-0">

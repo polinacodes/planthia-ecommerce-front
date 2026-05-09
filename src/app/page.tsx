@@ -2,7 +2,7 @@
 'use client'
 import Hero from "@/components/home/Hero";
 import Categories from "@/components/home/Categories"
-import RecommendedSection from '@/components/products/RecommendedSection';
+import RecommendedSection from '@/components/home/RecommendedSection';
 import { usePlants } from "@/hooks/usePlants";
 
 
