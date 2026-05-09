@@ -1,3 +1,4 @@
+//src/components/layout/Navbar.tsx
 "use client";
 
 import { useState, useEffect } from "react";
@@ -91,6 +92,13 @@ export default function Navbar() {
 
         <div className="flex items-center gap-4 sm:gap-6 text-planthia-dark">
           <SearchBar />
+
+           <button
+            // onClick={}
+            className="hover:text-planthia-green transition-colors cursor-pointer relative">
+            <Heart size={20} className="sm:w-[22px] sm:h-[22px]" />
+          </button>
+
 
           <button
             onClick={toggleCart}

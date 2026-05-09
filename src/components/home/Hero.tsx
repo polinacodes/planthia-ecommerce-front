@@ -1,3 +1,4 @@
+//src/components/home/Hero.tsx
 "use client";
 import { useRouter } from 'next/navigation';
 import { Star } from "lucide-react";
@@ -41,7 +42,7 @@ export default function Hero() {
       <div className="col-span-12 lg:col-span-7 relative h-auto lg:h-full min-h-[550px] sm:min-h-[650px] lg:min-h-[700px] order-first lg:order-last max-[1366px]:order-first">
 
         {/* CONTENEDOR DE CÍRCULOS */}
-        <div className="absolute top-[36%] md:top-[40%] lg:top-1/2 max-[1366px]:top-[40%] left-1/2 -translate-y-1/2 -translate-x-1/2 lg:-translate-x-[60%] max-[1366px]:-translate-x-1/2 w-[400px] h-[400px] sm:w-[500px] sm:h-[500px] lg:w-[680px] lg:h-[680px] z-0 flex items-center justify-center">
+        <div className="absolute top-[36%] md:top-[40%] lg:top-1/2 max-[1366px]:top-[40%] left-1/2 -translate-y-1/2 -translate-x-1/2 lg:-translate-x-[60%] max-[1366px]:-translate-x-1/2 w-[90vw] h-[90vw] min-[400px]:w-[400px] min-[400px]:h-[400px] sm:w-[500px] sm:h-[500px] lg:w-[680px] lg:h-[680px] z-0 flex items-center justify-center">
           {/* Círculo Exterior */}
           <div className="absolute inset-0 border-[4px] sm:border-[6px] border-white rounded-full shadow-md"></div>
           {/* Círculo Interior */}
@@ -49,10 +50,10 @@ export default function Hero() {
         </div>
 
         {/* CONTENEDOR DE PLANTA */}
-        <div className="absolute -top-30 sm:-top-28 lg:-top-32 max-[1366px]:-top-28 -left-4 -right-4 sm:-left-6 sm:-right-6 md:left-0 md:right-0 lg:-left-10 xl:-left-16 max-[1366px]:left-0 max-[1366px]:right-0 lg:right-auto z-10 w-auto md:w-full h-[120%] lg:h-[140%] xl:h-[150%] flex items-start justify-center lg:justify-start max-[1366px]:justify-center z-10">
+        <div className="absolute -top-40 sm:-top-40 lg:-top-40 max-[1366px]:-top-28 -left-4 -right-4 sm:-left-6 sm:-right-6 md:left-0 md:right-0 lg:-left-10 lg:right-auto xl:-left-16 xl:right-auto max-[1366px]:left-0 max-[1366px]:right-0  z-10 w-auto md:w-full h-[120%] lg:h-[140%] xl:h-[150%] flex items-start justify-center lg:justify-start max-[1366px]:justify-center z-10">
           <div className="relative w-full lg:w-[110%] max-[1366px]:w-full h-full">
             <Image
-              src="/hero.webp"
+              src="/heroo.webp"
               alt="Marble Queen Pothos Planthia"
               fill
               priority
