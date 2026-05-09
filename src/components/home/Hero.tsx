@@ -9,11 +9,11 @@ export default function Hero() {
 
   return (
     // <section className="relative bg-white py-20 px-6 md:px-12">
-
+    <div className="max-w-[1600px] mx-auto px-6 sm:px-12 overflow-hidden lg:overflow-visible">
     <section className="grid grid-cols-12 gap-4 items-center lg:min-h-[70vh] ">
 
       {/* Contenido Izquierdo  */}
-      <div className="col-span-12 lg:col-span-5 z-10 mt-8 lg:mt-0 px-4 md:px-0 order-last lg:order-first max-[1366px]:order-last">
+      <div className="col-span-12 lg:col-span-5 z-10 mt-8 lg:mt-0 xl:-mt-40 md:px-0 order-last lg:order-first max-[1366px]:order-last">
         <span className="font-headline font-bold tracking-[0.2em] text-xs text-planthia-dark mb-4 block uppercase">
           #RefugioVerde
         </span>
@@ -39,19 +39,19 @@ export default function Hero() {
       </div>
 
       {/* Contenido Derecho */}
-      <div className="col-span-12 lg:col-span-7 relative h-auto lg:h-full min-h-[550px] sm:min-h-[650px] lg:min-h-[700px] xl:min-h-[850px] order-first lg:order-last max-[1366px]:order-first">
+      <div className="col-span-12 lg:col-span-7 relative h-auto lg:h-full min-h-[550px] sm:min-h-[650px] lg:min-h-[700px] 2xl:min-h-[850px] order-first lg:order-last max-[1366px]:order-first">
 
         {/* CONTENEDOR DE CÍRCULOS */}
         <div className="absolute 
              top-[36%] md:top-[40%] lg:top-1/2 max-[1366px]:top-[40%] 
-             left-1/2  
+              right-0 lg:right-[-10%] 2xl:right-[-70%]
              -translate-x-1/2 lg:-translate-x-[60%] max-[1366px]:-translate-x-1/2 
-             -translate-y-60 xl:-translate-y-[60%]
+             -translate-y-60 2xl:-translate-y-[60%]
              w-[90vw] h-[90vw] 
              min-[400px]:w-[400px] min-[400px]:h-[400px] 
              sm:w-[500px] sm:h-[500px] 
              lg:w-[680px] lg:h-[680px] 
-             xl:w-[820px] xl:h-[820px]
+             2xl:w-[820px] xl:h-[820px]
              z-0 flex items-center justify-center">
           {/* Círculo Exterior */}
           <div className="absolute inset-0 border-[4px] sm:border-[6px] border-white rounded-full shadow-md"></div>
@@ -61,11 +61,11 @@ export default function Hero() {
 
         {/* CONTENEDOR DE PLANTA */}
         <div className="absolute 
-             -translate-y-6 xl:-translate-y-40
+             -translate-y-6 2xl:-translate-y-40
              -top-52 sm:-top-40 lg:-top-40 max-[1366px]:-top-28 -left-4 
-             -right-4 sm:-left-6 sm:-right-6 md:left-0 md:right-0 lg:-left-10 lg:right-auto xl:-left-16 xl:right-auto max-[1366px]:left-0 max-[1366px]:right-0  
+             -right-0 sm:-left-6 sm:-right-6 md:left-0 md:right-0 lg:-left-10 lg:right-auto 2xl:left-14 2xl:right-auto max-[1366px]:left-0 max-[1366px]:right-0  
              z-10 w-auto md:w-full 
-             h-[120%] lg:h-[140%] xl:h-[160%] 
+             h-[120%] lg:h-[140%] 2xl:h-[160%] 
              flex items-start justify-center lg:justify-start max-[1366px]:justify-center z-10">
           <div className="relative w-full lg:w-[110%] max-[1366px]:w-full h-full">
             <Image
@@ -79,13 +79,13 @@ export default function Hero() {
           </div>
 
           {/* CARD */}
-          <div className="absolute bottom-40 sm:bottom-40 lg:bottom-80 xl:bottom-110 left-4 sm:left-10 lg:left-30 z-20
+          <div className="absolute bottom-40 sm:bottom-40 lg:bottom-80 xl:bottom-120 left-4 sm:left-10 lg:left-30 lg:left-10 z-20
               bg-white/60
               backdrop-blur-md
               border border-white/80
               p-4 sm:p-5 rounded-2xl
               flex items-center gap-3 sm:gap-4
-              max-w-[260px] sm:max-w-[300px] lg:max-w-[350px] xl:max-w-[450px]
+              max-w-[260px] sm:max-w-[300px] lg:max-w-[350px] 2xl:max-w-[450px]
               shadow-[0_12px_40px_0_rgba(0,0,0,0.06)]">
 
             <div className="bg-white p-2 sm:p-3 rounded-xl shadow-sm flex-shrink-0">
@@ -104,5 +104,6 @@ export default function Hero() {
         </div>
       </div>
     </section>
+    </div>
   );
 }
