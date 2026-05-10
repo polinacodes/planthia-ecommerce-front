@@ -155,7 +155,7 @@ export default function SetPasswordForm({ code }: { code: string | null }) {
       <button
         type="submit"
         disabled={loading || !passwordValid || !passwordsMatch}
-        className="w-full mt-4 flex items-center justify-center bg-planthia-dark text-white font-bold py-4 rounded-full hover:bg-planthia-dark/90 transition-all shadow-lg disabled:opacity-20 disabled:grayscale disabled:cursor-not-allowed"
+        className="w-full mt-4 flex items-center justify-center bg-planthia-dark text-white font-bold py-4 hover:bg-planthia-dark/90 transition-all shadow-lg disabled:opacity-20 disabled:grayscale disabled:cursor-not-allowed"
       >
         {loading ? 'Guardando...' : 'Establecer Contraseña'}
         {!loading && <ArrowRight className="ml-2 w-4 h-4" />}

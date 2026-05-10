@@ -123,7 +123,7 @@ const ProductCard = ({ plant, isActive, onClick }: ProductCardProps) => {
               marginTop: isActive ? '0.25rem' : 0,
               marginBottom: isActive ? '0.5rem' : 0
             }}
-            transition={{ duration: 0.25, delay: isActive ? 0.1 : 0 }}
+            transition={{ duration: 0.1, delay: isActive ? 0.1 : 0 }}
             className={`text-[10px] sm:text-xs leading-relaxed line-clamp-2 ${!isActive && 'pointer-events-none'
               }`}
           >
@@ -143,7 +143,7 @@ const ProductCard = ({ plant, isActive, onClick }: ProductCardProps) => {
               opacity: isActive ? 1 : 0,
               height: isActive ? 'auto' : 0
             }}
-            transition={{ duration: 0.25, delay: isActive ? 0.15 : 0 }}
+            transition={{ duration: 0.1, delay: isActive ? 0.15 : 0 }}
             className={`flex items-center gap-2 sm:gap-3 ${!isActive && 'pointer-events-none'
               }`}
           >
