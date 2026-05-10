@@ -11,14 +11,14 @@ const categories = [
 
 export default function Categories() {
   return (
-    <section className="bg-cream pt-48 pb-20 xl:pt-62 xl:pb-24 px-4 sm:px-6 lg:px-12 max-w-[1600px] mx-auto relative z-0">
+    <section className="bg-cream pt-48 pb-20 lg:pt-20 xl:pt-48 xl:pb-24 px-4 sm:px-6 lg:px-12 max-w-[1600px] mx-auto relative z-0">
       
       {/* Encabezado */}
       <div className="mb-16"> 
-        <h2 className="text-4xl font-extrabold text-[#1A1A1A] tracking-tight">
+        <h2 className="text-3xl xl:text-4xl font-extrabold text-[#1A1A1A] tracking-tight">
           Nuestras colecciones
         </h2>
-        <p className="text-gray-400 mt-4 text-lg font-medium">
+        <p className="text-gray-400 mt-3 text-lg font-medium">
           Seleccionadas para transformar cada rincón.
         </p>
       </div>
@@ -38,7 +38,7 @@ export default function Categories() {
             </div>
             
             <div className="mt-6 flex justify-between items-center px-2">
-              <h3 className="text-2xl font-bold text-[#1A1A1A]">{cat.title}</h3>
+              <h3 className="text-xl lg:text-2xl font-bold text-[#1A1A1A]">{cat.title}</h3>
               <div className="w-10 h-10 rounded-full border border-gray-100 flex items-center justify-center text-gray-400 group-hover:bg-planthia-green group-hover:text-white group-hover:border-planthia-green transition-all duration-300">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
               </div>

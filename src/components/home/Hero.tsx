@@ -13,7 +13,7 @@ export default function Hero() {
     <section className="grid grid-cols-12 gap-4 items-center lg:min-h-[50vh] xl:min-h-[70vh]">
 
       {/* Contenido Izquierdo  */}
-      <div className="col-span-12 lg:col-span-5 z-10 mt-8 lg:-mt-30 xl:-mt-30 2xl:-mt-40 md:px-0 order-last lg:order-first max-[1366px]:order-last flex flex-col items-center lg:items-start text-center lg:text-left">
+      <div className="col-span-12 lg:col-span-5 z-10 mt-0 lg:-mt-30 xl:-mt-30 2xl:-mt-40 md:px-0 order-last lg:order-first max-[1366px]:order-last flex flex-col items-center lg:items-start text-center lg:text-left">
         <span className="font-headline font-bold tracking-[0.2em] text-xs text-planthia-dark mb-4 block uppercase">
           #RefugioVerde
         </span>
@@ -39,7 +39,7 @@ export default function Hero() {
       </div>
 
       {/* Contenido Derecho */}
-      <div className="col-span-12 lg:col-span-7 relative h-auto lg:h-full min-h-[550px] sm:min-h-[650px] md:min-h-[750px] lg:min-h-[700px] xl:min-h-[700px] 2xl:min-h-[850px] order-first lg:order-last max-[1366px]:order-first">
+      <div className="col-span-12 lg:col-span-7 relative h-auto lg:h-full min-h-[550px] sm:min-h-[650px] md:min-h-[860px] lg:min-h-[700px] xl:min-h-[700px] 2xl:min-h-[850px] order-first lg:order-last max-[1366px]:order-first">
 
         {/* CONTENEDOR DE CÍRCULOS */}
         {/* <div className="absolute 
@@ -62,8 +62,8 @@ export default function Hero() {
         {/* CONTENEDOR DE PLANTA */}
         <div className="absolute 
              -translate-y-6 lg:translate-y-0 2xl:-translate-y-40
-             -top-52 sm:-top-40 lg:-top-40 max-[1366px]:-top-28 -left-4 
-             -right-0 sm:-left-6 sm:-right-6 md:left-0 md:right-0 lg:left-10 lg:right-auto xl:left-14 xl:right-auto 2xl:left-14 2xl:right-auto max-[1366px]:left-0 max-[1366px]:right-0  
+             -top-52 sm:-top-40 lg:-top-40 max-[1366px]:-top-28 
+             -left-0 -right-0 sm:-left-6 sm:-right-6 md:left-0 md:right-0 lg:left-10 lg:right-auto xl:left-14 xl:right-auto 2xl:left-14 2xl:right-auto max-[1366px]:left-0 max-[1366px]:right-0  
              z-10 w-auto md:w-full 
              h-[120%] lg:h-[120%] xl:h-[140%] 2xl:h-[160%] 
              flex items-start justify-center lg:justify-start max-[1366px]:justify-center z-10">
@@ -79,11 +79,11 @@ export default function Hero() {
           </div>
 
           {/* CARD */}
-          <div className="absolute bottom-40 sm:bottom-40 md:bottom-50 lg:bottom-60 xl:bottom-90 2xl:bottom-120 left-4 sm:left-10 lg:left-0 xl:left-10 z-20
+          <div className="absolute bottom-40 sm:bottom-40 md:bottom-80 lg:bottom-60 xl:bottom-90 2xl:bottom-120 left-4 sm:left-10 md:left-20 lg:left-0 xl:left-10 z-20
               bg-white/60
               backdrop-blur-md
               border border-white/80
-              p-4 sm:p-3 md:p-3 lg:p-3 xl:p-4 rounded-2xl
+              p-4 sm:p-3 md:p-4 lg:p-3 xl:p-4 rounded-xl
               flex items-center gap-3 sm:gap-4
               max-w-[260px] sm:max-w-[300px] lg:max-w-[300px] xl:max-w-[400px] 2xl:max-w-[450px]
               shadow-[0_12px_40px_0_rgba(0,0,0,0.06)]">

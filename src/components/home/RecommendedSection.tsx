@@ -66,8 +66,8 @@ const RecommendedSection = ({ plants }: { plants: any[] }) => {
     <section className="pt-12 pb-12 px-4 sm:px-6 lg:px-12 max-w-[1600px] mx-auto bg-[#F7F5F0]">
       {/* Encabezado */}
       <div className="mb-14 md:mb-4">
-        <h2 className="text-4xl font-extrabold text-[#1A1A1A] tracking-tight">Recomendados</h2>
-        <p className="text-gray-400 mt-4 text-lg font-medium">Las plantas ideales para armar tu jungla urbana.</p>
+        <h2 className="text-3xl xl:text-4xl font-extrabold text-[#1A1A1A] tracking-tight">Recomendados</h2>
+        <p className="text-gray-400 mt-3 text-lg font-medium">Las plantas ideales para armar tu jungla urbana.</p>
       </div>
 
       {/* VISTA MOBILE: Scroll vertical */}
