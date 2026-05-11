@@ -36,7 +36,7 @@ const Footer = () => {
         <div className="flex flex-row justify-between items-center w-full gap-4">
 
           <p className="text-[10px] md:text-sm font-medium uppercase tracking-widest opacity-70">
-            Desarrollado por Pao
+            Desarrollado por Polina
           </p>
 
           <div className="flex gap-3 md:gap-5 items-center">

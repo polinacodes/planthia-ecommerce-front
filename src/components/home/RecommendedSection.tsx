@@ -13,7 +13,7 @@ const RecommendedSection = ({ plants }: { plants: any[] }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [visibleCount, setVisibleCount] = useState(4);
 
-  const mobilePlants = plants.slice(0, 3);
+  const mobilePlants = plants.slice(0, 6);
 
   useEffect(() => {
     const handleClickOutside = () => {
@@ -70,21 +70,22 @@ const RecommendedSection = ({ plants }: { plants: any[] }) => {
         <p className="text-gray-400 mt-3 text-lg font-medium">Las plantas ideales para armar tu jungla urbana.</p>
       </div>
 
-      {/* VISTA MOBILE: Scroll vertical */}
+      {/* VISTA MOBILE: Scroll horizontal nativo */}
       <div className="md:hidden">
-        <div className="flex flex-col gap-10 max-h-[700px] overflow-y-auto pr-2 pb-4">
+        <div className="flex gap-4 overflow-x-auto pb-4 -mr-4 pr-4 snap-x snap-mandatory">
           {mobilePlants.map((plant) => (
-            <ProductCard
-              key={`mobile-${plant.id}`}
-              plant={plant}
-              isActive={activeId === plant.id}
-              onClick={(e: React.MouseEvent) => handleCardClick(plant.id, e)}
-            />
+            <div key={`mobile-${plant.id}`} className="min-w-[280px] max-w-[320px] snap-center flex-shrink-0">
+              <ProductCard
+                plant={plant}
+                isActive={activeId === plant.id}
+                onClick={(e: React.MouseEvent) => handleCardClick(plant.id, e)}
+              />
+            </div>
           ))}
         </div>
-        <div className="flex justify-center mt-6">
+        {/* <div className="flex justify-center mt-6">
           <div className="w-12 h-1 bg-gray-300 rounded-full" />
-        </div>
+        </div> */}
       </div>
 
       {/* VISTA TABLET/DESKTOP: Carrusel horizontal */}
