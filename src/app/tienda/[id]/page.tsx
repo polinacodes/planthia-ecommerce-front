@@ -15,10 +15,10 @@ import { toast } from 'sonner';
 // --- SUB-COMPONENTES AUXILIARES ---
 const CareItem = ({ icon: Icon, label, value }: any) => (
   <div className="flex gap-4 items-start">
-    <Icon size={20} strokeWidth={1.5} className="text-planthia-dark/50" />
-    <div className="flex flex-col">
+    <Icon size={20} strokeWidth={1.5} className="text-planthia-dark/50 flex-shrink-0" />
+    <div className="flex flex-col min-w-0">
       <span className="text-[10px] uppercase tracking-widest text-planthia-dark/50 mb-1">{label}</span>
-      <span className="text-xs font-bold text-planthia-dark/80 uppercase">{value}</span>
+      <span className="text-xs font-bold text-planthia-dark/80 uppercase break-words">{value}</span>
     </div>
   </div>
 );
@@ -31,22 +31,23 @@ export default function ProductPage() {
 
   const [selectedImage, setSelectedImage] = useState<string>("");
   const [selectedVariant, setSelectedVariant] = useState<any>(null);
+  const [productsToShow, setProductsToShow] = useState(3);
 
   const product = useMemo(() => {
     if (!plants) return undefined;
     return plants.find((p) => p.id.toString() === id?.toString());
   }, [plants, id]);
 
-const stockDisponible = useMemo(() => {
-  if (!product) return 0;
-  
-  const p = product.attributes || product; 
-  
-  if (selectedVariant) {
-    return selectedVariant.stock || 0;
-  }
-  return p.stock || 0;
-}, [product, selectedVariant]);
+  const stockDisponible = useMemo(() => {
+    if (!product) return 0;
+
+    const p = product.attributes || product;
+
+    if (selectedVariant) {
+      return selectedVariant.stock || 0;
+    }
+    return p.stock || 0;
+  }, [product, selectedVariant]);
 
   const isOutOfStock = stockDisponible <= 0;
 
@@ -60,6 +61,18 @@ const stockDisponible = useMemo(() => {
       }
     }
   }, [product]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+      if (width < 768) setProductsToShow(2);
+      else if (width < 1024) setProductsToShow(3);
+      else setProductsToShow(4);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const getHexColor = (color: string) => {
     const colors: { [key: string]: string } = {
@@ -77,8 +90,19 @@ const stockDisponible = useMemo(() => {
     const currentSub = product.subcategory?.name;
     return plants
       .filter(p => p.subcategory?.name === currentSub && p.id !== product.id)
-      .slice(0, 4);
-  }, [product, plants]);
+      .slice(0, productsToShow);
+  }, [product, plants, productsToShow]);
+
+  const uniqueVariants = useMemo(() => {
+    if (!product?.variants) return [];
+    const seen = new Set();
+    return product.variants.filter((v: any) => {
+      const key = v.color.toLowerCase().trim();
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  }, [product]);
 
   if (loading) return null;
 
@@ -94,11 +118,11 @@ const stockDisponible = useMemo(() => {
   }
 
   const VariantSelector = () => {
-    if (!product?.variants || product.variants.length === 0) return null;
+    if (!uniqueVariants || uniqueVariants.length === 0) return null;
     return (
       <div className="flex items-center gap-6">
         <div className="flex gap-4">
-          {product.variants.map((variant: any) => (
+          {uniqueVariants.map((variant: any) => (
             <button
               key={variant.color}
               onClick={() => {
@@ -106,7 +130,7 @@ const stockDisponible = useMemo(() => {
                 setSelectedVariant(variant);
               }}
               className={`w-5 h-5 rounded-full border shadow-md transition-all duration-300 ${selectedImage === variant.image
-                ? 'scale-125 border-planthia-dark/30 '
+                ? 'scale-125 border-planthia-dark/30'
                 : 'border-transparent opacity-70 hover:opacity-100 hover:scale-110'
                 }`}
               style={{ backgroundColor: getHexColor(variant.color) }}
@@ -121,7 +145,6 @@ const stockDisponible = useMemo(() => {
     );
   };
 
-
   const currentUniqueId = selectedVariant
     ? `${product.id}-${selectedVariant.color.toLowerCase()}`
     : product.id;
@@ -130,54 +153,54 @@ const stockDisponible = useMemo(() => {
   const quantityInCart = cartItem ? cartItem.quantity : 0;
 
   const handleAddToCart = () => {
-  const uniqueId = selectedVariant
-    ? `${product.id}-${selectedVariant.color.toLowerCase()}`
-    : product.id;
+    const uniqueId = selectedVariant
+      ? `${product.id}-${selectedVariant.color.toLowerCase()}`
+      : product.id;
 
-  const wasAdded = addItem({
-    id: uniqueId,
-    name: product.name,
-    color: selectedVariant?.color,
-    price: product.price,
-    image: selectedImage || product.image,
-    quantity: 1,
-    stock: stockDisponible 
-  });
+    const wasAdded = addItem({
+      id: uniqueId,
+      name: product.name,
+      color: selectedVariant?.color,
+      price: product.price,
+      image: selectedImage || product.image,
+      quantity: 1,
+      stock: stockDisponible
+    });
 
-  if (wasAdded) {
-    toast.success(`${product.name} agregada`);
-  }
-};
+    if (wasAdded) {
+      toast.success(`${product.name} agregada`);
+    }
+  };
 
   return (
     <main className="min-h-screen bg-planthia-cream pt-6 md:pt-12">
-      <div className="max-w-7xl mx-auto px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* 1. BREADCRUMBS */}
-        <nav className="text-[10px] uppercase tracking-[0.2em] text-planthia-dark/60 mb-4">
+        <nav className="text-[10px] uppercase tracking-[0.2em] text-planthia-dark/60 mb-4 flex flex-wrap gap-x-2">
           <Link
             href={`/tienda?type=${product.type}`}
-            className="hover:text-planthia-green transition-colors"
+            className="hover:text-planthia-green transition-colors whitespace-nowrap"
           >
             {product.type === 'plantas' ? 'Plantas' : 'Cuidados'}
           </Link>
-          <span className="mx-2 text-planthia-dark/30">/</span>
+          <span className="text-planthia-dark/30">/</span>
           <Link
             href={`/tienda?type=${product.type}&category=${product.subcategory?.name?.toLowerCase() || 'todas'}`}
-            className="hover:text-planthia-green transition-colors"
+            className="hover:text-planthia-green transition-colors whitespace-nowrap"
           >
             {product.subcategory?.name || 'Sin categoría'}
           </Link>
-          <span className="mx-2 text-planthia-dark/30">/</span>
-          <span className="text-planthia-dark font-bold">{product.name}</span>
+          <span className="text-planthia-dark/30">/</span>
+          <span className="text-planthia-dark font-bold truncate">{product.name}</span>
         </nav>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 min-h-[600px] items-start">
-          {/*COLUMNA IZQUIERDA: VISUALS */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 min-h-[600px] items-start">
+          {/* COLUMNA IZQUIERDA: VISUALS */}
           <div className="flex flex-col p-2">
-            <div className="relative w-full h-[400px] md:h-[650px] bg-planthia-cream rounded-[3rem] overflow-hidden">
+            <div className="relative w-full h-[350px] sm:h-[400px] md:h-[500px] lg:h-[650px] bg-planthia-cream rounded-[2rem] lg:rounded-[3rem] overflow-hidden">
               {product.petFriendly && (
-                <div className="absolute top-8  z-10 bg-planthia-light-green/10 backdrop-blur-md border border-white/20 px-4 py-2 rounded-full flex items-center gap-2 shadow-sm">
-                  <PawPrint size={14} className="text-planthia-dark" />
+                <div className="absolute top-4 sm:top-8 left-4 sm:left-6 z-10 bg-planthia-light-green/10 backdrop-blur-md border border-white/20 px-3 sm:px-4 py-2 rounded-full flex items-center gap-2 shadow-sm">
+                  <PawPrint size={14} className="text-planthia-dark flex-shrink-0" />
                   <span className="text-[10px] uppercase tracking-widest font-bold text-planthia-dark">Pet Friendly</span>
                 </div>
               )}
@@ -197,35 +220,35 @@ const stockDisponible = useMemo(() => {
                       alt={product.name}
                       fill
                       priority
-                      sizes="(max-width: 768px) 100vw, 50vw"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 50vw"
                       className="object-contain p-2 transition-transform duration-500 ease-in-out hover:scale-105"
                     />
                   ) : (
-                    <div className="w-full h-full bg-planthia-cream/50 animate-pulse rounded-[3rem]" />
+                    <div className="w-full h-full bg-planthia-cream/50 animate-pulse rounded-[2rem] lg:rounded-[3rem]" />
                   )}
                 </motion.div>
               </AnimatePresence>
             </div>
-            <div className="md:hidden flex justify-center py-2">
+            <div className="lg:hidden flex justify-center py-4">
               <VariantSelector />
             </div>
           </div>
 
           {/* COLUMNA DERECHA: INFO y COMPRA */}
-          <div className="flex flex-col -mt-8 md:mt-16 justify-center space-y-8 lg:pl-12">
+          <div className="flex flex-col -mt-8 lg:mt-16 justify-center space-y-6 lg:space-y-8 lg:pl-12">
             <div className="space-y-4">
-              <h1 className="text-5xl md:text-6xl font-manrope text-planthia-dark leading-tight">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-manrope text-planthia-dark leading-tight break-words">
                 {product.name}
               </h1>
-              <p className="text-planthia-dark/60 text-lg leading-relaxed max-w-md italic">
+              <p className="text-planthia-dark/60 text-base lg:text-lg leading-relaxed max-w-md italic">
                 {product.description}
               </p>
             </div>
 
             {/* GRID DE INFO */}
-            <div className={`py-10 border-y border-planthia-dark/10 ${product.type === 'plantas'
-              ? 'grid grid-cols-2 gap-y-10 gap-x-8'
-              : 'grid grid-cols-1 md:grid-cols-3 gap-8'
+            <div className={`py-8 lg:py-10 border-y border-planthia-dark/10 ${product.type === 'plantas'
+              ? 'grid grid-cols-2 gap-y-8 lg:gap-y-10 gap-x-4 lg:gap-x-8'
+              : 'grid grid-cols-1 sm:grid-cols-3 gap-6 lg:gap-8'
               }`}>
               {product.type === 'plantas' ? (
                 <>
@@ -244,19 +267,22 @@ const stockDisponible = useMemo(() => {
             </div>
 
             {product.variants && (
-              <div className="hidden md:flex">
+              <div className="hidden lg:flex">
                 <VariantSelector />
               </div>
             )}
 
-            <div className="flex items-center gap-6 pt-6">
-              <span className="text-4xl font-light text-planthia-dark">
+            {/* PRECIO + BOTÓN AGREGAR + FAVORITOS - SIEMPRE EN LÍNEA */}
+            <div className="flex items-center gap-4 sm:gap-6 pt-4 lg:pt-6">
+              <span className="text-2xl sm:text-3xl lg:text-4xl font-light text-planthia-dark flex-shrink-0">
                 ${product.price.toLocaleString('es-AR')}
               </span>
 
-              {/* BOTÓN ÚNICO CON LÓGICA DUAL */}
-              <div className={`flex-1 flex items-center bg-planthia-green text-planthia-cream transition-all duration-300 min-h-[60px]
-                ${isOutOfStock ? "bg-gray-300 cursor-not-allowed" : "bg-planthia-green hover:bg-planthia-dark text-planthia-cream"}`}>
+              {/* BOTÓN AGREGAR */}
+              <div className={`flex-1 flex items-center overflow-hidden transition-all duration-300 min-h-[48px] sm:min-h-[56px] lg:min-h-[60px] ${isOutOfStock
+                ? "bg-gray-300 cursor-not-allowed"
+                : "bg-planthia-green hover:bg-planthia-dark text-planthia-cream"
+                }`}>
                 {quantityInCart > 0 ? (
                   <div className="flex w-full items-center px-2 sm:px-4">
                     <button
@@ -269,17 +295,16 @@ const stockDisponible = useMemo(() => {
                           toast.error(`${product.name} eliminada`);
                         }
                       }}
-                      className="p-4 hover:scale-110 transition-transform cursor-pointer font-bold text-xl"
+                      className="p-3 sm:p-4 hover:scale-110 transition-transform cursor-pointer font-bold text-lg sm:text-xl"
                     >
                       -
                     </button>
 
                     <div className="flex-1 flex flex-col items-center justify-center">
-                      <span className="md:hidden text-lg font-bold">
+                      <span className="xl:hidden text-base sm:text-lg font-bold">
                         {quantityInCart}
                       </span>
-
-                      <span className="hidden md:block text-[10px] font-bold tracking-[0.2em] whitespace-nowrap">
+                      <span className="hidden xl:block text-[10px] font-bold tracking-[0.2em] whitespace-nowrap">
                         {quantityInCart} EN EL CARRITO
                       </span>
                     </div>
@@ -287,7 +312,7 @@ const stockDisponible = useMemo(() => {
                     <button
                       onClick={handleAddToCart}
                       disabled={quantityInCart >= stockDisponible}
-                      className="p-4 hover:scale-110 transition-transform cursor-pointer font-bold text-xl"
+                      className="p-3 sm:p-4 hover:scale-110 transition-transform cursor-pointer font-bold text-lg sm:text-xl disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       +
                     </button>
@@ -296,15 +321,16 @@ const stockDisponible = useMemo(() => {
                   <button
                     onClick={handleAddToCart}
                     disabled={isOutOfStock}
-                    className="w-full py-5 px-8 cursor-pointer uppercase text-[10px] tracking-[0.2em] font-bold  transition-all"
+                    className="w-full py-3 sm:py-4 lg:py-5 px-4 sm:px-6 lg:px-8 cursor-pointer uppercase text-[10px] tracking-[0.2em] font-bold transition-all"
                   >
                     {isOutOfStock ? "Sin Stock" : "Agregar"}
                   </button>
                 )}
               </div>
 
-              <button className="p-4 rounded-full cursor-pointer border border-planthia-dark/10 hover:bg-planthia-green hover:text-planthia-cream transition-all group">
-                <Heart size={20} strokeWidth={1.5} className="group-hover:fill-current" />
+              {/* BOTÓN FAVORITOS */}
+              <button className="p-2 sm:p-3 lg:p-4 rounded-full cursor-pointer border border-planthia-dark/10 hover:bg-planthia-green hover:text-planthia-cream transition-all group flex-shrink-0">
+                <Heart size={18} strokeWidth={1.5} className="group-hover:fill-current sm:w-5 sm:h-5" />
               </button>
             </div>
           </div>
@@ -312,20 +338,12 @@ const stockDisponible = useMemo(() => {
 
         {/* SECCIÓN: PODRÍA INTERESARTE */}
         {relatedProducts.length > 0 && (
-          <section className="mt-32 pb-20 border-t border-planthia-dark/5 pt-20">
-            <h2 className="text-3xl font-manrope text-planthia-dark mb-12">Podría interesarte</h2>
+          <section className="mt-20 lg:mt-32 pb-20 border-t border-planthia-dark/5 pt-16 lg:pt-20">
+            <h2 className="text-2xl lg:text-3xl font-manrope text-planthia-dark mb-8 lg:mb-12">Podría interesarte</h2>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
-              {relatedProducts.map((relatedP, index) => (
-                <div
-                  key={relatedP.id}
-                  className={`
-                   ${index === 2 ? "hidden md:block" : "block"} 
-                   ${index === 3 ? "hidden lg:block" : "block"}
-                 `}
-                >
-                  <ProductCardShop product={relatedP} />
-                </div>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
+              {relatedProducts.map((relatedP) => (
+                <ProductCardShop key={relatedP.id} product={relatedP} />
               ))}
             </div>
           </section>
@@ -334,7 +352,3 @@ const stockDisponible = useMemo(() => {
     </main>
   );
 }
-
-
-
-
