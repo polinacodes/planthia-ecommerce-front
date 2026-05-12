@@ -36,13 +36,13 @@ const Footer = () => {
         <div className="flex flex-row justify-between items-center w-full gap-4">
 
           <p className="text-[10px] md:text-sm font-medium uppercase tracking-widest opacity-70">
-            Desarrollado por Polina
+            Desarrollado por Polinacodes
           </p>
 
           <div className="flex gap-3 md:gap-5 items-center">
             {/* GitHub */}
             <a
-              href="https://github.com/PauDev1"
+              href="https://github.com/polinacodes"
               target="_blank"
               rel="noopener noreferrer"
               className="p-2 bg-white/10 rounded-full hover:bg-[#C1D37F] hover:text-[#5B823B] transition-all"
@@ -53,7 +53,7 @@ const Footer = () => {
 
             {/* Web */}
             <a
-              href="https://pao-portfolio.vercel.app/"
+              href="https://polinacodes.vercel.app/"
               target="_blank"
               rel="noopener noreferrer"
               className="p-2 bg-white/10 rounded-full hover:bg-[#C1D37F] hover:text-[#5B823B] transition-all"
