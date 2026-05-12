@@ -272,7 +272,7 @@ export default function CheckoutPage() {
         <div className="text-center">
           <h2 className="text-2xl font-bold mb-4">Tu carrito está vacío</h2>
           <button
-            onClick={() => router.push('/tienda')}
+            onClick={() => router.push('/shop')}
             className="bg-planthia-green text-white px-6 py-3 rounded-full"
           >
             Seguir comprando

@@ -52,7 +52,7 @@ const EmptyState = ({ title = "Uy, parece que esa plantita todavía no llegó a 
       </div>
 
       <button
-        onClick={() => window.location.href = '/tienda'}
+        onClick={() => window.location.href = '/shop'}
         className="mt-12 bg-[#5B823B] text-white px-8 py-3 rounded-full font-bold hover:bg-[#4a6a30] transition-colors text-sm sm:text-base"
       >
         Ver toda la colección

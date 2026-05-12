@@ -26,7 +26,7 @@ export default function Hero() {
 
         <div className="flex flex-row items-center gap-2 sm:gap-2 lg:gap-2">
           <button
-            onClick={() => router.push('/tienda')}
+            onClick={() => router.push('/shop')}
             className="bg-planthia-green text-white px-6 sm:px-6 md:px-8 lg:px-6 xl:px-10 py-3 sm:py-3 md:py-4 lg:py-3 xl:py-5 font-bold hover:opacity-90 transition-all cursor-pointer
               rounded-tl-2xl rounded-bl-sm skew-x-[-15deg] origin-bottom overflow-hidden shadow-lg shadow-planthia-green/20 flex-1 sm:flex-none text-base sm:text-lg">
             <span className="inline-block skew-x-[15deg]">Coleccion</span>

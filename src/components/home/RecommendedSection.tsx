@@ -139,7 +139,7 @@ const RecommendedSection = ({ plants }: { plants: any[] }) => {
       {/* Botón "Ver todos" */}
       <div className="flex justify-end mt-8">
         <Link
-          href="/tienda"
+          href="/shop"
           className="bg-planthia-green text-white px-8 py-3 rounded-full font-bold text-sm md:text-base hover:bg-opacity-90 transition-all shadow-lg shadow-planthia-green/20 active:scale-95"
         >
           Ver toda la colección

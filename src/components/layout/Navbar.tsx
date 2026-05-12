@@ -53,8 +53,8 @@ export default function Navbar() {
 
   const isActive = (href: string) => {
     if (href === "/") return pathname === "/";
-    if (href === "/tienda?type=plantas") return pathname === "/tienda" && searchParams.get("type") === "plantas";
-    if (href === "/tienda?type=cuidados") return pathname === "/tienda" && searchParams.get("type") === "cuidados";
+    if (href === "/shop?type=plantas") return pathname === "/shop" && searchParams.get("type") === "plantas";
+    if (href === "/shop?type=cuidados") return pathname === "/shop" && searchParams.get("type") === "cuidados";
     return false;
   };
 
@@ -83,10 +83,10 @@ export default function Navbar() {
           <Link href="/" className={`${isActive("/") ? "text-planthia-green" : "hover:text-planthia-green"} transition-colors`}>
             Inicio
           </Link>
-          <Link href="/tienda?type=plantas" className={`${isActive("/tienda?type=plantas") ? "text-planthia-green" : "hover:text-planthia-green"} transition-colors`}>
+          <Link href="/shop?type=plantas" className={`${isActive("/shop?type=plantas") ? "text-planthia-green" : "hover:text-planthia-green"} transition-colors`}>
             Plantas
           </Link>
-          <Link href="/tienda?type=cuidados" className={`${isActive("/tienda?type=cuidados") ? "text-planthia-green" : "hover:text-planthia-green"} transition-colors`}>
+          <Link href="/shop?type=cuidados" className={`${isActive("/shop?type=cuidados") ? "text-planthia-green" : "hover:text-planthia-green"} transition-colors`}>
             Cuidados
           </Link>
         </div>
@@ -201,8 +201,8 @@ export default function Navbar() {
               <div className="flex flex-col gap-5 text-lg font-bold font-body">
 
                 <Link href="/" className="hover:opacity-80 transition-opacity">Inicio</Link>
-                <Link href="/tienda?type=plantas" className="hover:opacity-80 transition-opacity">Plantas</Link>
-                <Link href="/tienda?type=cuidados" className="hover:opacity-80 transition-opacity">Cuidados</Link>
+                <Link href="/shop?type=plantas" className="hover:opacity-80 transition-opacity">Plantas</Link>
+                <Link href="/shop?type=cuidados" className="hover:opacity-80 transition-opacity">Cuidados</Link>
 
                 <div className="h-px bg-planthia-cream/20 my-2" />
 

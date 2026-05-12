@@ -1,7 +1,7 @@
 "use client";
 
 import CategoryFilters from '@/components/shop/CategoryFilters';
-import HeroTienda from '@/components/shop/HeroTienda';
+import HeroShop from '@/components/shop/HeroShop';
 import Pagination from '@/components/shop/Pagination';
 import ProductGrid from '@/components/shop/ProductGrid';
 import ShopToolbar from '@/components/shop/ShopToolbar';
@@ -10,7 +10,7 @@ import { usePlants } from '@/hooks/usePlants';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 
-const TiendaPage = () => {
+const ShopPage = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
@@ -23,7 +23,7 @@ const TiendaPage = () => {
     if (hasFilters) {
       const type = params.get('type') || 'plantas';
       const category = params.get('category') || 'todas';
-      router.replace(`/tienda?type=${type}&category=${category}`, { scroll: false });
+      router.replace(`/shop?type=${type}&category=${category}`, { scroll: false });
     }
   }, []);
 
@@ -139,7 +139,7 @@ const TiendaPage = () => {
 
   return (
     <div className="min-h-screen bg-cream pt-24 pb-16 ">
-      <HeroTienda />
+      <HeroShop />
       <div className="max-w-[1400px] mx-auto px-6 sm:px-12">
 
         <TypeSelector
@@ -198,4 +198,4 @@ const TiendaPage = () => {
   );
 };
 
-export default TiendaPage;
+export default ShopPage;

@@ -3,10 +3,10 @@ import Image from "next/image";
 import Link from "next/link";
 
 const categories = [
-  { title: "Interior", img: "/interior.webp", link: "/tienda?type=plantas&category=interior" },
-  { title: "Exterior", img: "/exterior-2.webp", link: "/tienda?type=plantas&category=exterior" },
-  { title: "Aromáticas", img: "/aromaticas.webp", link: "/tienda?type=plantas&category=aromaticas" },
-  { title: "Cuidados", img: "/cuidados.webp", link: "/tienda?type=cuidados" },
+  { title: "Interior", img: "/interior.webp", link: "/shop?type=plantas&category=interior" },
+  { title: "Exterior", img: "/exterior-2.webp", link: "/shop?type=plantas&category=exterior" },
+  { title: "Aromáticas", img: "/aromaticas.webp", link: "/shop?type=plantas&category=aromaticas" },
+  { title: "Cuidados", img: "/cuidados.webp", link: "/shop?type=cuidados" },
 ];
 
 export default function Categories() {

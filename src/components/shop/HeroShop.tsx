@@ -3,12 +3,12 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const images = [
-  '/tienda-1.webp',
-  '/tienda-2.webp',
-  '/tienda-3.webp',
+  '/shop-1.webp',
+  '/shop-2.webp',
+  '/shop-3.webp',
 ];
 
-const HeroTienda = () => {
+const HeroShop = () => {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
@@ -53,4 +53,4 @@ const HeroTienda = () => {
   );
 };
 
-export default HeroTienda;
+export default HeroShop;

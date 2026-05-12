@@ -178,14 +178,14 @@ export default function ProductPage() {
         {/* 1. BREADCRUMBS */}
         <nav className="text-[10px] uppercase tracking-[0.2em] text-planthia-dark/60 mb-4 flex flex-wrap gap-x-2">
           <Link
-            href={`/tienda?type=${product.type}`}
+            href={`/shop?type=${product.type}`}
             className="hover:text-planthia-green transition-colors whitespace-nowrap"
           >
             {product.type === 'plantas' ? 'Plantas' : 'Cuidados'}
           </Link>
           <span className="text-planthia-dark/30">/</span>
           <Link
-            href={`/tienda?type=${product.type}&category=${product.subcategory?.name?.toLowerCase() || 'todas'}`}
+            href={`/shop?type=${product.type}&category=${product.subcategory?.name?.toLowerCase() || 'todas'}`}
             className="hover:text-planthia-green transition-colors whitespace-nowrap"
           >
             {product.subcategory?.name || 'Sin categoría'}

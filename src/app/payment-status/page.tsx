@@ -108,7 +108,7 @@ export default function PaymentStatusPage() {
           </button>
 
           <button
-            onClick={() => router.push('/tienda')}
+            onClick={() => router.push('/shop')}
             className="w-full flex items-center justify-center bg-transparent text-planthia-dark font-bold py-4 rounded-full border border-planthia-dark/10 shadow-lg shadow-planthia-dark/5 hover:bg-planthia-dark/5 transition-all"
           >
             <Home className="mr-2 w-4 h-4" />

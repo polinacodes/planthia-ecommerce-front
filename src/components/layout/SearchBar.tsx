@@ -37,7 +37,7 @@ const SearchBar = () => {
     
       params.set('search', text.trim());
       
-      router.push(`/tienda?${params.toString()}`);
+      router.push(`/shop?${params.toString()}`);
       setIsExpanded(false);
     }
   };
@@ -46,7 +46,7 @@ const SearchBar = () => {
     setText('');
     const params = new URLSearchParams(searchParams.toString());
     params.delete('search');
-    router.push(`/tienda?${params.toString()}`);
+    router.push(`/shop?${params.toString()}`);
   };
 
   return (

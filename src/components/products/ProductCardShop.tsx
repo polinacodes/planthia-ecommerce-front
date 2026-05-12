@@ -37,7 +37,7 @@ const ProductCardShop = ({ product }: { product: Product }) => {
     e.stopPropagation();
 
     if (hasVariants) {
-      router.push(`/tienda/${product.id}`);
+      router.push(`/shop/${product.id}`);
     } else {
       const wasAdded = addItem({
         id: product.id,
@@ -61,7 +61,7 @@ const ProductCardShop = ({ product }: { product: Product }) => {
 
       {/* Contenedor de Imagen */}
       <div className="relative aspect-square w-full bg-[#f9f9f9] overflow-hidden group">
-        <Link href={`/tienda/${product.id}`}>
+        <Link href={`/shop/${product.id}`}>
           <Image
             src={product.image}
             alt={product.name}
@@ -83,7 +83,7 @@ const ProductCardShop = ({ product }: { product: Product }) => {
         </button>
 
         <Link
-          href={`/tienda/${product.id}`}
+          href={`/shop/${product.id}`}
           className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 hidden md:flex z-10"
         >
           <div className="bg-[#5B823B]/20 backdrop-blur-sm p-2 rounded-lg text-[#5B823B] hover:bg-planthia-light-green hover:text-white transition-colors">
