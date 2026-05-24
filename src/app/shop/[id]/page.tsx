@@ -337,8 +337,21 @@ export default function ProductPage() {
               {/* BOTÓN FAVORITOS */}
               <button
                 onClick={() => toggleFavorite(product.id)}
-                className="p-2 sm:p-3 lg:p-4 rounded-full cursor-pointer border border-planthia-dark/10 hover:bg-planthia-green hover:text-planthia-cream transition-all group flex-shrink-0">
-                <Heart size={18} strokeWidth={1.5} className="group-hover:fill-current sm:w-5 sm:h-5" />
+                className={`p-2 sm:p-3 lg:p-4 rounded-full cursor-pointer border transition-all duration-300 group flex-shrink-0
+                    ${active
+                    ? "border-planthia-dark/10 bg-transparent hover:bg-planthia-green"
+                    : "border-planthia-dark/10 hover:bg-planthia-green text-planthia-green hover:text-planthia-cream"
+                  }`}
+              >
+                <Heart
+                  size={18}
+                  strokeWidth={1.5}
+                  className={`transition-all duration-300 sm:w-5 sm:h-5
+                      ${active
+                      ? "text-planthia-green fill-planthia-green group-hover:text-planthia-ice"
+                      : "group-hover:fill-current"
+                    }`}
+                />
               </button>
             </div>
           </div>

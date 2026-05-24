@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import Image from 'next/image';
 import { Heart, Plus, Eye } from 'lucide-react';
 import Link from 'next/link';
 import { useCart } from '@/hooks/useCart';
+import { useFavorites } from '@/context/FavoritesContext';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 
@@ -19,9 +20,20 @@ interface Product {
 
 const ProductCardShop = ({ product }: { product: Product }) => {
   const { addItem, cart, openCart } = useCart();
+  const { toggleFavorite, isFavorite } = useFavorites();
   const router = useRouter();
 
   const hasVariants = product.variants && product.variants.length > 0;
+
+  const favoriteActive = useMemo(() => {
+    return isFavorite(Number(product.id));
+  }, [product.id, isFavorite]);
+
+  const handleFavorite = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation(); 
+    await toggleFavorite(Number(product.id));
+  };
 
   const quantityInCart = cart
     .filter((item: any) => String(item.id).startsWith(String(product.id)))
@@ -78,8 +90,20 @@ const ProductCardShop = ({ product }: { product: Product }) => {
         </div> */}
 
         {/* Favorito  */}
-        <button className="absolute top-3 right-3 p-2 bg-white/50 hover:bg-white backdrop-blur-md rounded-full transition-colors text-gray-600 hover:text-[#5B823B]">
-          <Heart size={18} />
+        <button 
+          onClick={handleFavorite}
+          title={favoriteActive ? "Quitar de favoritos" : "Agregar a favoritos"}
+          className="absolute top-3 right-3 p-2 bg-transparent hover:bg-transparent backdrop-blur-md rounded-full transition-all text-planthia-green hover:text-planthia-green z-20"
+        >
+          <Heart 
+            size={18} 
+            strokeWidth={1.5}
+            className={`transition-colors duration-300 sm:w-6 sm:h-6
+              ${favoriteActive 
+                ? 'text-planthia-green fill-planthia-green' 
+                : 'hover:fill-current'
+              }`}
+          />
         </button>
 
         <Link
