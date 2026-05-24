@@ -1,6 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import AuthModal from '@/components/AuthModal';
 
 interface FavoriteItem {
   id: number;
@@ -21,6 +22,7 @@ export const FavoritesProvider = ({ children }: { children: React.ReactNode }) =
   const [favorites, setFavorites] = useState<FavoriteItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [userData, setUserData] = useState<any>(null);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
 
   const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
 
@@ -106,7 +108,7 @@ export const FavoritesProvider = ({ children }: { children: React.ReactNode }) =
   const toggleFavorite = async (productId: number) => {
     const token = localStorage.getItem('token');
     if (!token) {
-      alert('¡Tenés que iniciar sesión para guardar favoritos!');
+      setIsAuthModalOpen(true);
       return;
     }
 
@@ -179,6 +181,7 @@ export const FavoritesProvider = ({ children }: { children: React.ReactNode }) =
   return (
     <FavoritesContext.Provider value={{ favorites, toggleFavorite, isFavorite, loading }}>
       {children}
+      <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
     </FavoritesContext.Provider>
   );
 };

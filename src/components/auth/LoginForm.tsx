@@ -89,7 +89,7 @@ export default function LoginForm() {
       <button
         type="submit"
         disabled={loading}
-        className="w-full mt-4 flex items-center justify-center bg-planthia-dark text-white font-bold py-4 hover:bg-planthia-dark/90 cursor-pointer transition-all shadow-lg disabled:opacity-50"
+        className="w-full mt-4 flex items-center uppercase justify-center bg-planthia-dark text-white font-bold py-4 hover:bg-planthia-dark/90 cursor-pointer transition-all shadow-lg disabled:opacity-50"
       >
         {loading ? 'Iniciando sesión...' : 'Entrar'}
         {!loading && <ArrowRight className="ml-2 w-4 h-4" />}
