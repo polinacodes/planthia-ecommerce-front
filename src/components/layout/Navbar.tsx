@@ -94,11 +94,14 @@ export default function Navbar() {
         <div className="flex items-center gap-4 sm:gap-6 text-planthia-dark">
           <SearchBar />
 
-           <button
-            // onClick={}
-            className="hidden md:block hover:text-planthia-green transition-colors cursor-pointer relative">
-            <Heart size={20} className="sm:w-[22px] sm:h-[22px]" />
-          </button>
+           {user && (
+            <Link
+              href="/wishlist"
+              className="hidden md:block hover:text-planthia-green transition-colors cursor-pointer relative"
+            >
+              <Heart size={20} className="sm:w-[22px] sm:h-[22px]" />
+            </Link>
+          )}
 
 
           <button
@@ -216,12 +219,14 @@ export default function Navbar() {
                   </span>
                 </button>
 
-                <Link href="/wishlist" className="flex items-center gap-4 w-full group">
-                  <div className=" group-hover:bg-white/20 transition-colors">
-                    <Heart size={18} className="fill-current" />
-                  </div>
-                  Favoritos
-                </Link>
+                {user && (
+                  <Link href="/wishlist" className="flex items-center gap-4 w-full group">
+                    <div className=" group-hover:bg-white/20 transition-colors">
+                      <Heart size={18} className="fill-current" />
+                    </div>
+                    Favoritos
+                  </Link>
+                )}
 
                 <div className="h-px bg-planthia-cream/20 my-4" />
 
