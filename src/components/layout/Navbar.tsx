@@ -1,18 +1,22 @@
-//src/components/layout/Navbar.tsx
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useSearchParams } from "next/navigation";
-import { ShoppingCart, User, LogOut, Settings, Menu, X, Heart } from "lucide-react";
+import { ShoppingCart, User, LogOut, Settings, Menu, X, Heart, Trash2 } from "lucide-react";
 import SearchBar from "./SearchBar";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from '@/hooks/useCart';
+import { useFavorites } from '@/context/FavoritesContext';
+import { usePlants } from '@/hooks/usePlants';
 import { getToken, getUser, removeToken, removeUser, UserData } from "@/lib/auth";
+import { toast } from "sonner";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [isWishlistMenuOpen, setIsWishlistMenuOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [user, setUser] = useState<UserData | null>(null);
 
@@ -21,6 +25,15 @@ export default function Navbar() {
   const cart = useCart((state) => state.cart);
   const toggleCart = useCart((state) => state.toggleCart);
   const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
+
+  const { favorites, toggleFavorite } = useFavorites();
+  const { plants } = usePlants();
+
+  const previewFavorites = useMemo(() => {
+    if (!plants || !favorites || !user) return [];
+    const favoriteIds = new Set(favorites.map(fav => Number(fav.productId)));
+    return plants.filter((plant) => favoriteIds.has(Number(plant.id)));
+  }, [plants, favorites, user]);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -51,6 +64,13 @@ export default function Navbar() {
     window.location.href = "/";
   };
 
+  const handleRemoveFavorite = async (id: number, name: string, e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    await toggleFavorite(id);
+    toast.error(`${name} eliminada de favoritos`);
+  };
+
   const isActive = (href: string) => {
     if (href === "/") return pathname === "/";
     if (href === "/shop?type=plantas") return pathname === "/shop" && searchParams.get("type") === "plantas";
@@ -66,7 +86,7 @@ export default function Navbar() {
           : "bg-transparent"
           }`}
       >
-        <div className="max-w-[1600px] mx-auto flex items-center justify-between px-6 sm:px-12 py-6">
+        <div className="max-w-[1600px] mx-auto flex items-center justify-between px-6 sm:px-12 py-4">
         <div className="flex items-center">
           <button
             onClick={() => setIsMobileMenuOpen(true)}
@@ -94,15 +114,96 @@ export default function Navbar() {
         <div className="flex items-center gap-4 sm:gap-6 text-planthia-dark">
           <SearchBar />
 
-           {user && (
-            <Link
-              href="/wishlist"
-              className="hidden md:block hover:text-planthia-green transition-colors cursor-pointer relative"
+          {/*  DROPDOWN DE FAVORITOS (DESKTOP) */}
+          {user && (
+            <div 
+              className="relative hidden md:block"
+              onMouseEnter={() => setIsWishlistMenuOpen(true)}
+              onMouseLeave={() => setIsWishlistMenuOpen(false)}
             >
-              <Heart size={20} className="sm:w-[22px] sm:h-[22px]" />
-            </Link>
-          )}
+              <button
+                type="button"
+                className="hover:text-planthia-green transition-colors cursor-pointer block p-1 relative"
+              >
+                <Heart size={20} className="sm:w-[22px] sm:h-[22px]" />
+                {previewFavorites.length > 0 && (
+                  <span className="absolute top-0 right-0 bg-planthia-green w-2 h-2 rounded-full" />
+                )}
+              </button>
 
+              <AnimatePresence>
+                {isWishlistMenuOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, scaleY: 0.95 }}
+                    animate={{ opacity: 1, scaleY: 1 }}
+                    exit={{ opacity: 0, scaleY: 0.95 }}
+                    transition={{ duration: 0.15, ease: "easeOut" }}
+                    style={{
+                      backdropFilter: 'blur(16px)',
+                      WebkitBackdropFilter: 'blur(16px)',
+                      transformOrigin: 'top'
+                    }}
+                    // className="absolute right-[-4rem] top-[3.7rem] w-80 bg-planthia-cream/90 shadow-xl rounded-b-xl border-x border-b border-planthia-dark/10 p-4 z-40 origin-top"
+                    className="absolute right-[-4rem] top-[3rem] mt-3 w-80 bg-planthia-cream/90 shadow-xl rounded-xl border border-white/20 p-4 z-40 origin-top before:content-[''] before:absolute before:bottom-full before:right-[4.45rem] before:border-[8px] before:border-transparent before:border-b-planthia-cream/90"
+                  >
+                    {previewFavorites.length === 0 ? (
+                      <div className="py-6 text-center text-sm text-planthia-dark/60 italic font-body">
+                        Tu lista está vacía 
+                      </div>
+                    ) : (
+                      <>
+                        {/* Contenedor scrolleable ajustado para ~6 elementos */}
+                        <div className="max-h-[340px] overflow-y-auto pr-1 space-y-3 scrollbar-thin scrollbar-thumb-planthia-green/20">
+                          {previewFavorites.map((product) => (
+                            <div key={product.id} className="flex items-center gap-3 bg-white/40 p-2 rounded-lg border border-planthia-dark/5 group/item">
+                              <Link href={`/shop/${product.id}`} className="relative w-12 h-12 rounded-md overflow-hidden bg-white/80 flex-shrink-0">
+                                <Image 
+                                  src={product.image} 
+                                  alt={product.name} 
+                                  fill 
+                                  className="object-cover"
+                                />
+                              </Link>
+                              
+                              <div className="flex-1 min-w-0">
+                                <Link href={`/shop/${product.id}`} className="block">
+                                  <h4 className="text-xs font-bold text-planthia-dark hover:text-planthia-green transition-colors truncate">
+                                    {product.name}
+                                  </h4>
+                                </Link>
+                                <span className="text-xs font-extrabold text-[#5B823B] block mt-0.5">
+                                  ${product.price.toLocaleString('es-AR')}
+                                </span>
+                              </div>
+
+                              <button
+                                onClick={(e) => handleRemoveFavorite(Number(product.id), product.name, e)}
+                                className="p-1.5 text-gray-400 hover:text-rose-600 hover:bg-rose-50 rounded-md transition-all flex-shrink-0"
+                                title="Eliminar"
+                              >
+                                <Trash2 size={14} />
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+
+                        {/* Botón Ver Todos */}
+                        <div className="border-t border-planthia-dark/10 mt-3 pt-3">
+                          <Link 
+                            href="/wishlist"
+                            onClick={() => setIsWishlistMenuOpen(false)}
+                            className="block text-center w-full bg-planthia-green hover:bg-planthia-dark text-white py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-colors"
+                          >
+                            Ver todos
+                          </Link>
+                        </div>
+                      </>
+                    )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          )}
 
           <button
             onClick={toggleCart}
@@ -148,7 +249,8 @@ export default function Navbar() {
                         WebkitBackdropFilter: 'blur(16px)',
                         transformOrigin: 'top'
                       }}
-                      className="absolute right-[-3rem] top-[3.7rem] w-44 bg-planthia-cream/70 shadow-xl rounded-b-xl rounded-t-none p-2 z-40 border-x border-b border-white/20 origin-top-right"
+                      // className="absolute right-[-3rem] top-[3.7rem] w-44 bg-planthia-cream/90 shadow-xl rounded-b-xl rounded-t-none p-2 z-40 border-x border-b border-white/20 origin-top-right"
+                      className="absolute right-[-3rem] top-[3rem] mt-3 w-44 bg-planthia-cream/90 shadow-xl rounded-xl p-2 z-40 border border-white/20 origin-top-right before:content-[''] before:absolute before:bottom-full before:right-[3.35rem] before:border-[8px] before:border-transparent before:border-b-planthia-cream/90"
                     >
                       <div className="p-2 space-y-1">
                         <Link
