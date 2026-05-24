@@ -53,7 +53,7 @@ const Footer = () => {
 
             {/* Web */}
             <a
-              href="https://polinacodes.vercel.app/"
+              href="https://polinacodes.dev/"
               target="_blank"
               rel="noopener noreferrer"
               className="p-2 bg-white/10 rounded-full hover:bg-[#C1D37F] hover:text-[#5B823B] transition-all"
@@ -64,7 +64,7 @@ const Footer = () => {
 
             {/* LinkedIn */}
             <a
-              href="https://www.linkedin.com/in/paola-lizarriba/"
+              href="https://www.linkedin.com/in/polinacodes/"
               target="_blank"
               rel="noopener noreferrer"
               className="p-2 bg-white/10 rounded-full hover:bg-[#C1D37F] hover:text-[#5B823B] transition-all"

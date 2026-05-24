@@ -1,11 +1,12 @@
 "use client";
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Eye, Heart } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useCart } from '@/hooks/useCart';
+import { useFavorites } from '@/context/FavoritesContext';
 import { toast } from 'sonner';
 
 interface ProductCardProps {
@@ -16,10 +17,15 @@ interface ProductCardProps {
 
 const ProductCard = ({ plant, isActive, onClick }: ProductCardProps) => {
   const { addItem, openCart, cart } = useCart();
+  const { toggleFavorite, isFavorite } = useFavorites();
 
-  const handleFavorite = (e: React.MouseEvent) => {
+  const favoriteActive = useMemo(() => {
+    return isFavorite(plant.id);
+  }, [plant.id, isFavorite]);
+
+  const handleFavorite = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    console.log("Future: Add to favorites logic for", plant.id);
+   await toggleFavorite(plant.id);
   };
 
   const cartItem = cart.find((item: any) => String(item.id).startsWith(String(plant.id)));
@@ -68,13 +74,18 @@ const ProductCard = ({ plant, isActive, onClick }: ProductCardProps) => {
       {/* Icono Favorito */}
       <motion.button
         onClick={handleFavorite}
-        title="Próximamente: Agregar a favoritos"
+        title={favoriteActive ? "Quitar de favoritos" : "Agregar a favoritos"}
         className="absolute top-3 right-3 sm:top-4 sm:right-4 z-30"
         whileHover={{ scale: 1.15 }}
         whileTap={{ scale: 0.9 }}
       >
         <Heart
-          className={`w-5 h-5 sm:w-6 sm:h-6 transition-colors ${isActive ? 'text-white/70 hover:text-white' : 'text-gray-300 hover:text-[#588534]'
+          className={`w-5 h-5 sm:w-6 sm:h-6 transition-all duration-300 ${
+            favoriteActive
+              ? 'text-planthia-green fill-current drop-shadow-sm' 
+              : isActive 
+                ? 'text-white/70 hover:text-white' 
+                : 'text-gray-300 hover:text-[#588534]'
             }`}
         />
       </motion.button>

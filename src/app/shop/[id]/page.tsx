@@ -10,6 +10,7 @@ import Link from 'next/link'
 import ProductCardShop from '@/components/products/ProductCardShop';
 import EmptyState from '@/components/products/EmptyState';
 import { useCart } from '@/hooks/useCart';
+import { useFavorites } from '@/context/FavoritesContext';
 import { toast } from 'sonner';
 
 // --- SUB-COMPONENTES AUXILIARES ---
@@ -28,7 +29,7 @@ export default function ProductPage() {
   const id = params.id;
   const { plants, loading } = usePlants();
   const { addItem, cart, removeItem, updateQuantity } = useCart();
-
+  const { toggleFavorite, isFavorite } = useFavorites();
   const [selectedImage, setSelectedImage] = useState<string>("");
   const [selectedVariant, setSelectedVariant] = useState<any>(null);
   const [productsToShow, setProductsToShow] = useState(3);
@@ -37,6 +38,11 @@ export default function ProductPage() {
     if (!plants) return undefined;
     return plants.find((p) => p.id.toString() === id?.toString());
   }, [plants, id]);
+
+  const active = useMemo(() => {
+    if (!product) return false;
+    return isFavorite(product.id);
+  }, [product, isFavorite]);
 
   const stockDisponible = useMemo(() => {
     if (!product) return 0;
@@ -329,7 +335,9 @@ export default function ProductPage() {
               </div>
 
               {/* BOTÓN FAVORITOS */}
-              <button className="p-2 sm:p-3 lg:p-4 rounded-full cursor-pointer border border-planthia-dark/10 hover:bg-planthia-green hover:text-planthia-cream transition-all group flex-shrink-0">
+              <button
+                onClick={() => toggleFavorite(product.id)}
+                className="p-2 sm:p-3 lg:p-4 rounded-full cursor-pointer border border-planthia-dark/10 hover:bg-planthia-green hover:text-planthia-cream transition-all group flex-shrink-0">
                 <Heart size={18} strokeWidth={1.5} className="group-hover:fill-current sm:w-5 sm:h-5" />
               </button>
             </div>
