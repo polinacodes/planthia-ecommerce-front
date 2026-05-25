@@ -1,143 +1,402 @@
-// app/account/page.tsx
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { User, Package, LogOut, ArrowLeft } from 'lucide-react';
-import { toast } from 'sonner';
-import { getToken, removeToken } from '@/lib/auth';
+import { useState, useEffect } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import {
+  Package,
+  User,
+  MapPin,
+  Heart,
+  LogOut,
+  Pencil,
+  Truck,
+  CheckCircle2
+} from 'lucide-react';
+
+interface OrderItem {
+  id: number;
+  name: string;
+  price: number;
+  quantity: number;
+  image: string;
+}
+
+interface OrderData {
+  id: number;
+  total: number;
+  subtotal: number;
+  shipping_cost: number;
+  order_status: 'pending' | 'paid' | 'shipped' | 'delivered' | 'failure';
+  items: OrderItem[];
+  payment_id: string;
+  payment_method: string;
+  createdAt: string;
+}
 
 interface UserData {
   id: number;
   username: string;
   email: string;
-  first_name?: string;
-  last_name?: string;
-  phone?: string;
-  address?: string;
-  city?: string;
+  confirmed: boolean;
+  blocked: boolean;
+  createdAt: string;
+  first_name: string | null;
+  last_name: string | null;
+  phone: string | null;
+  address: string | null;
+  city: string | null;
+  zip_code: string | null;
+  orders?: OrderData[];
+  favorites?: any[];
 }
 
+const statusConfig = {
+  pending: { label: 'Pendiente', styles: 'bg-amber-100 text-amber-800' },
+  paid: { label: 'Pagado', styles: 'bg-blue-100 text-blue-800' },
+  shipped: { label: 'En camino', styles: 'bg-planthia-light-green/20 text-planthia-green' },
+  delivered: { label: 'Entregado', styles: 'bg-planthia-dark/5 text-planthia-dark/70' },
+  failure: { label: 'Fallido', styles: 'bg-red-100 text-red-600' },
+};
+
 export default function AccountPage() {
+  const [activeTab, setActiveTab] = useState('orders');
   const [user, setUser] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);
-  const router = useRouter();
 
   useEffect(() => {
-    const token = getToken();
-    const storedUser = localStorage.getItem('user');
+    const fetchUserData = async () => {
+      const token = localStorage.getItem('token');
 
-    if (!token || !storedUser) {
-      router.push('/login');
-      return;
-    }
+      if (!token) {
+        window.location.href = '/';
+        return;
+      }
 
-    try {
-      setUser(JSON.parse(storedUser));
-    } catch {
-      removeToken();
-      localStorage.removeItem('user');
-      router.push('/login');
-      return;
-    } finally {
-      setLoading(false);
-    }
-  }, [router]);
+      try {
+        const userResponse = await fetch('http://localhost:1337/api/users/me', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
 
-  const handleLogout = () => {
-    removeToken();
-    localStorage.removeItem('user');
-    toast.success('Sesión cerrada correctamente');
-    router.push('/');
-  };
+        if (!userResponse.ok) {
+          localStorage.removeItem('token');
+          window.location.href = '/';
+          return;
+        }
+
+        const userData = await userResponse.json();
+
+        // Endpoint personalizado que solo devuelve las órdenes del usuario autenticado
+        const ordersResponse = await fetch('http://localhost:1337/api/orders/my-orders', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (ordersResponse.ok) {
+          const ordersJson = await ordersResponse.json();
+          
+          // En Strapi 5, el controlador devuelve { data: [...] }
+          setUser({
+            ...userData,
+            orders: ordersJson.data || []
+          });
+        } else {
+          setUser({ ...userData, orders: [] });
+        }
+
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   if (loading) {
     return (
-      <main className="min-h-screen bg-planthia-cream/30 flex items-center justify-center">
-        <p className="text-planthia-dark/40">Cargando...</p>
-      </main>
+      <div className="min-h-screen bg-planthia-cream flex items-center justify-center">
+        <div className="w-8 h-8 border-4 border-planthia-green border-t-transparent rounded-full animate-spin"></div>
+      </div>
     );
   }
 
-  if (!user) {
-    return null; 
-  }
+  if (!user) return null;
+
+  const memberSince = new Date(user.createdAt).toLocaleDateString('es-ES', {
+    month: 'long',
+    year: 'numeric',
+  });
 
   return (
-    <main className="min-h-screen bg-planthia-cream/30 font-body text-planthia-dark p-6">
-      <div className="max-w-4xl mx-auto pt-12">
-        {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-          <div>
-            <button
-              onClick={() => router.push('/')}
-              className="flex items-center text-planthia-dark/40 hover:text-planthia-green transition-colors mb-4 text-sm font-bold uppercase tracking-widest"
-            >
-              <ArrowLeft className="mr-2 w-4 h-4" /> Volver a la tienda
-            </button>
-            <h1 className="text-4xl font-headline font-extrabold text-planthia-dark">
-              Hola, {user.first_name || user.username} 🌱
-            </h1>
-          </div>
+    <main className="pt-32 pb-24 px-6 md:px-12 max-w-[1440px] mx-auto min-h-screen bg-planthia-cream text-planthia-dark">
 
-          <button
-            onClick={handleLogout}
-            className="flex items-center text-red-500/70 hover:text-red-500 font-bold text-sm uppercase tracking-wider transition-colors"
-          >
-            Cerrar sesión <LogOut className="ml-2 w-4 h-4" />
+      {/* Profile Header */}
+      <div className="flex flex-col md:flex-row items-center gap-8 mb-16 animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <div className="relative group">
+          <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-planthia-ice shadow-sm relative bg-planthia-light-green/10 flex items-center justify-center">
+            <User
+              size={64} 
+              className="text-planthia-green opacity-40" 
+              strokeWidth={1.5} 
+            />
+          </div>
+          <button className="absolute bottom-0 right-0 bg-planthia-green text-planthia-ice p-2 rounded-full shadow-lg hover:scale-110 transition-transform flex items-center justify-center">
+            <Pencil size={16} />
           </button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Perfil */}
-          <div className="md:col-span-1 space-y-6">
-            <div className="bg-white rounded-3xl p-8 shadow-sm border border-planthia-dark/5">
-              <div className="bg-planthia-green/10 w-12 h-12 rounded-2xl flex items-center justify-center mb-4">
-                <User className="text-planthia-green w-6 h-6" />
-              </div>
-              <h2 className="font-headline font-bold text-xl mb-4">Tu Perfil</h2>
-              <div className="space-y-3">
-                <div>
-                  <p className="text-[10px] uppercase font-bold text-planthia-dark/30">Email</p>
-                  <p className="text-sm font-medium">{user.email}</p>
-                </div>
-                {user.phone && (
-                  <div>
-                    <p className="text-[10px] uppercase font-bold text-planthia-dark/30">Teléfono</p>
-                    <p className="text-sm font-medium">{user.phone}</p>
-                  </div>
-                )}
-                {(user.address || user.city) && (
-                  <div>
-                    <p className="text-[10px] uppercase font-bold text-planthia-dark/30">Dirección</p>
-                    <p className="text-sm font-medium">
-                      {[user.address, user.city].filter(Boolean).join(', ')}
-                    </p>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* Órdenes */}
-          <div className="md:col-span-2">
-            <div className="bg-white rounded-3xl p-8 shadow-sm border border-planthia-dark/5 min-h-[400px] flex flex-col items-center justify-center text-center">
-              <div className="bg-planthia-cream w-16 h-16 rounded-full flex items-center justify-center mb-6">
-                <Package className="text-planthia-dark/20 w-8 h-8" />
-              </div>
-              <h2 className="font-headline font-bold text-2xl mb-2">Tus pedidos</h2>
-              <p className="text-planthia-dark/50 max-w-xs mx-auto">
-                Próximamente vas a poder ver el historial detallado de tus compras y seguir tus envíos acá.
-              </p>
-
-              <div className="mt-8 pt-8 border-t border-planthia-dark/5 w-full">
-                <p className="text-[10px] uppercase font-bold text-planthia-green tracking-widest">
-                  Estamos trabajando en esta sección
-                </p>
-              </div>
-            </div>
-          </div>
+        <div className="text-center md:text-left">
+          <h1 className="font-headline font-extrabold text-4xl tracking-tight text-planthia-dark capitalize">
+            Hola, {user.first_name || user.username}
+          </h1>
+          <p className="text-planthia-dark/60 mt-2 font-body italic text-sm">
+            Miembro desde {memberSince} • {user.favorites && user.favorites.length > 0
+              ? `Cuidadora de ${user.favorites.length} ${user.favorites.length === 1 ? 'planta' : 'plantas'} favoritas`
+              : 'Explorando la tienda'}
+          </p>
         </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        {/* Sidebar Navigation */}
+        <aside className="lg:col-span-3">
+          <nav className="space-y-2 flex flex-col">
+            <button
+              onClick={() => setActiveTab('orders')}
+              className={`flex items-center gap-4 px-6 py-4 rounded-xl font-bold transition-all duration-300 group ${activeTab === 'orders'
+                ? 'text-planthia-green bg-planthia-light-green/10'
+                : 'text-planthia-dark/70 hover:bg-planthia-ice/50'
+                }`}
+            >
+              <Package size={20} className="group-hover:scale-110 transition-transform" />
+              <span className="font-headline tracking-wide text-sm">Mis Pedidos</span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab('profile')}
+              className={`flex items-center gap-4 px-6 py-4 rounded-xl font-bold transition-all duration-300 group ${activeTab === 'profile'
+                ? 'text-planthia-green bg-planthia-light-green/10'
+                : 'text-planthia-dark/70 hover:bg-planthia-ice/50'
+                }`}
+            >
+              <User size={20} className="group-hover:scale-110 transition-transform" />
+              <span className="font-headline tracking-wide text-sm">Información Personal</span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab('addresses')}
+              className={`flex items-center gap-4 px-6 py-4 rounded-xl font-bold transition-all duration-300 group ${activeTab === 'addresses'
+                ? 'text-planthia-green bg-planthia-light-green/10'
+                : 'text-planthia-dark/70 hover:bg-planthia-ice/50'
+                }`}
+            >
+              <MapPin size={20} className="group-hover:scale-110 transition-transform" />
+              <span className="font-headline tracking-wide text-sm">Direcciones</span>
+            </button>
+
+            <Link
+              href="/wishlist"
+              className="flex items-center gap-4 px-6 py-4 rounded-xl font-bold text-planthia-dark/70 hover:bg-planthia-ice/50 transition-all duration-300 group"
+            >
+              <Heart size={20} className="group-hover:scale-110 transition-transform" />
+              <span className="font-headline tracking-wide text-sm">Favoritos</span>
+            </Link>
+
+            <div className="pt-8 mt-8 border-t border-planthia-dark/10">
+              {/* <button
+                onClick={handleLogout}
+                className="flex items-center gap-4 px-6 py-4 rounded-xl text-red-600 hover:bg-red-50 transition-all duration-300 group w-full text-left font-bold"
+              >
+                <LogOut size={20} className="group-hover:translate-x-1 transition-transform" />
+                <span className="font-headline tracking-wide text-sm">Cerrar Sesión</span>
+              </button> */}
+            </div>
+          </nav>
+        </aside>
+
+        {/* Main Content Area */}
+        <section className="lg:col-span-9 space-y-8">
+          {activeTab === 'orders' && (
+            <>
+              <div className="flex items-center justify-between mb-2">
+                <h2 className="font-headline font-bold text-2xl tracking-tight text-planthia-dark">
+                  Mis Pedidos Recientes
+                </h2>
+                {user.orders && user.orders.length > 0 && (
+                  <button className="text-planthia-green font-bold text-sm hover:underline transition-all">
+                    Ver todo el historial
+                  </button>
+                )}
+              </div>
+
+              {!user.orders || user.orders.length === 0 ? (
+                <div className="bg-planthia-ice/40 border border-dashed border-planthia-dark/10 rounded-3xl p-12 text-center">
+                  <p className="text-planthia-dark/60 font-body mb-4">
+                    Aún no has realizado ningún pedido en Planthia.
+                  </p>
+                  <Link 
+                    href="/shop" 
+                    className="inline-block bg-planthia-green text-planthia-ice px-6 py-3 rounded-full font-bold text-sm hover:bg-planthia-light-green transition-all shadow-sm"
+                  >
+                    Explorar Colección
+                  </Link>
+                </div>
+              ) : (
+                <div className="grid gap-6">
+                  {user.orders
+                    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+                    .map((order) => {
+                      const itemsArray = Array.isArray(order.items) ? order.items : [];
+                      const firstItem = itemsArray[0];
+                      const extraItemsCount = itemsArray.length - 1;
+                      const currentStatus = statusConfig[order.order_status] || statusConfig.pending;
+
+                      return (
+                        <div 
+                          key={order.id} 
+                          className="group relative bg-planthia-ice/60 backdrop-blur-md rounded-3xl p-8 transition-all duration-500 hover:bg-planthia-ice border border-planthia-dark/5 shadow-sm"
+                        >
+                          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                            <div className="flex gap-6 items-center">
+                              <div className="relative w-24 h-24 rounded-2xl overflow-hidden bg-planthia-cream flex-shrink-0">
+                                <Image 
+                                  alt={firstItem?.name || "Producto Planthia"} 
+                                  src={firstItem?.image || "/products/placeholder.webp"} 
+                                  fill
+                                  className="object-cover group-hover:scale-110 transition-transform duration-700"
+                                />
+                                {extraItemsCount > 0 && (
+                                  <div className="absolute top-1 right-1 bg-white/80 backdrop-blur-md rounded-lg px-2 py-1 text-[10px] font-bold text-planthia-green shadow-sm">
+                                    +{extraItemsCount}
+                                  </div>
+                                )}
+                              </div>
+                              <div>
+                                <p className="text-[10px] font-bold uppercase tracking-widest text-planthia-dark/40 mb-1">
+                                  Pedido #PL-{order.payment_id ? order.payment_id.slice(-4).toUpperCase() : order.id}
+                                </p>
+                                <h4 className="font-headline text-lg font-bold text-planthia-dark">
+                                  {firstItem?.name || "Pedido Especial"} {extraItemsCount > 0 ? '& Colección' : ''}
+                                </h4>
+                                <p className="text-sm text-planthia-dark/60">
+                                  Realizado el {new Date(order.createdAt).toLocaleDateString('es-ES', {
+                                    day: 'numeric',
+                                    month: 'long',
+                                    year: 'numeric'
+                                  })}
+                                </p>
+                              </div>
+                            </div>
+                            
+                            <div className="flex flex-row md:flex-col items-center md:items-end justify-between gap-2">
+                              <span className={`px-4 py-1.5 rounded-full text-xs font-bold flex items-center gap-2 ${currentStatus.styles}`}>
+                                {order.order_status === 'shipped' && <span className="w-2 h-2 bg-planthia-green rounded-full animate-pulse"></span>}
+                                {order.order_status === 'delivered' && <CheckCircle2 size={14} className="text-planthia-green" />}
+                                {currentStatus.label}
+                              </span>
+                              <p className="font-headline font-extrabold text-xl text-planthia-dark">
+                                {Number(order.total).toFixed(2)}€
+                              </p>
+                            </div>
+                          </div>
+
+                          <div className="mt-6 flex gap-4">
+                            {order.order_status === 'shipped' ? (
+                              <button className="w-full py-4 border border-planthia-dark/10 rounded-xl font-bold text-sm bg-planthia-ice hover:bg-planthia-cream transition-colors flex items-center justify-center gap-2 text-planthia-dark shadow-sm">
+                                Rastrear paquete
+                                <Truck size={16} />
+                              </button>
+                            ) : (
+                              <>
+                                <button className="flex-1 py-4 bg-planthia-cream rounded-xl font-bold text-sm hover:bg-planthia-dark/5 transition-colors text-planthia-dark">
+                                  Detalles del pedido
+                                </button>
+                                <button className="flex-1 py-4 bg-planthia-green text-planthia-ice rounded-xl font-bold text-sm hover:bg-planthia-light-green transition-all shadow-sm">
+                                  Comprar de nuevo
+                                </button>
+                              </>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
+                </div>
+              )}
+
+              {/* Recommendation Section */}
+              <div className="mt-16 pt-16 border-t border-planthia-dark/10">
+                <h3 className="font-headline font-bold text-xl mb-8 text-planthia-dark">
+                  Basado en tu última compra
+                </h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                  <div className="relative group cursor-pointer">
+                    <div className="aspect-[4/5] rounded-[2rem] overflow-hidden bg-planthia-ice relative mb-6 border border-planthia-dark/5">
+                      <Image
+                        alt="Fiddle Leaf Fig"
+                        src="/products/ficus.webp"
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-700"
+                      />
+                      <div className="absolute top-6 left-6 bg-white/80 backdrop-blur-md px-4 py-2 rounded-full text-[10px] font-bold text-planthia-green shadow-sm tracking-wider">
+                        NUEVO
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-start px-2">
+                      <div>
+                        <h5 className="font-headline font-bold text-lg text-planthia-dark">Ficus Lyrata 'Premium'</h5>
+                        <p className="text-sm text-planthia-dark/60">Fácil cuidado • Purificador</p>
+                      </div>
+                      <span className="font-headline font-extrabold text-lg text-planthia-dark">65,00€</span>
+                    </div>
+                  </div>
+                  <div className="relative group cursor-pointer">
+                    <div className="aspect-[4/5] rounded-[2rem] overflow-hidden bg-planthia-ice relative mb-6 border border-planthia-dark/5">
+                      <Image
+                        alt="Calathea Ornata"
+                        src="/products/calathea.webp"
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-700"
+                      />
+                      <div className="absolute top-6 left-6 bg-white/80 backdrop-blur-md px-4 py-2 rounded-full text-[10px] font-bold text-planthia-green shadow-sm tracking-wider">
+                        MÁS BUSCADO
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-start px-2">
+                      <div>
+                        <h5 className="font-headline font-bold text-lg text-planthia-dark">Calathea Ornata</h5>
+                        <p className="text-sm text-planthia-dark/60">Luz indirecta • Pet friendly</p>
+                      </div>
+                      <span className="font-headline font-extrabold text-lg text-planthia-dark">34,00€</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+
+          {activeTab === 'profile' && (
+            <div className="bg-planthia-ice rounded-3xl p-8 border border-planthia-dark/5">
+              <h2 className="font-headline font-bold text-2xl mb-4">Información Personal</h2>
+              <p className="text-sm text-planthia-dark/60">Sección en desarrollo para editar datos de la cuenta.</p>
+            </div>
+          )}
+
+          {activeTab === 'addresses' && (
+            <div className="bg-planthia-ice rounded-3xl p-8 border border-planthia-dark/5">
+              <h2 className="font-headline font-bold text-2xl mb-4">Mis Direcciones</h2>
+              <p className="text-sm text-planthia-dark/60">Sección en desarrollo para gestionar direcciones de envío.</p>
+            </div>
+          )}
+        </section>
       </div>
     </main>
   );
