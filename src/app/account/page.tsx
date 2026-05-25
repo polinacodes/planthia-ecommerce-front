@@ -1,8 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
+import { usePlants } from '@/hooks/usePlants';
 import Image from 'next/image';
 import Link from 'next/link';
+import ProductCardShop from '@/components/products/ProductCardShop';
 import {
   Package,
   User,
@@ -20,6 +22,7 @@ interface OrderItem {
   price: number;
   quantity: number;
   image: string;
+  productId?: string
 }
 
 interface OrderData {
@@ -63,6 +66,9 @@ export default function AccountPage() {
   const [activeTab, setActiveTab] = useState('orders');
   const [user, setUser] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [productsToShow, setProductsToShow] = useState(4);
+
+  const { plants, loading: plantsLoading } = usePlants();
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -90,7 +96,6 @@ export default function AccountPage() {
 
         const userData = await userResponse.json();
 
-        // Endpoint personalizado que solo devuelve las órdenes del usuario autenticado
         const ordersResponse = await fetch('http://localhost:1337/api/orders/my-orders', {
           method: 'GET',
           headers: {
@@ -101,8 +106,6 @@ export default function AccountPage() {
 
         if (ordersResponse.ok) {
           const ordersJson = await ordersResponse.json();
-          
-          // En Strapi 5, el controlador devuelve { data: [...] }
           setUser({
             ...userData,
             orders: ordersJson.data || []
@@ -120,6 +123,60 @@ export default function AccountPage() {
 
     fetchUserData();
   }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+      if (width < 768) setProductsToShow(4);        
+      else if (width < 1280) setProductsToShow(3);  
+      else setProductsToShow(4);                    
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const recommendedProducts = useMemo(() => {
+    if (!plants || plants.length === 0) return [];
+
+    if (!user?.orders || user.orders.length === 0) {
+      return plants.slice(0, 4);
+    }
+
+    try {
+      const sortedOrders = [...user.orders].sort(
+        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+
+      const latestOrder = sortedOrders[0];
+      const itemsArray = Array.isArray(latestOrder.items) ? latestOrder.items : [];
+
+      if (itemsArray.length === 0) return plants.slice(0, 4);
+
+      const lastPurchasedId = (itemsArray[0].productId || itemsArray[0].id || '').toString().split('-')[0];
+      const lastPurchasedPlant = plants.find(p => p.id.toString() === lastPurchasedId);
+
+      if (!lastPurchasedPlant || !lastPurchasedPlant.subcategory) {
+        return plants.slice(0, 4);
+      }
+
+      const currentSub = lastPurchasedPlant.subcategory.name;
+
+      const filtered = plants.filter(
+        p => p.subcategory?.name === currentSub && p.id.toString() !== lastPurchasedId
+      );
+
+      if (filtered.length < 4) {
+        const extra = plants.filter(p => p.id.toString() !== lastPurchasedId && p.subcategory?.name !== currentSub);
+        return [...filtered, ...extra].slice(0, 4);
+      }
+
+      return filtered.slice(0, 4);
+    } catch (error) {
+      console.error("Error calculando recomendados:", error);
+      return plants.slice(0, 4);
+    }
+  }, [user?.orders, plants]);
 
   if (loading) {
     return (
@@ -144,9 +201,9 @@ export default function AccountPage() {
         <div className="relative group">
           <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-planthia-ice shadow-sm relative bg-planthia-light-green/10 flex items-center justify-center">
             <User
-              size={64} 
-              className="text-planthia-green opacity-40" 
-              strokeWidth={1.5} 
+              size={64}
+              className="text-planthia-green opacity-40"
+              strokeWidth={1.5}
             />
           </div>
           <button className="absolute bottom-0 right-0 bg-planthia-green text-planthia-ice p-2 rounded-full shadow-lg hover:scale-110 transition-transform flex items-center justify-center">
@@ -172,7 +229,7 @@ export default function AccountPage() {
           <nav className="space-y-2 flex flex-col">
             <button
               onClick={() => setActiveTab('orders')}
-              className={`flex items-center gap-4 px-6 py-4 rounded-xl font-bold transition-all duration-300 group ${activeTab === 'orders'
+              className={`flex items-center gap-4 px-6 py-4 rounded-xl cursor-pointer font-bold transition-all duration-300 group ${activeTab === 'orders' 
                 ? 'text-planthia-green bg-planthia-light-green/10'
                 : 'text-planthia-dark/70 hover:bg-planthia-ice/50'
                 }`}
@@ -183,7 +240,7 @@ export default function AccountPage() {
 
             <button
               onClick={() => setActiveTab('profile')}
-              className={`flex items-center gap-4 px-6 py-4 rounded-xl font-bold transition-all duration-300 group ${activeTab === 'profile'
+              className={`flex items-center gap-4 px-6 py-4 rounded-xl cursor-pointer font-bold transition-all duration-300 group ${activeTab === 'profile'
                 ? 'text-planthia-green bg-planthia-light-green/10'
                 : 'text-planthia-dark/70 hover:bg-planthia-ice/50'
                 }`}
@@ -194,7 +251,7 @@ export default function AccountPage() {
 
             <button
               onClick={() => setActiveTab('addresses')}
-              className={`flex items-center gap-4 px-6 py-4 rounded-xl font-bold transition-all duration-300 group ${activeTab === 'addresses'
+              className={`flex items-center gap-4 px-6 py-4 rounded-xl cursor-pointer font-bold transition-all duration-300 group ${activeTab === 'addresses'
                 ? 'text-planthia-green bg-planthia-light-green/10'
                 : 'text-planthia-dark/70 hover:bg-planthia-ice/50'
                 }`}
@@ -210,16 +267,6 @@ export default function AccountPage() {
               <Heart size={20} className="group-hover:scale-110 transition-transform" />
               <span className="font-headline tracking-wide text-sm">Favoritos</span>
             </Link>
-
-            <div className="pt-8 mt-8 border-t border-planthia-dark/10">
-              {/* <button
-                onClick={handleLogout}
-                className="flex items-center gap-4 px-6 py-4 rounded-xl text-red-600 hover:bg-red-50 transition-all duration-300 group w-full text-left font-bold"
-              >
-                <LogOut size={20} className="group-hover:translate-x-1 transition-transform" />
-                <span className="font-headline tracking-wide text-sm">Cerrar Sesión</span>
-              </button> */}
-            </div>
           </nav>
         </aside>
 
@@ -228,7 +275,7 @@ export default function AccountPage() {
           {activeTab === 'orders' && (
             <>
               <div className="flex items-center justify-between mb-2">
-                <h2 className="font-headline font-bold text-2xl tracking-tight text-planthia-dark">
+                <h2 className="text-2xl lg:text-2xl font-manrope text-planthia-dark">
                   Mis Pedidos Recientes
                 </h2>
                 {user.orders && user.orders.length > 0 && (
@@ -243,8 +290,8 @@ export default function AccountPage() {
                   <p className="text-planthia-dark/60 font-body mb-4">
                     Aún no has realizado ningún pedido en Planthia.
                   </p>
-                  <Link 
-                    href="/shop" 
+                  <Link
+                    href="/shop"
                     className="inline-block bg-planthia-green text-planthia-ice px-6 py-3 rounded-full font-bold text-sm hover:bg-planthia-light-green transition-all shadow-sm"
                   >
                     Explorar Colección
@@ -261,16 +308,16 @@ export default function AccountPage() {
                       const currentStatus = statusConfig[order.order_status] || statusConfig.pending;
 
                       return (
-                        <div 
-                          key={order.id} 
+                        <div
+                          key={order.id}
                           className="group relative bg-planthia-ice/60 backdrop-blur-md rounded-3xl p-8 transition-all duration-500 hover:bg-planthia-ice border border-planthia-dark/5 shadow-sm"
                         >
                           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                             <div className="flex gap-6 items-center">
                               <div className="relative w-24 h-24 rounded-2xl overflow-hidden bg-planthia-cream flex-shrink-0">
-                                <Image 
-                                  alt={firstItem?.name || "Producto Planthia"} 
-                                  src={firstItem?.image || "/products/placeholder.webp"} 
+                                <Image
+                                  alt={firstItem?.name || "Producto Planthia"}
+                                  src={firstItem?.image || "/products/placeholder.webp"}
                                   fill
                                   className="object-cover group-hover:scale-110 transition-transform duration-700"
                                 />
@@ -285,7 +332,7 @@ export default function AccountPage() {
                                   Pedido #PL-{order.payment_id ? order.payment_id.slice(-4).toUpperCase() : order.id}
                                 </p>
                                 <h4 className="font-headline text-lg font-bold text-planthia-dark">
-                                  {firstItem?.name || "Pedido Especial"} {extraItemsCount > 0 ? '& Colección' : ''}
+                                  {firstItem?.name || "Pedido Especial"} {extraItemsCount > 0 ? ' y otros' : ''}
                                 </h4>
                                 <p className="text-sm text-planthia-dark/60">
                                   Realizado el {new Date(order.createdAt).toLocaleDateString('es-ES', {
@@ -296,7 +343,7 @@ export default function AccountPage() {
                                 </p>
                               </div>
                             </div>
-                            
+
                             <div className="flex flex-row md:flex-col items-center md:items-end justify-between gap-2">
                               <span className={`px-4 py-1.5 rounded-full text-xs font-bold flex items-center gap-2 ${currentStatus.styles}`}>
                                 {order.order_status === 'shipped' && <span className="w-2 h-2 bg-planthia-green rounded-full animate-pulse"></span>}
@@ -304,7 +351,7 @@ export default function AccountPage() {
                                 {currentStatus.label}
                               </span>
                               <p className="font-headline font-extrabold text-xl text-planthia-dark">
-                                {Number(order.total).toFixed(2)}€
+                                ${Number(order.total).toFixed(2)}
                               </p>
                             </div>
                           </div>
@@ -332,54 +379,22 @@ export default function AccountPage() {
                 </div>
               )}
 
-              {/* Recommendation Section */}
-              <div className="mt-16 pt-16 border-t border-planthia-dark/10">
-                <h3 className="font-headline font-bold text-xl mb-8 text-planthia-dark">
-                  Basado en tu última compra
-                </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-                  <div className="relative group cursor-pointer">
-                    <div className="aspect-[4/5] rounded-[2rem] overflow-hidden bg-planthia-ice relative mb-6 border border-planthia-dark/5">
-                      <Image
-                        alt="Fiddle Leaf Fig"
-                        src="/products/ficus.webp"
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-700"
-                      />
-                      <div className="absolute top-6 left-6 bg-white/80 backdrop-blur-md px-4 py-2 rounded-full text-[10px] font-bold text-planthia-green shadow-sm tracking-wider">
-                        NUEVO
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-start px-2">
-                      <div>
-                        <h5 className="font-headline font-bold text-lg text-planthia-dark">Ficus Lyrata 'Premium'</h5>
-                        <p className="text-sm text-planthia-dark/60">Fácil cuidado • Purificador</p>
-                      </div>
-                      <span className="font-headline font-extrabold text-lg text-planthia-dark">65,00€</span>
-                    </div>
+              {/* SECCIÓN RECOMENDADOS */}
+              {recommendedProducts.length > 0 && (
+                <section className="mt-20 lg:mt-32 pb-16 border-t border-planthia-dark/5 pt-16 lg:pt-16">
+                  <h2 className="text-2xl lg:text-2xl font-manrope text-planthia-dark mb-8 lg:mb-12">
+                    {user.orders && user.orders.length > 0
+                      ? "Basado en tu última compra"
+                      : "Recomendados para tu jardín"}
+                  </h2>
+
+                  <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
+                    {recommendedProducts.slice(0, productsToShow).map((item: any) => (
+                      <ProductCardShop key={item.id} product={item} />
+                    ))}
                   </div>
-                  <div className="relative group cursor-pointer">
-                    <div className="aspect-[4/5] rounded-[2rem] overflow-hidden bg-planthia-ice relative mb-6 border border-planthia-dark/5">
-                      <Image
-                        alt="Calathea Ornata"
-                        src="/products/calathea.webp"
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-700"
-                      />
-                      <div className="absolute top-6 left-6 bg-white/80 backdrop-blur-md px-4 py-2 rounded-full text-[10px] font-bold text-planthia-green shadow-sm tracking-wider">
-                        MÁS BUSCADO
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-start px-2">
-                      <div>
-                        <h5 className="font-headline font-bold text-lg text-planthia-dark">Calathea Ornata</h5>
-                        <p className="text-sm text-planthia-dark/60">Luz indirecta • Pet friendly</p>
-                      </div>
-                      <span className="font-headline font-extrabold text-lg text-planthia-dark">34,00€</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                </section>
+              )}
             </>
           )}
 

@@ -93,7 +93,7 @@ const ProductCardShop = ({ product }: { product: Product }) => {
         <button 
           onClick={handleFavorite}
           title={favoriteActive ? "Quitar de favoritos" : "Agregar a favoritos"}
-          className="absolute top-3 right-3 p-2 bg-transparent hover:bg-transparent backdrop-blur-md rounded-full transition-all text-planthia-green hover:text-planthia-green z-20"
+          className="absolute top-3 right-3 p-2 bg-transparent hover:bg-transparent backdrop-blur-md rounded-full transition-all text-planthia-green hover:text-planthia-green cursor-pointer z-20"
         >
           <Heart 
             size={18} 
@@ -148,7 +148,7 @@ const ProductCardShop = ({ product }: { product: Product }) => {
             </div>
 
             {/* VISTA DESKTOP */}
-            <span className="hidden md:block text-sm font-semibold">
+            <span className="hidden md:block text-sm font-semibold cursor-pointer">
               {isOutOfStock ? "Sin stock" :isAlreadyInCart ? "Agregado" : "Agregar"}
             </span>
           </button>
