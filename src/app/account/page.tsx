@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import OrdersSection from '@/components/account/OrdersSection';
+import ProfileSection from '@/components/account/ProfileSection';
+
 import {
   Package,
   User,
@@ -159,7 +161,7 @@ export default function AccountPage() {
           <nav className="space-y-2 flex flex-col">
             <button
               onClick={() => setActiveTab('orders')}
-              className={`flex items-center gap-4 px-6 py-4 rounded-xl cursor-pointer font-bold transition-all duration-300 group ${activeTab === 'orders' 
+              className={`flex items-center gap-4 px-6 py-4 rounded-xl cursor-pointer font-bold transition-all duration-300 group ${activeTab === 'orders'
                 ? 'text-planthia-green bg-planthia-light-green/10'
                 : 'text-planthia-dark/70 hover:bg-planthia-ice/50'
                 }`}
@@ -207,10 +209,12 @@ export default function AccountPage() {
           )}
 
           {activeTab === 'profile' && (
-            <div className="bg-planthia-ice rounded-3xl p-8 border border-planthia-dark/5">
-              <h2 className="font-headline font-bold text-2xl mb-4">Información Personal</h2>
-              <p className="text-sm text-planthia-dark/60">Sección en desarrollo para editar datos de la cuenta.</p>
-            </div>
+            <ProfileSection
+              user={user}
+              onUserUpdate={(updatedData) => {
+                setUser((prev) => prev ? { ...prev, ...updatedData } : null);
+              }}
+            />
           )}
 
           {activeTab === 'addresses' && (
