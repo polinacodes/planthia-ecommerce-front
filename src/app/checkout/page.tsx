@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react'; 
 import { useCart } from '@/hooks/useCart';
 import { LockKeyhole, Wallet, CreditCard } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -45,7 +45,6 @@ interface PaymentOptionProps {
 }
 
 // COMPONENTES SECUNDARIOS
-
 function InputField({ label, placeholder, type = "text", value, onChange, onBlur, error }: InputFieldProps) {
   return (
     <div className="flex flex-col gap-2">
@@ -79,7 +78,7 @@ function PaymentOption({ label, description, icon, selected, onSelect }: Payment
   );
 }
 
-//  COMPONENTE PRINCIPAL
+// COMPONENTE PRINCIPAL
 export default function CheckoutPage() {
   const { cart, getTotalPrice, clearCart } = useCart();
   const router = useRouter();
@@ -106,6 +105,47 @@ export default function CheckoutPage() {
   const shippingCost = 12.50;
   const subtotal = getTotalPrice();
   const total = subtotal + shippingCost - discountAmount;
+
+  // AUTOCOMPLETADO DE DATOS 
+  useEffect(() => {
+    const loadUserData = async () => {
+      try {
+        const token = localStorage.getItem('token'); 
+        if (!token) return;
+
+        const url = `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/users/me`;
+
+        const res = await fetch(url, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (res.ok) {
+          const userData = await res.json();
+      
+          setFormData({
+            first_name: userData.first_name || userData.firstName || '',
+            last_name: userData.last_name || userData.lastName || '',
+            email: userData.email || '',
+            phone: userData.phone || '',
+            address: userData.address || '',
+            city: userData.city || '',
+            zip_code: userData.zip_code || userData.zipCode || ''
+          });
+        } else {
+          const errorErr = await res.text();
+          console.error("Error en la respuesta:", errorErr);
+        }
+      } catch (error) {
+        console.error("Error al precargar los datos del usuario:", error);
+      }
+    };
+
+    loadUserData();
+  }, []);
 
   // FUNCIONES DE VALIDACIÓN
   const validateEmail = (email: string): boolean => {

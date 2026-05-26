@@ -3,8 +3,11 @@
 import { useState, useMemo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation'; 
+import { useCart } from '@/hooks/useCart'; 
+import { toast } from 'sonner';
 import { CheckCircle2, Truck } from 'lucide-react';
-import OrderDetail, { OrderData } from './OrderDetail'; 
+import OrderDetail, { OrderData, OrderItem } from './OrderDetail';
 
 interface OrdersSectionProps {
   orders: OrderData[];
@@ -31,6 +34,9 @@ export default function OrdersSection({ orders, user }: OrdersSectionProps) {
   const [visibleOrdersCount, setVisibleOrdersCount] = useState(3);
   const [selectedOrder, setSelectedOrder] = useState<OrderData | null>(null);
 
+  const router = useRouter();
+  const { addItem, updateQuantity } = useCart(); 
+
   const sortedOrders = useMemo(() => {
     if (!orders) return [];
     return [...orders].sort(
@@ -42,12 +48,75 @@ export default function OrdersSection({ orders, user }: OrdersSectionProps) {
     return sortedOrders.slice(0, visibleOrdersCount);
   }, [sortedOrders, visibleOrdersCount]);
 
+  const handleBuyAgain = async (items: OrderItem[]) => {
+    const toastId = toast.loading("Verificando stock y precios actuales...");
+    let atLeastOneAdded = false; 
+
+    try {
+      for (const item of items) {
+        const idParaBuscar = item.productId || String(item.id);
+        const strapiUrl = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
+        const res = await fetch(`${strapiUrl}/api/products?filters[id][$eq]=${idParaBuscar}&populate=*`);
+
+        if (!res.ok) {
+          console.error(`Error en la petición a Strapi. Status: ${res.status}`);
+          continue;
+        }
+
+        const json = await res.json();
+        const currentProduct = json.data && json.data.length > 0 ? json.data[0] : null;
+
+        if (!currentProduct) {
+          console.error(`No se encontró el producto con ID ${idParaBuscar}. Asegurate de que exista y esté PUBLICADO.`);
+          continue;
+        }
+
+        const attributes = currentProduct.attributes || currentProduct;
+        const currentStock = attributes.stock ?? 0;
+
+        if (currentStock <= 0) {
+          toast.error(`"${attributes.name}" no se agregó por falta de stock.`, { id: toastId });
+          continue;
+        }
+
+        const productToCart = {
+          id: String(currentProduct.id),
+          name: attributes.name,
+          price: attributes.price,
+          image: attributes.image?.url || item.image,
+          stock: currentStock,
+          quantity: item.quantity
+        };
+
+        addItem(productToCart);
+
+        if (item.quantity > 1 && typeof updateQuantity === 'function') {
+          updateQuantity(productToCart.id, item.quantity);
+        }
+
+        atLeastOneAdded = true;
+      }
+
+      if (atLeastOneAdded) {
+        toast.success("Productos añadidos al carrito", { id: toastId });
+        router.push('/checkout');
+      } else {
+        toast.error("No se pudo añadir ningún producto. Verificá el stock o los permisos de Strapi.", { id: toastId });
+      }
+
+    } catch (error) {
+      console.error("Error al re-comprar pedido:", error);
+      toast.error("Ocurrió un error al procesar la compra de nuevo.", { id: toastId });
+    }
+  };
+
   if (selectedOrder) {
     return (
-      <OrderDetail 
-        order={selectedOrder} 
-        user={user} 
-        onBack={() => setSelectedOrder(null)} 
+      <OrderDetail
+        order={selectedOrder}
+        user={user}
+        onBack={() => setSelectedOrder(null)}
+        onBuyAgain={handleBuyAgain} 
       />
     );
   }
@@ -147,7 +216,11 @@ export default function OrdersSection({ orders, user }: OrdersSectionProps) {
                         >
                           Detalles del pedido
                         </button>
-                        <button className="flex-1 py-4 bg-planthia-green text-planthia-ice rounded-xl font-bold text-sm hover:bg-planthia-light-green transition-all shadow-sm">
+                        {/* Conectamos la función acá */}
+                        <button
+                          onClick={() => handleBuyAgain(itemsArray)}
+                          className="flex-1 py-4 bg-planthia-green text-planthia-ice rounded-xl font-bold text-sm hover:bg-planthia-light-green transition-all shadow-sm cursor-pointer"
+                        >
                           Comprar de nuevo
                         </button>
                       </>

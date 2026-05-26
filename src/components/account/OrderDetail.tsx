@@ -1,7 +1,9 @@
 'use client';
 
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
+import { toast } from 'sonner'; 
 import {
   ArrowLeft,
   Calendar,
@@ -9,7 +11,8 @@ import {
   CheckCircle2,
   ShoppingBag,
   MapPin,
-  CreditCard
+  CreditCard,
+  Loader2
 } from 'lucide-react';
 
 export interface OrderItem {
@@ -45,6 +48,7 @@ interface OrderDetailProps {
     email: string;
   };
   onBack: () => void;
+  onBuyAgain: (items: OrderItem[]) => Promise<void>;
 }
 
 const getStepIndex = (status: string) => {
@@ -63,9 +67,23 @@ const steps = [
   { label: 'Entregado' }
 ];
 
-export default function OrderDetail({ order, user, onBack }: OrderDetailProps) {
+export default function OrderDetail({ order, user, onBack, onBuyAgain }: OrderDetailProps) {
   const itemsArray = Array.isArray(order.items) ? order.items : [];
   const currentStep = getStepIndex(order.order_status);
+  const [isProcessing, setIsProcessing] = useState(false);
+
+  const handleLocalBuyAgain = async () => {
+    if (isProcessing) return;
+    try {
+      setIsProcessing(true);
+      await onBuyAgain(itemsArray);
+    } catch (error) {
+      console.error("Error al re-procesar la compra:", error);
+      toast.error("No se pudieron cargar los productos. Por favor, intentá de nuevo.");
+    } finally {
+      setIsProcessing(false);
+    }
+  };
 
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
@@ -102,7 +120,7 @@ export default function OrderDetail({ order, user, onBack }: OrderDetailProps) {
         </div>
       )}
 
-      {/* Línea de Progreso Dinámica (Stepper Adaptado) */}
+      {/* Línea de Progreso Dinámica */}
       <div className="bg-planthia-ice/40 border border-planthia-dark/5 rounded-3xl p-4 sm:p-6 lg:p-8 overflow-hidden">
         <div className="relative flex justify-between items-start max-w-3xl mx-auto">
           <div className="absolute left-[12.5%] right-[12.5%] top-4 h-1 z-0">
@@ -190,9 +208,8 @@ export default function OrderDetail({ order, user, onBack }: OrderDetailProps) {
         </div>
       </div>
 
-      {/* Cuerpo Principal del Detalle*/}
+      {/* Cuerpo Principal */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* Columna Izquierda: Lista de Productos */}
         <div className="lg:col-span-8 space-y-4">
           <h3 className="font-headline font-bold text-lg text-planthia-dark flex items-center gap-2">
             <ShoppingBag size={18} className="text-planthia-green" />
@@ -229,9 +246,8 @@ export default function OrderDetail({ order, user, onBack }: OrderDetailProps) {
           </div>
         </div>
 
-        {/* Columna Derecha: Envío, Facturación y Costos */}
+        {/* Columna Derecha */}
         <div className="lg:col-span-4 space-y-6">
-          {/* Datos de Entrega */}
           <div className="bg-planthia-ice/30 border border-planthia-dark/5 rounded-3xl p-6 space-y-4">
             <h4 className="font-headline font-bold text-sm text-planthia-dark flex items-center gap-2 border-b border-planthia-dark/5 pb-3">
               <MapPin size={16} className="text-planthia-green" />
@@ -248,7 +264,6 @@ export default function OrderDetail({ order, user, onBack }: OrderDetailProps) {
             </div>
           </div>
 
-          {/* Resumen del Pago */}
           <div className="bg-planthia-ice/30 border border-planthia-dark/5 rounded-3xl p-6 space-y-3 text-sm">
             <h4 className="font-headline font-bold text-sm text-planthia-dark flex items-center gap-2 border-b border-planthia-dark/5 pb-3">
               <CreditCard size={16} className="text-planthia-green" />
@@ -262,7 +277,7 @@ export default function OrderDetail({ order, user, onBack }: OrderDetailProps) {
               <span>Costo de envío</span>
               <span>{order.shipping_cost > 0 ? `$${Number(order.shipping_cost).toFixed(2)}` : 'Gratis'}</span>
             </div>
-            <div className="flex justify-between text-xs text-planthia-dark/60  pb-2">
+            <div className="flex justify-between text-xs text-planthia-dark/60 pb-2">
               <span>Método</span>
               <span><span className="capitalize">{order.payment_method || 'Tarjeta'}</span></span>
             </div>
@@ -271,10 +286,22 @@ export default function OrderDetail({ order, user, onBack }: OrderDetailProps) {
               <span>${Number(order.total).toFixed(2)}</span>
             </div>
 
-            {/* Botón Comprar de nuevo exclusivo para pedidos entregados */}
             {order.order_status === 'delivered' && (
-              <button className="w-full mt-4 py-3 bg-planthia-green text-planthia-ice rounded-xl font-bold text-xs hover:bg-planthia-light-green transition-all shadow-sm">
-                Comprar de nuevo
+              <button 
+                onClick={handleLocalBuyAgain}
+                disabled={isProcessing}
+                className={`w-full mt-4 py-3 bg-planthia-green text-planthia-ice rounded-xl font-bold text-xs hover:bg-planthia-light-green transition-all shadow-sm cursor-pointer flex items-center justify-center gap-2 ${
+                  isProcessing ? 'opacity-60 cursor-not-allowed' : ''
+                }`}
+              >
+                {isProcessing ? (
+                  <>
+                    <Loader2 size={14} className="animate-spin" />
+                    Procesando...
+                  </>
+                ) : (
+                  'Comprar de nuevo'
+                )}
               </button>
             )}
           </div>

@@ -101,7 +101,7 @@ export default function PaymentStatusPage() {
         <div className="flex flex-col w-full gap-3">
           <button
             onClick={() => isError ? router.push('/checkout') : router.push('/account')}
-            className="w-full flex items-center justify-center bg-planthia-dark text-white font-bold py-4 rounded-full hover:bg-planthia-dark/90 transition-all shadow-lg shadow-planthia-dark/20"
+            className="w-full cursor-pointer flex items-center justify-center bg-planthia-dark text-white font-bold py-4 rounded-full hover:bg-planthia-dark/90 transition-all shadow-lg shadow-planthia-dark/20"
           >
             {current.buttonText}
             <ArrowRight className="ml-2 w-4 h-4" />
@@ -109,7 +109,7 @@ export default function PaymentStatusPage() {
 
           <button
             onClick={() => router.push('/shop')}
-            className="w-full flex items-center justify-center bg-transparent text-planthia-dark font-bold py-4 rounded-full border border-planthia-dark/10 shadow-lg shadow-planthia-dark/5 hover:bg-planthia-dark/5 transition-all"
+            className="w-full cursor-pointer flex items-center justify-center bg-transparent text-planthia-dark font-bold py-4 rounded-full border border-planthia-dark/10 shadow-lg shadow-planthia-dark/5 hover:bg-planthia-dark/5 transition-all"
           >
             <Home className="mr-2 w-4 h-4" />
             Volver a la tienda
