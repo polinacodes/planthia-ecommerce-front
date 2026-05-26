@@ -32,6 +32,7 @@ const statusConfig = {
 
 export default function OrdersSection({ orders, user }: OrdersSectionProps) {
   const [productsToShow, setProductsToShow] = useState(4);
+  const [visibleOrdersCount, setVisibleOrdersCount] = useState(3); // <-- Controla cuántos pedidos se ven
   const [selectedOrder, setSelectedOrder] = useState<OrderData | null>(null);
   const { plants, loading: plantsLoading } = usePlants();
 
@@ -47,16 +48,25 @@ export default function OrdersSection({ orders, user }: OrdersSectionProps) {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  const sortedOrders = useMemo(() => {
+    if (!orders) return [];
+    return [...orders].sort(
+      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
+  }, [orders]);
+
+  const displayedOrders = useMemo(() => {
+    return sortedOrders.slice(0, visibleOrdersCount);
+  }, [sortedOrders, visibleOrdersCount]);
+
   const recommendedProducts = useMemo(() => {
     if (!plants || plants.length === 0) return [];
     if (!orders || orders.length === 0) return plants.slice(0, 4);
 
     try {
-      const sortedOrders = [...orders].sort(
-        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-      );
-
       const latestOrder = sortedOrders[0];
+      if (!latestOrder) return plants.slice(0, 4);
+      
       const itemsArray = Array.isArray(latestOrder.items) ? latestOrder.items : [];
 
       if (itemsArray.length === 0) return plants.slice(0, 4);
@@ -84,7 +94,7 @@ export default function OrdersSection({ orders, user }: OrdersSectionProps) {
       console.error("Error calculando recomendados:", error);
       return plants.slice(0, 4);
     }
-  }, [orders, plants]);
+  }, [sortedOrders, orders, plants]);
 
   if (selectedOrder) {
     return (
@@ -98,15 +108,10 @@ export default function OrdersSection({ orders, user }: OrdersSectionProps) {
 
   return (
     <>
-      <div className="flex items-center justify-between mb-2">
-        <h2 className="text-2xl lg:text-2xl font-manrope text-planthia-dark">
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-2xl font-manrope text-planthia-dark">
           Mis Pedidos Recientes
         </h2>
-        {orders && orders.length > 0 && (
-          <button className="text-planthia-green font-bold text-sm hover:underline transition-all">
-            Ver todo el historial
-          </button>
-        )}
       </div>
 
       {orders.length === 0 ? (
@@ -122,10 +127,9 @@ export default function OrdersSection({ orders, user }: OrdersSectionProps) {
           </Link>
         </div>
       ) : (
-        <div className="grid gap-6">
-          {[...orders]
-            .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-            .map((order) => {
+        <div className="space-y-6">
+          <div className="grid gap-6">
+            {displayedOrders.map((order) => {
               const itemsArray = Array.isArray(order.items) ? order.items : [];
               const firstItem = itemsArray[0];
               const extraItemsCount = itemsArray.length - 1;
@@ -214,6 +218,19 @@ export default function OrdersSection({ orders, user }: OrdersSectionProps) {
                 </div>
               );
             })}
+          </div>
+
+          {/* Botón Ver Más */}
+          {visibleOrdersCount < sortedOrders.length && (
+            <div className="flex justify-center pt-8">
+              <button
+                onClick={() => setVisibleOrdersCount((prev) => prev + 3)}
+                className="bg-planthia-green text-planthia-ice px-8 py-3.5 rounded-full font-bold text-sm hover:bg-planthia-light-green transition-all shadow-sm cursor-pointer tracking-wide"
+              >
+                Ver más
+              </button>
+            </div>
+          )}
         </div>
       )}
 

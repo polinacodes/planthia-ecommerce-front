@@ -94,9 +94,9 @@ export default function WishlistPage() {
           <h1 className="text-3xl sm:text-4xl font-manrope text-planthia-dark mb-2">
             Mi Lista de Favoritos
           </h1>
-          <p className="text-sm text-planthia-dark/60 italic">
+          {/* <p className="text-sm text-planthia-dark/60 ">
             Tienes {favoriteProducts.length} {favoriteProducts.length === 1 ? 'producto guardado' : 'productos guardados'}
-          </p>
+          </p> */}
         </div>
 
         {/* Tabla / Lista de Favoritos */}

@@ -98,7 +98,7 @@ export default function ProfileSection({ user, onUserUpdate }: ProfileSectionPro
           <p className="text-sm text-planthia-dark/60 mt-1">
             {isEditing 
               ? "Modifica tus datos de contacto y facturación." 
-              : "Consulta tus datos de contacto y envío guardados."}
+              : ""}
           </p>
         </div>
 

@@ -274,7 +274,7 @@ export default function OrderDetail({ order, user, onBack }: OrderDetailProps) {
             {/* Botón Comprar de nuevo exclusivo para pedidos entregados */}
             {order.order_status === 'delivered' && (
               <button className="w-full mt-4 py-3 bg-planthia-green text-planthia-ice rounded-xl font-bold text-xs hover:bg-planthia-light-green transition-all shadow-sm">
-                Comprar todo de nuevo
+                Comprar de nuevo
               </button>
             )}
           </div>

@@ -181,7 +181,7 @@ export default function AccountPage() {
               <span className="font-headline tracking-wide text-sm">Información Personal</span>
             </button>
 
-            <button
+            {/* <button
               onClick={() => setActiveTab('addresses')}
               className={`flex items-center gap-4 px-6 py-4 rounded-xl cursor-pointer font-bold transition-all duration-300 group ${activeTab === 'addresses'
                 ? 'text-planthia-green bg-planthia-light-green/10'
@@ -190,7 +190,7 @@ export default function AccountPage() {
             >
               <MapPin size={20} className="group-hover:scale-110 transition-transform" />
               <span className="font-headline tracking-wide text-sm">Direcciones</span>
-            </button>
+            </button> */}
 
             <Link
               href="/wishlist"
@@ -217,12 +217,12 @@ export default function AccountPage() {
             />
           )}
 
-          {activeTab === 'addresses' && (
+          {/* {activeTab === 'addresses' && (
             <div className="bg-planthia-ice rounded-3xl p-8 border border-planthia-dark/5">
               <h2 className="font-headline font-bold text-2xl mb-4">Mis Direcciones</h2>
               <p className="text-sm text-planthia-dark/60">Sección en desarrollo para gestionar direcciones de envío.</p>
             </div>
-          )}
+          )} */}
         </section>
       </div>
     </main>
