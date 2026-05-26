@@ -139,7 +139,7 @@ export default function AccountPage() {
               strokeWidth={1.5}
             />
           </div>
-          <button className="absolute bottom-0 right-0 bg-planthia-green text-planthia-ice p-2 rounded-full shadow-lg hover:scale-110 transition-transform flex items-center justify-center">
+          <button className="absolute cursor-pointer bottom-0 right-0 bg-planthia-green text-planthia-ice p-2 rounded-full shadow-lg hover:scale-110 transition-transform flex items-center justify-center">
             <Pencil size={16} />
           </button>
         </div>
@@ -148,10 +148,8 @@ export default function AccountPage() {
           <h1 className="font-headline font-extrabold text-4xl tracking-tight text-planthia-dark capitalize">
             Hola, {user.first_name || user.username}
           </h1>
-          <p className="text-planthia-dark/60 mt-2 font-body italic text-sm">
-            Miembro desde {memberSince} • {user.favorites && user.favorites.length > 0
-              ? `Cuidadora de ${user.favorites.length} ${user.favorites.length === 1 ? 'planta' : 'plantas'} favoritas`
-              : 'Explorando la tienda'}
+          <p className="text-planthia-dark/60 mt-2 font-body text-sm">
+            Miembro desde {memberSince}
           </p>
         </div>
       </div>
