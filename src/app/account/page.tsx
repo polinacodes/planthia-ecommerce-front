@@ -203,7 +203,7 @@ export default function AccountPage() {
         {/* Main Content Area */}
         <section className="lg:col-span-9 space-y-8">
           {activeTab === 'orders' && (
-            <OrdersSection orders={user.orders || []} />
+            <OrdersSection orders={user.orders || []} user={user} />
           )}
 
           {activeTab === 'profile' && (
