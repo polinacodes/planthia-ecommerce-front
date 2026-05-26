@@ -1,12 +1,9 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
-import { usePlants } from '@/hooks/usePlants';
+import { useState, useMemo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import ProductCardShop from '@/components/products/ProductCardShop';
 import { CheckCircle2, Truck } from 'lucide-react';
-
 import OrderDetail, { OrderData } from './OrderDetail'; 
 
 interface OrdersSectionProps {
@@ -31,22 +28,8 @@ const statusConfig = {
 };
 
 export default function OrdersSection({ orders, user }: OrdersSectionProps) {
-  const [productsToShow, setProductsToShow] = useState(4);
-  const [visibleOrdersCount, setVisibleOrdersCount] = useState(3); // <-- Controla cuántos pedidos se ven
+  const [visibleOrdersCount, setVisibleOrdersCount] = useState(3);
   const [selectedOrder, setSelectedOrder] = useState<OrderData | null>(null);
-  const { plants, loading: plantsLoading } = usePlants();
-
-  useEffect(() => {
-    const handleResize = () => {
-      const width = window.innerWidth;
-      if (width < 768) setProductsToShow(4);
-      else if (width < 1280) setProductsToShow(3);
-      else setProductsToShow(4);
-    };
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   const sortedOrders = useMemo(() => {
     if (!orders) return [];
@@ -58,43 +41,6 @@ export default function OrdersSection({ orders, user }: OrdersSectionProps) {
   const displayedOrders = useMemo(() => {
     return sortedOrders.slice(0, visibleOrdersCount);
   }, [sortedOrders, visibleOrdersCount]);
-
-  const recommendedProducts = useMemo(() => {
-    if (!plants || plants.length === 0) return [];
-    if (!orders || orders.length === 0) return plants.slice(0, 4);
-
-    try {
-      const latestOrder = sortedOrders[0];
-      if (!latestOrder) return plants.slice(0, 4);
-      
-      const itemsArray = Array.isArray(latestOrder.items) ? latestOrder.items : [];
-
-      if (itemsArray.length === 0) return plants.slice(0, 4);
-
-      const lastPurchasedId = (itemsArray[0].productId || itemsArray[0].id || '').toString().split('-')[0];
-      const lastPurchasedPlant = plants.find(p => p.id.toString() === lastPurchasedId);
-
-      if (!lastPurchasedPlant || !lastPurchasedPlant.subcategory) {
-        return plants.slice(0, 4);
-      }
-
-      const currentSub = lastPurchasedPlant.subcategory.name;
-
-      const filtered = plants.filter(
-        p => p.subcategory?.name === currentSub && p.id.toString() !== lastPurchasedId
-      );
-
-      if (filtered.length < 4) {
-        const extra = plants.filter(p => p.id.toString() !== lastPurchasedId && p.subcategory?.name !== currentSub);
-        return [...filtered, ...extra].slice(0, 4);
-      }
-
-      return filtered.slice(0, 4);
-    } catch (error) {
-      console.error("Error calculando recomendados:", error);
-      return plants.slice(0, 4);
-    }
-  }, [sortedOrders, orders, plants]);
 
   if (selectedOrder) {
     return (
@@ -109,7 +55,7 @@ export default function OrdersSection({ orders, user }: OrdersSectionProps) {
   return (
     <>
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-manrope text-planthia-dark">
+        <h2 className="font-headline font-bold text-2xl text-planthia-dark">
           Mis Pedidos Recientes
         </h2>
       </div>
@@ -184,7 +130,6 @@ export default function OrdersSection({ orders, user }: OrdersSectionProps) {
                     </div>
                   </div>
 
-                  {/* SECCIÓN DINÁMICA DE BOTONES SEGÚN EL ESTADO */}
                   <div className="mt-6 flex gap-4">
                     {order.order_status === 'shipped' ? (
                       <button
@@ -220,7 +165,6 @@ export default function OrdersSection({ orders, user }: OrdersSectionProps) {
             })}
           </div>
 
-          {/* Botón Ver Más */}
           {visibleOrdersCount < sortedOrders.length && (
             <div className="flex justify-center pt-8">
               <button
@@ -232,23 +176,6 @@ export default function OrdersSection({ orders, user }: OrdersSectionProps) {
             </div>
           )}
         </div>
-      )}
-
-      {/* SECCIÓN RECOMENDADOS */}
-      {recommendedProducts.length > 0 && (
-        <section className="mt-20 lg:mt-32 pb-16 border-t border-planthia-dark/5 pt-16 lg:pt-16">
-          <h2 className="text-2xl lg:text-2xl font-manrope text-planthia-dark mb-8 lg:mb-12">
-            {orders && orders.length > 0
-              ? "Basado en tu última compra"
-              : "Recomendados para tu jardín"}
-          </h2>
-
-          <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
-            {recommendedProducts.slice(0, productsToShow).map((item: any) => (
-              <ProductCardShop key={item.id} product={item} />
-            ))}
-          </div>
-        </section>
       )}
     </>
   );

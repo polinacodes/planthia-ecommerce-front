@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import OrdersSection from '@/components/account/OrdersSection';
 import ProfileSection from '@/components/account/ProfileSection';
+import RecommendedProducts from '@/components/account/RecommendedProducts'; // <-- Importamos el nuevo componente
 
 import {
   Package,
@@ -181,17 +182,6 @@ export default function AccountPage() {
               <span className="font-headline tracking-wide text-sm">Información Personal</span>
             </button>
 
-            {/* <button
-              onClick={() => setActiveTab('addresses')}
-              className={`flex items-center gap-4 px-6 py-4 rounded-xl cursor-pointer font-bold transition-all duration-300 group ${activeTab === 'addresses'
-                ? 'text-planthia-green bg-planthia-light-green/10'
-                : 'text-planthia-dark/70 hover:bg-planthia-ice/50'
-                }`}
-            >
-              <MapPin size={20} className="group-hover:scale-110 transition-transform" />
-              <span className="font-headline tracking-wide text-sm">Direcciones</span>
-            </button> */}
-
             <Link
               href="/wishlist"
               className="flex items-center gap-4 px-6 py-4 rounded-xl font-bold text-planthia-dark/70 hover:bg-planthia-ice/50 transition-all duration-300 group"
@@ -216,15 +206,11 @@ export default function AccountPage() {
               }}
             />
           )}
-
-          {/* {activeTab === 'addresses' && (
-            <div className="bg-planthia-ice rounded-3xl p-8 border border-planthia-dark/5">
-              <h2 className="font-headline font-bold text-2xl mb-4">Mis Direcciones</h2>
-              <p className="text-sm text-planthia-dark/60">Sección en desarrollo para gestionar direcciones de envío.</p>
-            </div>
-          )} */}
         </section>
       </div>
+
+      <RecommendedProducts orders={user.orders || []} />
+
     </main>
   );
 }
