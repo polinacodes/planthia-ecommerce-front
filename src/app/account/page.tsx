@@ -67,7 +67,7 @@ export default function AccountPage() {
       }
 
       try {
-        const userResponse = await fetch('http://localhost:1337/api/users/me', {
+        const userResponse = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/users/me`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -83,7 +83,7 @@ export default function AccountPage() {
 
         const userData = await userResponse.json();
 
-        const ordersResponse = await fetch('http://localhost:1337/api/orders/my-orders', {
+        const ordersResponse = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/orders/my-orders`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,

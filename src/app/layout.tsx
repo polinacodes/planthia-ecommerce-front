@@ -8,6 +8,7 @@ import { Toaster } from 'sonner';
 import { CartDrawer } from "@/components/shop/CartDrawer";
 import NewsletterPopup from "@/components/layout/NewsletterPopup";
 import { FavoritesProvider } from '@/context/FavoritesContext';
+import { Suspense } from "react";
 
 const manrope = Manrope({
   subsets: ["latin"],
@@ -33,13 +34,17 @@ export default function RootLayout({
     <html lang="es" className={`${manrope.variable} ${inter.variable}`}>
       <body className=" relative font-body antialiased bg-planthia-cream text-planthia-dark">
         <FavoritesProvider>
-          <Navbar />
+          <Suspense fallback={null}>
+            <Navbar />
+          </Suspense>
           <CartDrawer />
           <main className="relative">
             {children}
           </main>
           <Footer />
-          <NewsletterPopup />
+          <Suspense fallback={null}>
+            <NewsletterPopup />
+          </Suspense>
           <Toaster
             position="bottom-right"
             toastOptions={{
