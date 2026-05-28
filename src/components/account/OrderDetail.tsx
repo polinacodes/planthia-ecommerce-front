@@ -72,6 +72,8 @@ export default function OrderDetail({ order, user, onBack, onBuyAgain }: OrderDe
   const currentStep = getStepIndex(order.order_status);
   const [isProcessing, setIsProcessing] = useState(false);
 
+  const formatPrice = (value: number) => Math.round(value).toLocaleString('es-AR');
+
   const handleLocalBuyAgain = async () => {
     if (isProcessing) return;
     try {
@@ -235,10 +237,10 @@ export default function OrderDetail({ order, user, onBack, onBuyAgain }: OrderDe
                 </div>
                 <div className="text-right">
                   <p className="font-headline font-bold text-sm text-planthia-dark">
-                    ${(item.price * item.quantity).toFixed(2)}
+                    ${formatPrice(item.price * item.quantity)}
                   </p>
                   {item.quantity > 1 && (
-                    <p className="text-[10px] text-planthia-dark/40 mt-0.5">${Number(item.price).toFixed(2)} c/u</p>
+                    <p className="text-[10px] text-planthia-dark/40 mt-0.5">${formatPrice(Number(item.price))} c/u</p>
                   )}
                 </div>
               </div>
@@ -271,11 +273,11 @@ export default function OrderDetail({ order, user, onBack, onBuyAgain }: OrderDe
             </h4>
             <div className="flex justify-between text-xs text-planthia-dark/70 pt-1">
               <span>Subtotal</span>
-              <span>${Number(order.subtotal || order.total - (order.shipping_cost || 0)).toFixed(2)}</span>
+              <span>${formatPrice(Number(order.subtotal || order.total - (order.shipping_cost || 0)))}</span>
             </div>
             <div className="flex justify-between text-xs text-planthia-dark/70">
               <span>Costo de envío</span>
-              <span>{order.shipping_cost > 0 ? `$${Number(order.shipping_cost).toFixed(2)}` : 'Gratis'}</span>
+              <span>{order.shipping_cost > 0 ? `$${formatPrice(Number(order.shipping_cost))}` : 'Gratis'}</span>
             </div>
             <div className="flex justify-between text-xs text-planthia-dark/60 pb-2">
               <span>Método</span>
@@ -283,7 +285,7 @@ export default function OrderDetail({ order, user, onBack, onBuyAgain }: OrderDe
             </div>
             <div className="flex justify-between font-headline font-extrabold text-base text-planthia-dark border-t border-planthia-dark/5 pt-3">
               <span>Total</span>
-              <span>${Number(order.total).toFixed(2)}</span>
+              <span>${formatPrice(Number(order.total))}</span>
             </div>
 
             {order.order_status === 'delivered' && (

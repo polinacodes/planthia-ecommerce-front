@@ -18,38 +18,30 @@ function PaymentStatusContent() {
   const isError = status === 'failure';
 
   useEffect(() => {
-    const handlePaymentSuccess = async () => {
-      if (status === 'approved' || status === 'success') {
-        
-        if (status === 'success') {
-          const orderId = searchParams.get('order');
-          if (orderId) {
-            try {
-              console.log('🔄 Actualizando orden a paid:', orderId);
-              await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/orders/${orderId}/status`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                  
-                    order_status: 'paid'
-                  
-                })
-              });
-              console.log('✅ Orden actualizada correctamente');
-            } catch (error) {
-              console.error('❌ Error actualizando orden:', error);
-            }
-          }
+  const handlePaymentSuccess = async () => {
+    if (status === 'approved' || status === 'success') {
+      const orderId = searchParams.get('order');
+
+      if (orderId) {
+        try {
+          await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/orders/${orderId}/status`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ order_status: 'paid' })
+          });
+        } catch (error) {
+          console.error('❌ Error actualizando orden:', error);
         }
-
-        // Limpiar carrito
-        console.log("✅ Pago aprobado: Limpiando carrito...");
-        clearCart();
       }
-    };
+      setTimeout(() => {
+        clearCart();
+        console.log("✅ Carrito limpiado");
+      }, 300);
+    }
+  };
 
-    handlePaymentSuccess();
-  }, [status, clearCart, searchParams]);
+  handlePaymentSuccess();
+}, [status, clearCart, searchParams]);
 
   const statusConfig = {
     success: {

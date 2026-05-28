@@ -78,6 +78,8 @@ function PaymentOption({ label, description, icon, selected, onSelect }: Payment
   );
 }
 
+const formatPrice = (value: number) => Math.round(value).toLocaleString('es-AR');
+
 // COMPONENTE PRINCIPAL
 export default function CheckoutPage() {
   const { cart, getTotalPrice, clearCart } = useCart();
@@ -219,7 +221,7 @@ export default function CheckoutPage() {
         setDiscountError('');
 
         toast.success('¡Código aplicado!', {
-          description: `Se ha aplicado un ${data.discountAmount}% de descuento (-$${calculatedDiscount.toFixed(2)})`,
+          description: `Se ha aplicado un ${data.discountAmount}% de descuento (-$${formatPrice(calculatedDiscount)})`,
         });
       } else {
         setDiscountError(data.message || 'Código inválido');
@@ -429,7 +431,7 @@ export default function CheckoutPage() {
                     <div className="flex-grow">
                       <p className="font-bold">{item.name}</p>
                       <p className="text-sm text-planthia-dark/70">Cant: {item.quantity}</p>
-                      <p className="text-planthia-green font-semibold mt-1">${item.price}</p>
+                      <p className="text-planthia-green font-semibold mt-1">${formatPrice(Number(item.price))}</p>
                     </div>
                   </div>
                 ))}
@@ -437,7 +439,7 @@ export default function CheckoutPage() {
               <div className="space-y-4 pt-6 border-t border-planthia-dark/10">
                 <div className="flex justify-between text-planthia-dark/70">
                   <span>Subtotal</span>
-                  <span>${subtotal.toFixed(2)}</span>
+                  <span>${formatPrice(subtotal)}</span>
                 </div>
                 <div className="border-t border-planthia-dark/10 pt-6">
                   <label className="text-sm font-semibold text-planthia-dark/70 block mb-2">¿Tenés un código de descuento?</label>
@@ -449,18 +451,18 @@ export default function CheckoutPage() {
                 {discountAmount > 0 && (
                   <div className="flex justify-between text-planthia-green">
                     <span>Descuento</span>
-                    <span>-${discountAmount.toFixed(2)}</span>
+                    <span>-${formatPrice(discountAmount)}</span>
                   </div>
                 )}
                 <div className="flex justify-between text-planthia-dark/70">
                   <span>Envío</span>
                   <span className={shippingCost === 0 ? "text-planthia-green font-bold bg-planthia-green/10 px-2 py-0.5 rounded-lg text-sm" : ""}>
-                    {shippingCost === 0 ? 'Gratis' : `$${shippingCost.toFixed(2)}`}
+                    {shippingCost === 0 ? 'Gratis' : `$${formatPrice(shippingCost)}`}
                   </span>
                 </div>
                 <div className="flex justify-between items-center pt-4">
                   <span className="text-lg font-bold">Total</span>
-                  <span className="text-2xl font-extrabold text-planthia-green">${total.toFixed(2)}</span>
+                  <span className="text-2xl font-extrabold text-planthia-green">${formatPrice(total)}</span>
                 </div>
               </div>
               <button type="submit" disabled={loading} className="w-full py-4 rounded-full bg-planthia-green text-white font-bold text-lg hover:bg-planthia-light-green transition-all shadow-lg disabled:opacity-50 cursor-pointer">

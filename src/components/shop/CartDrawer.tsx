@@ -8,6 +8,8 @@ export const CartDrawer = () => {
   const { cart, isOpen, closeCart, removeItem, updateQuantity, getTotalPrice } = useCart();
   const router = useRouter();
 
+  const formatPrice = (value: number) => Math.round(value).toLocaleString('es-AR');
+
   // LÓGICA DE ENVÍO GRATIS
   const total = getTotalPrice();
   const SHIPPING_THRESHOLD = 10000;
@@ -96,7 +98,7 @@ export const CartDrawer = () => {
                         </button>
                       </div>
 
-                      <p className="text-[11px] font-medium text-planthia-dark/60">${item.price}</p>
+                      <p className="text-[11px] font-medium text-planthia-dark/60">${formatPrice(item.price)}</p>
 
                       <div className="flex items-center border border-planthia-dark/10 w-fit mt-2 rounded-full px-2 py-1">
                         <button
@@ -129,7 +131,7 @@ export const CartDrawer = () => {
             <div className="pt-6 border-t border-planthia-dark/10">
               <div className="flex justify-between mb-4">
                 <span className="text-xs font-bold uppercase">Total</span>
-                <span className="text-xs font-bold">${getTotalPrice()}</span>
+                <span className="text-xs font-bold">${formatPrice(getTotalPrice())}</span>
               </div>
               <button
                 onClick={() => {

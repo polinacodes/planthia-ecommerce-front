@@ -3,8 +3,8 @@
 import { useState, useMemo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation'; 
-import { useCart } from '@/hooks/useCart'; 
+import { useRouter } from 'next/navigation';
+import { useCart } from '@/hooks/useCart';
 import { toast } from 'sonner';
 import { CheckCircle2, Truck } from 'lucide-react';
 import OrderDetail, { OrderData, OrderItem } from './OrderDetail';
@@ -35,7 +35,9 @@ export default function OrdersSection({ orders, user }: OrdersSectionProps) {
   const [selectedOrder, setSelectedOrder] = useState<OrderData | null>(null);
 
   const router = useRouter();
-  const { addItem, updateQuantity } = useCart(); 
+  const { addItem, updateQuantity } = useCart();
+
+  const formatPrice = (value: number) => Math.round(value).toLocaleString('es-AR');
 
   const sortedOrders = useMemo(() => {
     if (!orders) return [];
@@ -50,7 +52,7 @@ export default function OrdersSection({ orders, user }: OrdersSectionProps) {
 
   const handleBuyAgain = async (items: OrderItem[]) => {
     const toastId = toast.loading("Verificando stock y precios actuales...");
-    let atLeastOneAdded = false; 
+    let atLeastOneAdded = false;
 
     try {
       for (const item of items) {
@@ -116,7 +118,7 @@ export default function OrdersSection({ orders, user }: OrdersSectionProps) {
         order={selectedOrder}
         user={user}
         onBack={() => setSelectedOrder(null)}
-        onBuyAgain={handleBuyAgain} 
+        onBuyAgain={handleBuyAgain}
       />
     );
   }
@@ -194,7 +196,7 @@ export default function OrdersSection({ orders, user }: OrdersSectionProps) {
                         {currentStatus.label}
                       </span>
                       <p className="font-headline font-extrabold text-xl text-planthia-dark">
-                        ${Number(order.total).toFixed(2)}
+                        ${formatPrice(Number(order.total))}
                       </p>
                     </div>
                   </div>
