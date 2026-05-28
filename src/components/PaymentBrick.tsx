@@ -44,7 +44,7 @@ export default function PaymentBrick({ preferenceId, onError }: PaymentBrickProp
   return (
     <div className="w-full">
       <Wallet
-        initialization={{ preferenceId: preferenceId }}
+        initialization={{ preferenceId: preferenceId, redirectMode: 'self' }}
         onError={(error) => {
           console.error('Error en Wallet:', error);
           onError?.('Error al cargar el método de pago');
