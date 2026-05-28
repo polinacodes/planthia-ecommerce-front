@@ -281,8 +281,9 @@ export default function CheckoutPage() {
       if (data.ok) {
 
         if (paymentMethod === 'mercadopago' && data.mercadoPagoUrl) {
-          window.open(data.mercadoPagoUrl, '_blank');
-          router.push(`/payment-waiting?orderId=${data.orderId}`);
+          // window.open(data.mercadoPagoUrl, '_blank');
+          // router.push(`/payment-waiting?orderId=${data.orderId}`);
+          window.location.href = data.mercadoPagoUrl;
           return;
         }
 
