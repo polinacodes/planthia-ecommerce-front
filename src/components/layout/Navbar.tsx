@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useSearchParams } from "next/navigation";
@@ -13,7 +13,8 @@ import { usePlants } from '@/hooks/usePlants';
 import { getToken, getUser, removeToken, removeUser, UserData } from "@/lib/auth";
 import { toast } from "sonner";
 
-export default function Navbar() {
+
+function NavbarContent() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isWishlistMenuOpen, setIsWishlistMenuOpen] = useState(false);
@@ -360,5 +361,13 @@ export default function Navbar() {
         )}
       </AnimatePresence>
     </>
+  );
+}
+
+export default function Navbar() {
+  return (
+    <Suspense fallback={null}>
+      <NavbarContent />
+    </Suspense>
   );
 }

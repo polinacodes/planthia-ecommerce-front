@@ -1,10 +1,10 @@
 'use client';
-import { useEffect } from 'react';
+import { useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useCart } from '@/hooks/useCart';
 import { CheckCircle, AlertCircle, ArrowRight, Home, ShoppingBag } from 'lucide-react';
 
-export default function PaymentStatusPage() {
+function PaymentStatusContent() {
 
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -117,5 +117,13 @@ export default function PaymentStatusPage() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function PaymentStatusPage() {
+  return (
+    <Suspense fallback={null}>
+      <PaymentStatusContent />
+    </Suspense>
   );
 }

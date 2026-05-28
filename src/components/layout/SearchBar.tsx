@@ -1,10 +1,10 @@
 "use client";
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, Suspense } from 'react';
 import { Search, X } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const SearchBar = () => {
+const SearchBarContent = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [text, setText] = useState('');
   const containerRef = useRef<HTMLDivElement>(null);
@@ -88,6 +88,14 @@ const SearchBar = () => {
         <Search size={20} className="sm:w-[22px] sm:h-[22px] cursor-pointer" />
       </button>
     </div>
+  );
+};
+
+const SearchBar = () => {
+  return (
+    <Suspense fallback={null}>
+      <SearchBarContent />
+    </Suspense>
   );
 };
 

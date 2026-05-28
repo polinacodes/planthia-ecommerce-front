@@ -8,9 +8,9 @@ import ShopToolbar from '@/components/shop/ShopToolbar';
 import TypeSelector from '@/components/shop/TypeSelector';
 import { usePlants } from '@/hooks/usePlants';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, Suspense } from 'react';
 
-const ShopPage = () => {
+const ShopPageContent = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
@@ -195,6 +195,14 @@ const ShopPage = () => {
         />
       </div>
     </div>
+  );
+};
+
+const ShopPage = () => {
+  return (
+    <Suspense fallback={null}>
+      <ShopPageContent />
+    </Suspense>
   );
 };
 

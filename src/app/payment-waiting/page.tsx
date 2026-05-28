@@ -1,10 +1,10 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { AlertCircle, ArrowRight, Home } from 'lucide-react';
 
-export default function PaymentWaitingPage() {
+function PaymentWaitingContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const orderId = searchParams.get('orderId');
@@ -121,5 +121,13 @@ export default function PaymentWaitingPage() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function PaymentWaitingPage() {
+  return (
+    <Suspense fallback={null}>
+      <PaymentWaitingContent />
+    </Suspense>
   );
 }
