@@ -102,8 +102,8 @@ export default function CheckoutPage() {
   const [discountError, setDiscountError] = useState('');
   const [discountTouched, setDiscountTouched] = useState(false);
 
-  const shippingCost = 12.50;
   const subtotal = getTotalPrice();
+  const shippingCost = subtotal >= 10000 ? 0 : 1500; 
   const total = subtotal + shippingCost - discountAmount;
 
   // AUTOCOMPLETADO DE DATOS 
@@ -454,7 +454,9 @@ export default function CheckoutPage() {
                 )}
                 <div className="flex justify-between text-planthia-dark/70">
                   <span>Envío</span>
-                  <span>${shippingCost.toFixed(2)}</span>
+                  <span className={shippingCost === 0 ? "text-planthia-green font-bold bg-planthia-green/10 px-2 py-0.5 rounded-lg text-sm" : ""}>
+                    {shippingCost === 0 ? 'Gratis' : `$${shippingCost.toFixed(2)}`}
+                  </span>
                 </div>
                 <div className="flex justify-between items-center pt-4">
                   <span className="text-lg font-bold">Total</span>

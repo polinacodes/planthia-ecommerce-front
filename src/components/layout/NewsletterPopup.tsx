@@ -23,38 +23,38 @@ export default function NewsletterPopup() {
     localStorage.setItem('hasSeenNewsletter', 'true');
   };
 
-const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
-  setLoading(true);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
 
-  try {
-    const url = `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/newsletter/subscribe`;
-console.log('🔍 URL del fetch newsletter:', url);
-    const res = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/newsletter/subscribe`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        data: {           
-          email: email
-        }
-      }),
-    });
+    try {
+      const url = `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/newsletter/subscribe`;
+      console.log('🔍 URL del fetch newsletter:', url);
+      const res = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/newsletter/subscribe`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          data: {
+            email: email
+          }
+        }),
+      });
 
-    const data = await res.json();
-    console.log('Respuesta:', data); 
+      const data = await res.json();
+      console.log('Respuesta:', data);
 
-    if (res.ok) {
-      toast.success('¡Suscripción exitosa! Revisá tu email.');
-      setTimeout(() => closePopup(), 2000);
-    } else {
-      toast.error(data.error?.message || 'Algo salió mal, intentá de nuevo.');
+      if (res.ok) {
+        toast.success('¡Suscripción exitosa! Revisá tu email.');
+        setTimeout(() => closePopup(), 2000);
+      } else {
+        toast.error(data.error?.message || 'Algo salió mal, intentá de nuevo.');
+      }
+    } catch (err) {
+      toast.error('Error de conexión');
+    } finally {
+      setLoading(false);
     }
-  } catch (err) {
-    toast.error('Error de conexión');
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   return (
     <AnimatePresence>
@@ -64,7 +64,7 @@ console.log('🔍 URL del fetch newsletter:', url);
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
-            className="bg-planthia-ice rounded-[2rem] overflow-hidden max-w-3xl w-full flex flex-col md:flex-row relative shadow-2xl"
+            className="bg-planthia-ice rounded-[2rem] overflow-hidden w-full flex flex-col md:flex-row relative shadow-2xl max-w-sm md:max-w-3xl xl:max-w-3xl 2xl:max-w-4xl"
           >
             <button
               onClick={closePopup}

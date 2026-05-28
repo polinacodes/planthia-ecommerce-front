@@ -1,12 +1,18 @@
 'use client'
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '@/hooks/useCart';
-import { X, Trash2, Plus, Minus } from 'lucide-react';
+import { X, Trash2, Plus, Minus, Truck, Check } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 export const CartDrawer = () => {
   const { cart, isOpen, closeCart, removeItem, updateQuantity, getTotalPrice } = useCart();
   const router = useRouter();
+
+  // LÓGICA DE ENVÍO GRATIS
+  const total = getTotalPrice();
+  const SHIPPING_THRESHOLD = 10000;
+  const remaining = SHIPPING_THRESHOLD - total;
+  const progress = Math.min((total / SHIPPING_THRESHOLD) * 100, 100);
 
   return (
     <AnimatePresence>
@@ -29,13 +35,39 @@ export const CartDrawer = () => {
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
             className="fixed right-0 top-0 h-full w-full max-w-md bg-planthia-cream shadow-2xl z-[101] p-8 flex flex-col"
           >
-            <div className="flex justify-between items-center mb-10">
+            {/* Header */}
+            <div className="flex justify-between items-center mb-6">
               <h2 className="text-sm font-bold uppercase tracking-[0.2em] text-planthia-dark">Tu Carrito</h2>
               <button onClick={closeCart} className="hover:rotate-90 transition-transform duration-300 cursor-pointer">
                 <X size={20} strokeWidth={1.5} />
               </button>
             </div>
 
+            {/*  BARRA DE PROGRESO DE ENVÍO GRATIS  */}
+            {cart.length > 0 && (
+              <div className="bg-white rounded-xl p-4 border border-planthia-dark/5 mb-6">
+                <div className="flex items-center gap-2.5 mb-2.5">
+                  {remaining > 0 ? (
+                    <Truck size={16} className="text-planthia-green" strokeWidth={2} />
+                  ) : (
+                    <Check size={16} className="text-planthia-green" strokeWidth={3} />
+                  )}
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-planthia-dark/80">
+                    {remaining > 0
+                      ? `Te faltan $${remaining.toLocaleString('es-AR')} para el envío gratis`
+                      : "¡Felicidades! Tenés envío gratis"}
+                  </p>
+                </div>
+                <div className="h-1.5 w-full bg-planthia-dark/10 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-planthia-green transition-all duration-500 ease-out"
+                    style={{ width: `${progress}%` }}
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* Lista de Productos */}
             <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar">
               {cart.length === 0 ? (
                 <div className="h-full flex flex-col items-center justify-center opacity-40">
@@ -43,7 +75,7 @@ export const CartDrawer = () => {
                 </div>
               ) : (
                 cart.map((item) => (
-                  <div key={item.id} className="flex gap-5 mb-8 items-start border-b border-planthia-dark/5 pb-6">
+                  <div key={item.id} className="flex gap-5 mb-8 items-start border-b border-planthia-dark/5 pb-2">
                     <div className="w-24 h-24 flex items-center justify-center p-2">
                       <img src={item.image} alt={item.name} className="w-full h-full object-contain" />
                     </div>
@@ -93,6 +125,7 @@ export const CartDrawer = () => {
               )}
             </div>
 
+            {/* Footer */}
             <div className="pt-6 border-t border-planthia-dark/10">
               <div className="flex justify-between mb-4">
                 <span className="text-xs font-bold uppercase">Total</span>
