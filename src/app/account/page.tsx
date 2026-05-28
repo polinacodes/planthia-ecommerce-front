@@ -62,7 +62,7 @@ export default function AccountPage() {
       const token = localStorage.getItem('token');
 
       if (!token) {
-        window.location.href = '/';
+        window.location.href = '/login';
         return;
       }
 
@@ -77,7 +77,7 @@ export default function AccountPage() {
 
         if (!userResponse.ok) {
           localStorage.removeItem('token');
-          window.location.href = '/';
+          window.location.href = '/login';
           return;
         }
 

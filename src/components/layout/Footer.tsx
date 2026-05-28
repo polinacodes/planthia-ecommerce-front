@@ -35,7 +35,7 @@ const Footer = () => {
 
         <div className="flex flex-row justify-between items-center w-full gap-4">
 
-          <p className="text-[10px] md:text-sm font-medium uppercase tracking-widest opacity-70">
+          <p className="text-[10px] md:text-sm font-medium tracking-widest opacity-70">
             Desarrollado por Polinacodes
           </p>
 

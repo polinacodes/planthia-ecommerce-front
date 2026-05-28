@@ -80,7 +80,7 @@ const ProductCard = ({ plant, isActive, onClick }: ProductCardProps) => {
         whileTap={{ scale: 0.9 }}
       >
         <Heart
-          className={`w-5 h-5 sm:w-6 sm:h-6 transition-all duration-300 ${favoriteActive
+          className={`w-5 h-5 sm:w-6 sm:h-6 transition-all duration-300 cursor-pointer ${favoriteActive
               ? isActive
                 ? 'text-planthia-ice fill-current drop-shadow-sm'
                 : 'text-planthia-green fill-current drop-shadow-sm'
@@ -164,7 +164,7 @@ const ProductCard = ({ plant, isActive, onClick }: ProductCardProps) => {
               whileTap={{ scale: 0.95 }}
               onClick={handleAddToCart}
               disabled={isLimitReached}
-              className={`px-3 sm:px-4 lg:px-5 py-1.5 sm:py-2 lg:py-2.5 rounded-lg sm:rounded-xl text-xs sm:text-sm font-bold transition-colors shadow-sm
+              className={`px-3 sm:px-4 lg:px-5 py-1.5 sm:py-2 lg:py-2.5 rounded-lg sm:rounded-xl text-xs sm:text-sm font-bold transition-colors shadow-sm cursor-pointer
                   ${isLimitReached
                   ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                   : "bg-white text-[#5B823B] hover:bg-gray-100"}`}

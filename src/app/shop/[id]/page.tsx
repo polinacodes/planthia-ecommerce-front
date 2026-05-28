@@ -135,7 +135,7 @@ export default function ProductPage() {
                 setSelectedImage(variant.image);
                 setSelectedVariant(variant);
               }}
-              className={`w-5 h-5 rounded-full border shadow-md transition-all duration-300 ${selectedImage === variant.image
+              className={`w-5 h-5 cursor-pointer rounded-full border shadow-md transition-all duration-300 ${selectedImage === variant.image
                 ? 'scale-125 border-planthia-dark/30'
                 : 'border-transparent opacity-70 hover:opacity-100 hover:scale-110'
                 }`}
@@ -217,7 +217,7 @@ export default function ProductPage() {
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -20 }}
-                  transition={{ duration: 0.3, ease: "easeOut" }}
+                  transition={{ duration: 0.2, ease: "easeOut" }}
                   className="relative w-full h-full"
                 >
                   {selectedImage ? (
