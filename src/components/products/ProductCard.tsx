@@ -25,7 +25,7 @@ const ProductCard = ({ plant, isActive, onClick }: ProductCardProps) => {
 
   const handleFavorite = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    await toggleFavorite(plant.id);
+    await toggleFavorite(plant.id, plant.name);
   };
 
   const cartItem = cart.find((item: any) => String(item.id).startsWith(String(plant.id)));

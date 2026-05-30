@@ -18,16 +18,13 @@ export default function LoginForm() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-
     try {
       const data = await login({ email: identifier, password });
-      
-      // Guardar token y datos del usuario
       setToken(data.jwt);
       localStorage.setItem('user', JSON.stringify(data.user));
-      
+      window.dispatchEvent(new Event('user-login'));
       toast.success(`¡Bienvenido de nuevo, ${data.user.username}!`);
-      router.push('/account');
+      window.location.href = '/account';
     } catch (error) {
       toast.error(error instanceof Error ? error.message : 'Credenciales incorrectas');
     } finally {
@@ -78,8 +75,8 @@ export default function LoginForm() {
       </div>
 
       <div className="flex justify-end">
-        <Link 
-          href="/forgot-password" 
+        <Link
+          href="/forgot-password"
           className="text-xs text-planthia-green hover:text-planthia-green/70 transition-colors font-medium"
         >
           ¿Olvidaste tu contraseña?

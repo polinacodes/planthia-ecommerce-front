@@ -27,7 +27,7 @@ function NavbarContent() {
   const toggleCart = useCart((state) => state.toggleCart);
   const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
 
-  const { favorites, toggleFavorite } = useFavorites();
+  const { favorites, toggleFavorite, clearFavorites } = useFavorites();
   const { plants } = usePlants();
 
   const previewFavorites = useMemo(() => {
@@ -59,6 +59,7 @@ function NavbarContent() {
   const handleLogout = () => {
     removeToken();
     removeUser();
+    clearFavorites();
     setUser(null);
     setIsUserMenuOpen(false);
     setIsMobileMenuOpen(false);
@@ -88,158 +89,52 @@ function NavbarContent() {
           }`}
       >
         <div className="max-w-[1600px] mx-auto flex items-center justify-between px-6 sm:px-12 py-4">
-        <div className="flex items-center">
-          <button
-            onClick={() => setIsMobileMenuOpen(true)}
-            className="md:hidden text-planthia-dark hover:text-planthia-green transition-colors mr-4"
-          >
-            <Menu size={24} />
-          </button>
-          <Link href="/" className="hidden md:block text-2xl font-headline font-extrabold text-planthia-dark">
-            Planthia<span className="text-planthia-green">.</span>
-          </Link>
-        </div>
-
-        <div className="hidden md:flex items-center gap-8 font-body text-base font-semibold text-planthia-dark/70">
-          <Link href="/" className={`${isActive("/") ? "text-planthia-green" : "hover:text-planthia-green"} transition-colors`}>
-            Inicio
-          </Link>
-          <Link href="/shop?type=plantas" className={`${isActive("/shop?type=plantas") ? "text-planthia-green" : "hover:text-planthia-green"} transition-colors`}>
-            Plantas
-          </Link>
-          <Link href="/shop?type=cuidados" className={`${isActive("/shop?type=cuidados") ? "text-planthia-green" : "hover:text-planthia-green"} transition-colors`}>
-            Cuidados
-          </Link>
-        </div>
-
-        <div className="flex items-center gap-4 sm:gap-6 text-planthia-dark">
-          <SearchBar />
-
-          {/*  DROPDOWN DE FAVORITOS (DESKTOP) */}
-          {user && (
-            <div 
-              className="relative hidden md:block"
-              onMouseEnter={() => setIsWishlistMenuOpen(true)}
-              onMouseLeave={() => setIsWishlistMenuOpen(false)}
+          <div className="flex items-center">
+            <button
+              onClick={() => setIsMobileMenuOpen(true)}
+              className="md:hidden text-planthia-dark hover:text-planthia-green transition-colors mr-4"
             >
-              <button
-                type="button"
-                className="hover:text-planthia-green transition-colors cursor-pointer block p-1 relative"
+              <Menu size={24} />
+            </button>
+            <Link href="/" className="hidden md:block text-2xl font-headline font-extrabold text-planthia-dark">
+              Planthia<span className="text-planthia-green">.</span>
+            </Link>
+          </div>
+
+          <div className="hidden md:flex items-center gap-8 font-body text-base font-semibold text-planthia-dark/70">
+            <Link href="/" className={`${isActive("/") ? "text-planthia-green" : "hover:text-planthia-green"} transition-colors`}>
+              Inicio
+            </Link>
+            <Link href="/shop?type=plantas" className={`${isActive("/shop?type=plantas") ? "text-planthia-green" : "hover:text-planthia-green"} transition-colors`}>
+              Plantas
+            </Link>
+            <Link href="/shop?type=cuidados" className={`${isActive("/shop?type=cuidados") ? "text-planthia-green" : "hover:text-planthia-green"} transition-colors`}>
+              Cuidados
+            </Link>
+          </div>
+
+          <div className="flex items-center gap-4 sm:gap-6 text-planthia-dark">
+            <SearchBar />
+
+            {/*  DROPDOWN DE FAVORITOS (DESKTOP) */}
+            {user && (
+              <div
+                className="relative hidden md:block"
+                onMouseEnter={() => setIsWishlistMenuOpen(true)}
+                onMouseLeave={() => setIsWishlistMenuOpen(false)}
               >
-                <Heart size={20} className="sm:w-[22px] sm:h-[22px]" />
-                {previewFavorites.length > 0 && (
-                  <span className="absolute top-0 right-0 bg-planthia-green w-2 h-2 rounded-full" />
-                )}
-              </button>
-
-              <AnimatePresence>
-                {isWishlistMenuOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, scaleY: 0.95 }}
-                    animate={{ opacity: 1, scaleY: 1 }}
-                    exit={{ opacity: 0, scaleY: 0.95 }}
-                    transition={{ duration: 0.15, ease: "easeOut" }}
-                    style={{
-                      backdropFilter: 'blur(16px)',
-                      WebkitBackdropFilter: 'blur(16px)',
-                      transformOrigin: 'top'
-                    }}
-                    // className="absolute right-[-4rem] top-[3.7rem] w-80 bg-planthia-cream/90 shadow-xl rounded-b-xl border-x border-b border-planthia-dark/10 p-4 z-40 origin-top"
-                    className="absolute right-[-4rem] top-[3rem] mt-3 w-80 bg-planthia-cream/90 shadow-xl rounded-xl border border-white/20 p-4 z-40 origin-top before:content-[''] before:absolute before:bottom-full before:right-[4.45rem] before:border-[8px] before:border-transparent before:border-b-planthia-cream/90"
-                  >
-                    {previewFavorites.length === 0 ? (
-                      <div className="py-6 text-center text-sm text-planthia-dark/60 italic font-body">
-                        Tu lista está vacía 
-                      </div>
-                    ) : (
-                      <>
-                        {/* Contenedor scrolleable ajustado para ~6 elementos */}
-                        <div className="max-h-[340px] overflow-y-auto pr-1 space-y-3 scrollbar-thin scrollbar-thumb-planthia-green/20">
-                          {previewFavorites.map((product) => (
-                            <div key={product.id} className="flex items-center gap-3 bg-white/40 p-2 rounded-lg border border-planthia-dark/5 group/item">
-                              <Link href={`/shop/${product.id}`} className="relative w-12 h-12 rounded-md overflow-hidden bg-white/80 flex-shrink-0">
-                                <Image 
-                                  src={product.image} 
-                                  alt={product.name} 
-                                  fill 
-                                  className="object-cover"
-                                />
-                              </Link>
-                              
-                              <div className="flex-1 min-w-0">
-                                <Link href={`/shop/${product.id}`} className="block">
-                                  <h4 className="text-xs font-bold text-planthia-dark hover:text-planthia-green transition-colors truncate">
-                                    {product.name}
-                                  </h4>
-                                </Link>
-                                <span className="text-xs font-extrabold text-[#5B823B] block mt-0.5">
-                                  ${product.price.toLocaleString('es-AR')}
-                                </span>
-                              </div>
-
-                              <button
-                                onClick={(e) => handleRemoveFavorite(Number(product.id), product.name, e)}
-                                className="p-1.5 text-gray-400 hover:text-rose-600 hover:bg-rose-50 rounded-md transition-all flex-shrink-0"
-                                title="Eliminar"
-                              >
-                                <Trash2 size={14} />
-                              </button>
-                            </div>
-                          ))}
-                        </div>
-
-                        {/* Botón Ver Todos */}
-                        <div className="border-t border-planthia-dark/10 mt-3 pt-3">
-                          <Link 
-                            href="/wishlist"
-                            onClick={() => setIsWishlistMenuOpen(false)}
-                            className="block text-center w-full bg-planthia-green hover:bg-planthia-dark text-white py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-colors"
-                          >
-                            Ver todos
-                          </Link>
-                        </div>
-                      </>
-                    )}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          )}
-
-          <button
-            onClick={toggleCart}
-            className="hover:text-planthia-green transition-colors cursor-pointer relative">
-            <ShoppingCart size={20} className="sm:w-[22px] sm:h-[22px]" />
-            {totalItems > 0 && (
-              <span className="absolute -top-2 -right-2 bg-planthia-green text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
-                {totalItems}
-              </span>
-            )}
-          </button>
-
-          {/* Contenedor del Usuario */}
-          <div
-            className="relative hidden md:block"
-            onMouseEnter={() => user && setIsUserMenuOpen(true)}
-            onMouseLeave={() => user && setIsUserMenuOpen(false)}
-          >
-            {!user ? (
-              <Link
-                href="/login"
-                className="hover:text-planthia-green transition-colors cursor-pointer flex items-center p-1"
-              >
-                <User size={20} className="sm:w-[22px] sm:h-[22px]" />
-              </Link>
-            ) : (
-              <>
                 <button
-                  className="hover:text-planthia-green transition-colors cursor-pointer focus:outline-none flex items-center p-1"
+                  type="button"
+                  className="hover:text-planthia-green transition-colors cursor-pointer block p-1 relative"
                 >
-                  <User size={20} className="sm:w-[22px] sm:h-[22px]" />
+                  <Heart size={20} className="sm:w-[22px] sm:h-[22px]" />
+                  {previewFavorites.length > 0 && (
+                    <span className="absolute top-0 right-0 bg-planthia-green w-2 h-2 rounded-full" />
+                  )}
                 </button>
 
                 <AnimatePresence>
-                  {isUserMenuOpen && (
+                  {isWishlistMenuOpen && (
                     <motion.div
                       initial={{ opacity: 0, scaleY: 0.95 }}
                       animate={{ opacity: 1, scaleY: 1 }}
@@ -250,33 +145,139 @@ function NavbarContent() {
                         WebkitBackdropFilter: 'blur(16px)',
                         transformOrigin: 'top'
                       }}
-                      // className="absolute right-[-3rem] top-[3.7rem] w-44 bg-planthia-cream/90 shadow-xl rounded-b-xl rounded-t-none p-2 z-40 border-x border-b border-white/20 origin-top-right"
-                      className="absolute right-[-3rem] top-[3rem] mt-3 w-44 bg-planthia-cream/90 shadow-xl rounded-xl p-2 z-40 border border-white/20 origin-top-right before:content-[''] before:absolute before:bottom-full before:right-[3.35rem] before:border-[8px] before:border-transparent before:border-b-planthia-cream/90"
+                      // className="absolute right-[-4rem] top-[3.7rem] w-80 bg-planthia-cream/90 shadow-xl rounded-b-xl border-x border-b border-planthia-dark/10 p-4 z-40 origin-top"
+                      className="absolute right-[-4rem] top-[3rem] mt-3 w-80 bg-planthia-cream/90 shadow-xl rounded-xl border border-white/20 p-4 z-40 origin-top before:content-[''] before:absolute before:bottom-full before:right-[4.45rem] before:border-[8px] before:border-transparent before:border-b-planthia-cream/90"
                     >
-                      <div className="p-2 space-y-1">
-                        <Link
-                          href="/account"
-                          onClick={() => setIsUserMenuOpen(false)}
-                          className="flex items-center gap-3 w-full px-4 py-3 text-sm font-bold text-planthia-dark/90 hover:text-planthia-green transition-all"
-                        >
-                          <Settings size={16} />
-                          Mi Cuenta
-                        </Link>
-                        <button
-                          onClick={handleLogout}
-                          className="flex items-center gap-3 w-full px-4 py-3 text-sm font-bold text-planthia-dark/90 hover:text-red-500 transition-all cursor-pointer"
-                        >
-                          <LogOut size={16} />
-                          Salir
-                        </button>
-                      </div>
+                      {previewFavorites.length === 0 ? (
+                        <div className="py-6 text-center text-sm text-planthia-dark/60 italic font-body">
+                          Tu lista está vacía
+                        </div>
+                      ) : (
+                        <>
+                          {/* Contenedor scrolleable ajustado para ~6 elementos */}
+                          <div className="max-h-[340px] overflow-y-auto pr-1 space-y-3 scrollbar-thin scrollbar-thumb-planthia-green/20">
+                            {previewFavorites.map((product) => (
+                              <div key={product.id} className="flex items-center gap-3 bg-white/40 p-2 rounded-lg border border-planthia-dark/5 group/item">
+                                <Link href={`/shop/${product.id}`} className="relative w-12 h-12 rounded-md overflow-hidden bg-white/80 flex-shrink-0">
+                                  <Image
+                                    src={product.image}
+                                    alt={product.name}
+                                    fill
+                                    className="object-cover"
+                                  />
+                                </Link>
+
+                                <div className="flex-1 min-w-0">
+                                  <Link href={`/shop/${product.id}`} className="block">
+                                    <h4 className="text-xs font-bold text-planthia-dark hover:text-planthia-green transition-colors truncate">
+                                      {product.name}
+                                    </h4>
+                                  </Link>
+                                  <span className="text-xs font-extrabold text-[#5B823B] block mt-0.5">
+                                    ${product.price.toLocaleString('es-AR')}
+                                  </span>
+                                </div>
+
+                                <button
+                                  onClick={(e) => handleRemoveFavorite(Number(product.id), product.name, e)}
+                                  className="p-1.5 text-gray-400 hover:text-rose-600 hover:bg-rose-50 rounded-md transition-all flex-shrink-0"
+                                  title="Eliminar"
+                                >
+                                  <Trash2 size={14} />
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+
+                          {/* Botón Ver Todos */}
+                          <div className="border-t border-planthia-dark/10 mt-3 pt-3">
+                            <Link
+                              href="/wishlist"
+                              onClick={() => setIsWishlistMenuOpen(false)}
+                              className="block text-center w-full bg-planthia-green hover:bg-planthia-dark text-white py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-colors"
+                            >
+                              Ver todos
+                            </Link>
+                          </div>
+                        </>
+                      )}
                     </motion.div>
                   )}
                 </AnimatePresence>
-              </>
+              </div>
             )}
+
+            <button
+              onClick={toggleCart}
+              className="hover:text-planthia-green transition-colors cursor-pointer relative">
+              <ShoppingCart size={20} className="sm:w-[22px] sm:h-[22px]" />
+              {totalItems > 0 && (
+                <span className="absolute -top-2 -right-2 bg-planthia-green text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
+                  {totalItems}
+                </span>
+              )}
+            </button>
+
+            {/* Contenedor del Usuario */}
+            <div
+              className="relative hidden md:block"
+              onMouseEnter={() => user && setIsUserMenuOpen(true)}
+              onMouseLeave={() => user && setIsUserMenuOpen(false)}
+            >
+              {!user ? (
+                <Link
+                  href="/login"
+                  className="hover:text-planthia-green transition-colors cursor-pointer flex items-center p-1"
+                >
+                  <User size={20} className="sm:w-[22px] sm:h-[22px]" />
+                </Link>
+              ) : (
+                <>
+                  <button
+                    className="hover:text-planthia-green transition-colors cursor-pointer focus:outline-none flex items-center p-1"
+                  >
+                    <User size={20} className="sm:w-[22px] sm:h-[22px]" />
+                  </button>
+
+                  <AnimatePresence>
+                    {isUserMenuOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, scaleY: 0.95 }}
+                        animate={{ opacity: 1, scaleY: 1 }}
+                        exit={{ opacity: 0, scaleY: 0.95 }}
+                        transition={{ duration: 0.15, ease: "easeOut" }}
+                        style={{
+                          backdropFilter: 'blur(16px)',
+                          WebkitBackdropFilter: 'blur(16px)',
+                          transformOrigin: 'top'
+                        }}
+                        // className="absolute right-[-3rem] top-[3.7rem] w-44 bg-planthia-cream/90 shadow-xl rounded-b-xl rounded-t-none p-2 z-40 border-x border-b border-white/20 origin-top-right"
+                        className="absolute right-[-3rem] top-[3rem] mt-3 w-44 bg-planthia-cream/90 shadow-xl rounded-xl p-2 z-40 border border-white/20 origin-top-right before:content-[''] before:absolute before:bottom-full before:right-[3.35rem] before:border-[8px] before:border-transparent before:border-b-planthia-cream/90"
+                      >
+                        <div className="p-2 space-y-1">
+                          <Link
+                            href="/account"
+                            onClick={() => setIsUserMenuOpen(false)}
+                            className="flex items-center gap-3 w-full px-4 py-3 text-sm font-bold text-planthia-dark/90 hover:text-planthia-green transition-all"
+                          >
+                            <Settings size={16} />
+                            Mi Cuenta
+                          </Link>
+                          <button
+                            onClick={handleLogout}
+                            className="flex items-center gap-3 w-full px-4 py-3 text-sm font-bold text-planthia-dark/90 hover:text-red-500 transition-all cursor-pointer"
+                          >
+                            <LogOut size={16} />
+                            Salir
+                          </button>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </>
+              )}
+            </div>
           </div>
-        </div>
         </div>
       </nav>
 

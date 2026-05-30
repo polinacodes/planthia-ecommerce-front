@@ -1,6 +1,7 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
+import { toast } from 'sonner';
 import AuthModal from '@/components/AuthModal';
 
 interface FavoriteItem {
@@ -11,8 +12,9 @@ interface FavoriteItem {
 
 interface FavoritesContextType {
   favorites: FavoriteItem[];
-  toggleFavorite: (productId: number) => Promise<void>;
+  toggleFavorite: (productId: number, productName?: string) => Promise<void>;
   isFavorite: (productId: number) => boolean;
+  clearFavorites: () => void;
   loading: boolean;
 }
 
@@ -21,12 +23,11 @@ const FavoritesContext = createContext<FavoritesContextType | undefined>(undefin
 export const FavoritesProvider = ({ children }: { children: React.ReactNode }) => {
   const [favorites, setFavorites] = useState<FavoriteItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [userData, setUserData] = useState<any>(null);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
+  const userDataRef = useRef<any>(null);
 
   const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
 
-  // Obtener datos del usuario (incluye documentId)
   const fetchUserData = async (token: string) => {
     try {
       const res = await fetch(`${STRAPI_URL}/api/users/me`, {
@@ -34,7 +35,7 @@ export const FavoritesProvider = ({ children }: { children: React.ReactNode }) =
       });
       if (res.ok) {
         const data = await res.json();
-        setUserData(data);
+        userDataRef.current = data;
         return data;
       }
     } catch (error) {
@@ -43,61 +44,63 @@ export const FavoritesProvider = ({ children }: { children: React.ReactNode }) =
     return null;
   };
 
-  useEffect(() => {
-    const fetchFavorites = async () => {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        setLoading(false);
-        return;
-      }
+  const fetchFavorites = async () => {
+    const token = localStorage.getItem('token');
 
-      // Obtener datos del usuario primero
-      await fetchUserData(token);
+    if (!token) {
+      setFavorites([]);
+      setLoading(false);
+      return;
+    }
 
-      try {
-        const res = await fetch(`${STRAPI_URL}/api/favorites?populate=product`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+    const user = await fetchUserData(token);
 
-        if (res.ok) {
-          const response = await res.json();
-          const data = response.data;
+    if (!user) {
+      setFavorites([]);
+      setLoading(false);
+      return;
+    }
 
-          const mappedFavorites = data.map((fav: any) => ({
+    try {
+      const res = await fetch(
+        `${STRAPI_URL}/api/favorites?populate=product`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      if (res.ok) {
+        const response = await res.json();
+        const mappedFavorites = response.data
+          .map((fav: any) => ({
             id: fav.id,
             documentId: fav.documentId,
             productId: fav.product?.id,
-          })).filter((fav: any) => fav.productId);
+          }))
+          .filter((fav: any) => fav.productId);
 
-          setFavorites(mappedFavorites);
-        }
-      } catch (err) {
-        console.error('Error cargando favoritos:', err);
-      } finally {
-        setLoading(false);
+        setFavorites(mappedFavorites);
       }
-    };
+    } catch (err) {
+      console.error('Error cargando favoritos:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchFavorites();
+    window.addEventListener('user-login', fetchFavorites);
+    return () => window.removeEventListener('user-login', fetchFavorites);
   }, [STRAPI_URL]);
 
-  // Obtener documentId de un producto por su ID numérico
   const getProductDocumentId = async (productId: number, token: string): Promise<string | null> => {
     try {
       const res = await fetch(
         `${STRAPI_URL}/api/products?filters[id][$eq]=${productId}&fields[0]=documentId`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
-
       if (res.ok) {
         const { data } = await res.json();
-        if (data && data.length > 0) {
-          return data[0].documentId;
-        }
-      } else {
-        console.error('Error fetching product:', res.status);
+        if (data && data.length > 0) return data[0].documentId;
       }
     } catch (error) {
       console.error('Error:', error);
@@ -105,7 +108,7 @@ export const FavoritesProvider = ({ children }: { children: React.ReactNode }) =
     return null;
   };
 
-  const toggleFavorite = async (productId: number) => {
+  const toggleFavorite = async (productId: number, productName?: string) => {
     const token = localStorage.getItem('token');
     if (!token) {
       setIsAuthModalOpen(true);
@@ -115,8 +118,10 @@ export const FavoritesProvider = ({ children }: { children: React.ReactNode }) =
     const existingFav = favorites.find(fav => fav.productId === productId);
 
     if (existingFav) {
-      // ELIMINAR
-      setFavorites(prev => prev.filter(fav => fav.productId !== productId));
+      // ELIMINAR 
+      const updatedFavorites = favorites.filter(fav => fav.productId !== productId);
+      setFavorites(updatedFavorites);
+      toast.success(productName ? `"${productName}" quitado de favoritos` : 'Quitado de favoritos');
 
       try {
         const deleteId = existingFav.documentId || existingFav.id;
@@ -124,24 +129,25 @@ export const FavoritesProvider = ({ children }: { children: React.ReactNode }) =
           method: 'DELETE',
           headers: { Authorization: `Bearer ${token}` },
         });
-
         if (!res.ok) throw new Error('Error al eliminar');
       } catch (error) {
-        setFavorites(prev => [...prev, existingFav]);
-        alert('Error al quitar de favoritos');
+        // Revertir si falla
+        setFavorites([...updatedFavorites, existingFav]);
+        toast.error('Error al quitar de favoritos');
       }
+
     } else {
-      // AGREGAR
+      // AGREGAR 
       const tempId = Date.now() * -1;
-      setFavorites(prev => [...prev, { id: tempId, productId }]);
+      const optimisticFavorites = [...favorites, { id: tempId, productId }];
+      setFavorites(optimisticFavorites);
+      toast.success(productName ? `"${productName}" agregado a favoritos` : 'Agregado a favoritos');
 
       try {
         const prodDocId = await getProductDocumentId(productId, token);
-        const userDocId = userData?.documentId;
+        const userDocId = userDataRef.current?.documentId;
 
-        if (!prodDocId || !userDocId) {
-          throw new Error('No se pudieron obtener los IDs necesarios');
-        }
+        if (!prodDocId || !userDocId) throw new Error('No se pudieron obtener los IDs necesarios');
 
         const res = await fetch(`${STRAPI_URL}/api/favorites`, {
           method: 'POST',
@@ -151,35 +157,40 @@ export const FavoritesProvider = ({ children }: { children: React.ReactNode }) =
           },
           body: JSON.stringify({
             data: {
-              product: prodDocId,  
+              product: prodDocId,
+              user: userDocId,
+              publishedAt: new Date(),
             },
           }),
         });
 
         if (res.ok) {
           const { data } = await res.json();
-          setFavorites(prev =>
-            prev.map(fav =>
-              fav.productId === productId
-                ? { id: data.id, documentId: data.documentId, productId }
-                : fav
-            )
-          );
+          setFavorites(optimisticFavorites.map(fav =>
+            fav.productId === productId
+              ? { id: data.id, documentId: data.documentId, productId }
+              : fav
+          ));
         } else {
           const error = await res.json();
           throw new Error(error.error?.message || 'Error al crear');
         }
       } catch (error: any) {
-        setFavorites(prev => prev.filter(fav => fav.productId !== productId));
-        alert(error.message || 'Error al agregar a favoritos');
+        // Revertir si falla
+        setFavorites(optimisticFavorites.filter(fav => fav.productId !== productId));
+        toast.error(error.message || 'Error al agregar a favoritos');
       }
     }
   };
 
   const isFavorite = (productId: number) => favorites.some(fav => fav.productId === productId);
 
+  const clearFavorites = () => {
+    setFavorites([]);
+  };
+
   return (
-    <FavoritesContext.Provider value={{ favorites, toggleFavorite, isFavorite, loading }}>
+    <FavoritesContext.Provider value={{ favorites, toggleFavorite, isFavorite, clearFavorites, loading }}>
       {children}
       <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
     </FavoritesContext.Provider>

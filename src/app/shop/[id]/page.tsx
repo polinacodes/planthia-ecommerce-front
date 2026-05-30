@@ -336,7 +336,7 @@ export default function ProductPage() {
 
               {/* BOTÓN FAVORITOS */}
               <button
-                onClick={() => toggleFavorite(product.id)}
+                onClick={() => toggleFavorite(product.id, product.name)}
                 className={`p-2 sm:p-3 lg:p-4 rounded-full cursor-pointer border transition-all duration-300 group flex-shrink-0
                     ${active
                     ? "border-planthia-dark/10 bg-transparent hover:bg-planthia-green"

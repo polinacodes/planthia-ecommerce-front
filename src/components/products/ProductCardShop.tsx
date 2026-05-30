@@ -32,7 +32,7 @@ const ProductCardShop = ({ product }: { product: Product }) => {
   const handleFavorite = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation(); 
-    await toggleFavorite(Number(product.id));
+    await toggleFavorite(Number(product.id), product.name);
   };
 
   const quantityInCart = cart

@@ -91,7 +91,7 @@ export default function WishlistPage() {
 
         {/* Encabezado */}
         <div className="border-b border-planthia-dark/10 pb-6 mb-8">
-          <h1 className="text-3xl sm:text-4xl font-manrope text-planthia-dark mb-2">
+          <h1 className="text-2xl sm:text-2xl font-manrope text-planthia-dark mb-0">
             Mi Lista de Favoritos
           </h1>
           {/* <p className="text-sm text-planthia-dark/60 ">
