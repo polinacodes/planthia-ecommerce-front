@@ -52,8 +52,7 @@ export default function WishlistPage() {
 
   const handleRemoveFavorite = async (id: any, name: string, e: React.MouseEvent) => {
     e.preventDefault();
-    await toggleFavorite(Number(id));
-    toast.error(`${name} eliminada de favoritos`);
+    await toggleFavorite(Number(id), name);
   };
 
   if (loading) {

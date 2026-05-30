@@ -69,8 +69,7 @@ function NavbarContent() {
   const handleRemoveFavorite = async (id: number, name: string, e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    await toggleFavorite(id);
-    toast.error(`${name} eliminada de favoritos`);
+    await toggleFavorite(id, name);
   };
 
   const isActive = (href: string) => {
