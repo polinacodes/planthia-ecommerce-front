@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import { getPendingDiscountCode, clearPendingDiscountCode, normalizeDiscountCode } from '@/lib/discountCode'; 
 import { useCart } from '@/hooks/useCart';
 import { useCartStockCheck } from '@/hooks/useCartStockCheck';
-import { LockKeyhole, Wallet, CreditCard } from 'lucide-react';
+import { LockKeyhole, Wallet, CreditCard, Trash2, Minus, Plus } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
@@ -84,7 +84,7 @@ const formatPrice = (value: number) => Math.round(value).toLocaleString('es-AR')
 
 // COMPONENTE PRINCIPAL
 export default function CheckoutPage() {
-  const { cart, getTotalPrice, clearCart } = useCart();
+  const { cart, getTotalPrice, clearCart, removeItem, updateQuantity } = useCart();
   // Al entrar al checkout se revisa el stock real de lo que hay en el carrito
   const { recheck } = useCartStockCheck(true);
   const soldOutItems = cart.filter((item) => (item.stock ?? 0) <= 0);
@@ -464,13 +464,48 @@ export default function CheckoutPage() {
                     <div className="w-20 h-20 rounded-xl bg-planthia-cream overflow-hidden">
                       <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
                     </div>
-                    <div className="flex-grow">
-                      <p className="font-bold">{item.name}</p>
-                      <p className="text-sm text-planthia-dark/70">Cant: {item.quantity}</p>
+                    <div className="flex-grow min-w-0">
+                      <div className="flex items-start justify-between gap-2">
+                        <p className="font-bold">{item.name}</p>
+                        <button
+                          type="button"
+                          onClick={() => removeItem(item.id)}
+                          aria-label={`Quitar ${item.name}`}
+                          className="text-planthia-dark/40 hover:text-red-700 transition-colors cursor-pointer flex-shrink-0 mt-0.5"
+                        >
+                          <Trash2 size={16} strokeWidth={1.5} />
+                        </button>
+                      </div>
+                      {item.color && (
+                        <p className="text-xs text-planthia-dark/60">Color: {item.color}</p>
+                      )}
                       {(item.stock ?? 0) <= 0 && (
                         <p className="text-xs font-bold text-red-700 mt-1">Sin stock</p>
                       )}
-                      <p className="text-planthia-green font-semibold mt-1">${formatPrice(Number(item.price))}</p>
+                      <div className="flex items-center justify-between mt-2">
+                        <div className="flex items-center border border-planthia-dark/10 rounded-full px-1.5 py-0.5">
+                          <button
+                            type="button"
+                            onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                            disabled={item.quantity <= 1}
+                            aria-label="Restar uno"
+                            className="p-1 hover:text-planthia-green transition-colors cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
+                          >
+                            <Minus size={12} />
+                          </button>
+                          <span className="text-sm font-bold px-2 min-w-[28px] text-center">{item.quantity}</span>
+                          <button
+                            type="button"
+                            onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                            disabled={!item.stock || item.quantity >= (item.stock || 0)}
+                            aria-label="Sumar uno"
+                            className="p-1 hover:text-planthia-green transition-colors cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
+                          >
+                            <Plus size={12} />
+                          </button>
+                        </div>
+                        <p className="text-planthia-green font-semibold">${formatPrice(Number(item.price))}</p>
+                      </div>
                     </div>
                   </div>
                 ))}
