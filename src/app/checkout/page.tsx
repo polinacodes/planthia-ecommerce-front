@@ -243,9 +243,9 @@ export default function CheckoutPage() {
       } else {
         // Si el cupón guardado del link ya no sirve, no se vuelve a intentar
         if (codeFromLink) clearPendingDiscountCode();
-        setDiscountError(data.message || 'Código inválido');
+        setDiscountError(data.error?.message || 'Código inválido');
         setDiscountAmount(0);
-        toast.error(data.message || 'Código inválido');
+        toast.error(data.error?.message || 'Código inválido');
       }
     } catch (error) {
       setDiscountError('Error al validar código');
