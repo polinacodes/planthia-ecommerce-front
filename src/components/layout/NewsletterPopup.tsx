@@ -29,7 +29,6 @@ export default function NewsletterPopup() {
 
     try {
       const url = `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/newsletter/subscribe`;
-      console.log('🔍 URL del fetch newsletter:', url);
       const res = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/newsletter/subscribe`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -41,7 +40,6 @@ export default function NewsletterPopup() {
       });
 
       const data = await res.json();
-      console.log('Respuesta:', data);
 
       if (res.ok) {
         toast.success('¡Suscripción exitosa! Revisá tu email.');

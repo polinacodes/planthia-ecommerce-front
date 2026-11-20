@@ -60,7 +60,6 @@ const RecommendedSection = ({ plants }: { plants: any[] }) => {
     setActiveId(activeId === plantId ? null : plantId);
   };
 
-  console.log("Plantas recibidas en RecommendedSection:", plants);
 
   return (
     <section className="pt-12 pb-12 px-4 sm:px-6 lg:px-12 max-w-[1600px] mx-auto bg-[#F7F5F0]">
