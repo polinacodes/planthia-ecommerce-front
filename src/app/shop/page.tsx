@@ -10,6 +10,17 @@ import { usePlants } from '@/hooks/usePlants';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useState, Suspense } from 'react';
 
+// Normaliza texto para comparar: minúsculas y sin tildes ("Indirecta" → "indirecta", "Fácil" → "facil")
+const normalize = (value: unknown) =>
+  String(value ?? '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+
+// En Strapi light y difficulty son texto libre: en vez de exigir el valor exacto,
+// se busca la palabra clave del filtro dentro del texto ("Luz indirecta brillante" coincide con "indirecta")
+const matchesAny = (productValue: unknown, filterValues: string[]) => {
+  const text = normalize(productValue);
+  return filterValues.some((value) => text.includes(normalize(value)));
+};
+
 const ShopPageContent = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -65,6 +76,11 @@ const ShopPageContent = () => {
     if (key === 'type') {
       params.set('type', value);
       params.delete('category');
+      // Los filtros de luz, dificultad y mascotas son solo de plantas:
+      // si quedaban activos, Insumos mostraba 0 resultados
+      params.delete('light');
+      params.delete('difficulty');
+      params.delete('petFriendly');
     } else if (value === 'todas' || !value) {
       params.delete(key);
     } else {
@@ -94,19 +110,19 @@ const ShopPageContent = () => {
           product.subcategory?.name?.toLowerCase() !== categoryQuery.toLowerCase()) return false;
         if (lightQuery) {
           const lightValues = lightQuery.split(',');
-          if (!lightValues.includes(product.metadata?.light)) return false;
+          if (!matchesAny(product.metadata?.light, lightValues)) return false;
         }
         if (petQuery && !product.metadata?.pet_friendly) return false;
         if (diffQuery) {
           const diffValues = diffQuery.split(',');
-          if (!diffValues.includes(product.metadata?.difficulty)) return false;
+          if (!matchesAny(product.metadata?.difficulty, diffValues)) return false;
         }
 
         return true;
       });
     }
-    // Ordenamiento
-    return results.sort((a, b) => {
+    // Ordenamiento (sobre una copia: sort() modifica el array y "Relevancia" ya no volvía al orden original)
+    return [...results].sort((a, b) => {
       if (sortQuery === 'precio-bajo') return (a.price || 0) - (b.price || 0);
       if (sortQuery === 'precio-alto') return (b.price || 0) - (a.price || 0);
       return 0;
@@ -135,7 +151,8 @@ const ShopPageContent = () => {
   const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
 
-  useEffect(() => { setCurrentPage(1); }, [searchQuery, categoryQuery, productsPerPage]);
+  // Volver a la página 1 cuando cambia cualquier filtro (si no, podía quedar una página vacía)
+  useEffect(() => { setCurrentPage(1); }, [searchQuery, typeQuery, categoryQuery, lightQuery, diffQuery, petQuery, sortQuery, productsPerPage]);
 
   return (
     <div className="min-h-screen bg-cream pt-24 pb-16 ">
