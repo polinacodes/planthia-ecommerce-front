@@ -23,6 +23,8 @@ export default function RegisterForm() {
       
       setToken(data.jwt);
       localStorage.setItem('user', JSON.stringify(data.user));
+      // Igual que en el login: avisa al resto del sitio (favoritos, menú) que hay sesión
+      window.dispatchEvent(new Event('user-login'));
       
       toast.success('¡Cuenta creada con éxito!');
       router.push('/account');

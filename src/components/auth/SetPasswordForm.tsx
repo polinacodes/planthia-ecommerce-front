@@ -44,7 +44,8 @@ export default function SetPasswordForm({ code }: { code: string | null }) {
       // Guardar el token y redirigir
       setToken(data.jwt);
       localStorage.setItem('user', JSON.stringify(data.user));
-      
+      window.dispatchEvent(new Event('user-login'));
+
       toast.success('¡Contraseña configurada con éxito!');
       router.push('/account');
     } catch (error) {
