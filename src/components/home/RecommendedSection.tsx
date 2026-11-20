@@ -6,13 +6,16 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import ProductCard from '../products/ProductCard';
 
+// Máximo de plantas destacadas en el carrusel de la home
+const MAX_FEATURED = 10;
+
 const RecommendedSection = ({ plants }: { plants: any[] }) => {
-  const featuredPlants = plants.slice(0, 6);
+  const featuredPlants = plants.slice(0, MAX_FEATURED);
   const [activeId, setActiveId] = useState<string | number | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [visibleCount, setVisibleCount] = useState(4);
 
-  const mobilePlants = plants.slice(0, 6);
+  const mobilePlants = plants.slice(0, MAX_FEATURED);
 
   useEffect(() => {
     const handleClickOutside = () => {
