@@ -87,6 +87,9 @@ export default function RegisterForm() {
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
+            // Fuera del orden de Tab: así Tab pasa al campo siguiente
+            tabIndex={-1}
+            aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
             className="absolute right-4 top-1/2 -translate-y-1/2 text-planthia-dark/20 hover:text-planthia-green cursor-pointer transition-colors"
           >
             {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}

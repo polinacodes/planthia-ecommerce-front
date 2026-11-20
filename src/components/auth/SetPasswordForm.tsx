@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { Eye, EyeOff, Check, ArrowRight } from 'lucide-react';
-import { resetPassword, setToken } from '@/lib/auth';
+import { resetPassword, setToken, checkResetCode } from '@/lib/auth';
 
 export default function SetPasswordForm({ code }: { code: string | null }) {
   const router = useRouter();
@@ -14,6 +14,18 @@ export default function SetPasswordForm({ code }: { code: string | null }) {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [strength, setStrength] = useState(0);
+
+  // Apenas se abre la página se revisa el link: si venció o ya se usó,
+  // se avisa y se lleva a pedir uno nuevo (antes recién se enteraba al enviar)
+  useEffect(() => {
+    if (!code) return;
+    checkResetCode(code).then((valid) => {
+      if (!valid) {
+        toast.error('El link venció o ya se usó. Pedí uno nuevo.');
+        router.replace('/forgot-password');
+      }
+    });
+  }, [code, router]);
 
   useEffect(() => {
     const requirements = {
@@ -87,6 +99,9 @@ export default function SetPasswordForm({ code }: { code: string | null }) {
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
+              // Fuera del orden de Tab: así Tab pasa al campo siguiente
+              tabIndex={-1}
+              aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
               className="absolute right-4 top-1/2 -translate-y-1/2 text-planthia-dark/20 hover:text-planthia-green transition-colors"
             >
               {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}

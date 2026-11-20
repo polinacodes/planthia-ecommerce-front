@@ -53,6 +53,18 @@ export interface UserData {
 // AUTENTICACIÓN 
 // ==============
 
+/** ¿El link para crear o cambiar la contraseña sigue sirviendo? */
+export async function checkResetCode(code: string): Promise<boolean> {
+  try {
+    const res = await fetch(`${STRAPI_URL}/api/auth/reset-code-status?code=${encodeURIComponent(code)}`);
+    if (!res.ok) return true; // si no se puede verificar, se deja intentar igual
+    const data = await res.json();
+    return data.valid === true;
+  } catch {
+    return true;
+  }
+}
+
 export async function register(input: RegisterInput): Promise<AuthResponse> {
   const res = await fetch(`${STRAPI_URL}/api/auth/custom-register`, {
     method: 'POST',
