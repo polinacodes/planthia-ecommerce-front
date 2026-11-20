@@ -3,6 +3,7 @@
 import { useState, useEffect, useMemo, Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import Logo from "./Logo";
 import { usePathname, useSearchParams } from "next/navigation";
 import { ShoppingCart, User, LogOut, Settings, Menu, X, Heart, Trash2 } from "lucide-react";
 import SearchBar from "./SearchBar";
@@ -95,8 +96,8 @@ function NavbarContent() {
             >
               <Menu size={24} />
             </button>
-            <Link href="/" className="hidden md:block text-2xl font-headline font-extrabold text-planthia-dark">
-              Planthia<span className="text-planthia-green">.</span>
+            <Link href="/" className="hidden md:block text-planthia-dark" aria-label="Planthia, ir al inicio">
+              <Logo className="h-8 w-auto" />
             </Link>
           </div>
 
@@ -296,7 +297,7 @@ function NavbarContent() {
               {/* Logo */}
               <div className="flex justify-between items-start mb-10">
                 <div className="flex flex-col">
-                  <span className="text-3xl font-headline font-extrabold leading-none">Planthia<span className="text-planthia-cream/50">.</span></span>
+                  <Logo className="h-10 w-auto" symbolColor="currentColor" />
                 </div>
                 <button onClick={() => setIsMobileMenuOpen(false)} className=" hover:bg-white/20 transition-colors">
                   <X size={24} />
