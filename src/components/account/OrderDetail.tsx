@@ -12,7 +12,9 @@ import {
   ShoppingBag,
   MapPin,
   CreditCard,
-  Loader2
+  Loader2,
+  Clock,
+  XCircle
 } from 'lucide-react';
 
 export interface OrderItem {
@@ -29,6 +31,16 @@ export interface OrderData {
   total: number;
   subtotal: number;
   shipping_cost: number;
+  discount_amount?: number | null;
+  discount_code?: string | null;
+  // Datos de envío guardados en el pedido (los del perfil pueden cambiar después)
+  first_name?: string | null;
+  last_name?: string | null;
+  phone?: string | null;
+  address?: string | null;
+  city?: string | null;
+  zip_code?: string | null;
+  customer_email?: string | null;
   order_status: 'pending' | 'paid' | 'shipped' | 'delivered' | 'failure';
   items: OrderItem[];
   payment_id: string;
@@ -56,6 +68,8 @@ const getStepIndex = (status: string) => {
     case 'paid': return 1;
     case 'shipped': return 2;
     case 'delivered': return 3;
+    case 'pending': return -1;  // todavía no se pagó: ningún paso marcado
+    case 'failure': return -1;  // pago no completado: ningún paso marcado
     default: return 0;
   }
 };
@@ -73,6 +87,20 @@ export default function OrderDetail({ order, user, onBack, onBuyAgain }: OrderDe
   const [isProcessing, setIsProcessing] = useState(false);
 
   const formatPrice = (value: number) => Math.round(value).toLocaleString('es-AR');
+
+  // Si el pedido tiene sus propios datos de envío se usan esos; si no (pedidos viejos), los del perfil
+  const shipping = order.address
+    ? {
+        first_name: order.first_name,
+        last_name: order.last_name,
+        address: order.address,
+        city: order.city,
+        zip_code: order.zip_code,
+        phone: order.phone,
+        email: order.customer_email || user?.email,
+      }
+    : user;
+  const discount = Number(order.discount_amount) || 0;
 
   const handleLocalBuyAgain = async () => {
     if (isProcessing) return;
@@ -100,7 +128,7 @@ export default function OrderDetail({ order, user, onBack, onBuyAgain }: OrderDe
         </button>
         <div className="text-left sm:text-right">
           <p className="text-[12px] font-bold uppercase tracking-widest text-planthia-green">
-            Pedido #PL-{order.payment_id ? order.payment_id.slice(-4).toUpperCase() : order.id}
+            Pedido #PL-{order.id}
           </p>
           <p className="text-xs text-planthia-dark/60 flex items-center gap-1 sm:justify-end mt-1">
             <Calendar size={14} />
@@ -122,6 +150,32 @@ export default function OrderDetail({ order, user, onBack, onBuyAgain }: OrderDe
         </div>
       )}
 
+      {/* Banner si el pago todavía no se confirmó */}
+      {order.order_status === 'pending' && (
+        <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 flex items-center gap-4 text-amber-800">
+          <div className="bg-amber-100 text-amber-800 p-2.5 rounded-xl">
+            <Clock size={20} />
+          </div>
+          <div>
+            <h5 className="font-bold text-sm">Esperando la confirmación del pago</h5>
+            <p className="text-xs text-planthia-dark/70 mt-0.5">Cuando se acredite, el pedido pasa a preparación.</p>
+          </div>
+        </div>
+      )}
+
+      {/* Banner si el pago no se completó */}
+      {order.order_status === 'failure' && (
+        <div className="bg-red-50 border border-red-200 rounded-2xl p-4 flex items-center gap-4 text-red-600">
+          <div className="bg-red-100 text-red-600 p-2.5 rounded-xl">
+            <XCircle size={20} />
+          </div>
+          <div>
+            <h5 className="font-bold text-sm">El pago no se completó</h5>
+            <p className="text-xs text-planthia-dark/70 mt-0.5">No se realizó ningún cobro. Podés volver a comprar desde la tienda.</p>
+          </div>
+        </div>
+      )}
+
       {/* Línea de Progreso Dinámica */}
       <div className="bg-planthia-ice/40 border border-planthia-dark/5 rounded-3xl p-4 sm:p-6 lg:p-8 overflow-hidden">
         <div className="relative flex justify-between items-start max-w-3xl mx-auto">
@@ -130,7 +184,7 @@ export default function OrderDetail({ order, user, onBack, onBuyAgain }: OrderDe
             <motion.div
               className="absolute left-0 top-0 h-full bg-planthia-green rounded-full"
               initial={{ width: "0%" }}
-              animate={{ width: `${(currentStep / (steps.length - 1)) * 100}%` }}
+              animate={{ width: `${(Math.max(currentStep, 0) / (steps.length - 1)) * 100}%` }}
               transition={{ duration: 1.2, ease: "easeInOut" }}
             />
           </div>
@@ -257,12 +311,12 @@ export default function OrderDetail({ order, user, onBack, onBuyAgain }: OrderDe
             </h4>
             <div className="text-xs space-y-2 text-planthia-dark/80">
               <p className="font-bold text-planthia-dark capitalize">
-                {user?.first_name || user?.last_name ? `${user.first_name || ''} ${user.last_name || ''}` : 'Cliente Planthia'}
+                {shipping?.first_name || shipping?.last_name ? `${shipping.first_name || ''} ${shipping.last_name || ''}` : 'Cliente Planthia'}
               </p>
-              <p className="capitalize leading-relaxed">{user?.address || 'Dirección no especificada'}</p>
-              <p className="capitalize">{user?.city ? `${user.city}` : ''} {user?.zip_code ? `(${user.zip_code})` : ''}</p>
-              {user?.phone && <p className="text-planthia-dark/60 pt-1">Tel: {user.phone}</p>}
-              <p className="text-planthia-dark/60">Email: {user?.email}</p>
+              <p className="capitalize leading-relaxed">{shipping?.address || 'Dirección no especificada'}</p>
+              <p className="capitalize">{shipping?.city ? `${shipping.city}` : ''} {shipping?.zip_code ? `(${shipping.zip_code})` : ''}</p>
+              {shipping?.phone && <p className="text-planthia-dark/60 pt-1">Tel: {shipping.phone}</p>}
+              <p className="text-planthia-dark/60">Email: {shipping?.email}</p>
             </div>
           </div>
 
@@ -275,6 +329,12 @@ export default function OrderDetail({ order, user, onBack, onBuyAgain }: OrderDe
               <span>Subtotal</span>
               <span>${formatPrice(Number(order.subtotal || order.total - (order.shipping_cost || 0)))}</span>
             </div>
+            {discount > 0 && (
+              <div className="flex justify-between text-xs text-planthia-green">
+                <span>Descuento</span>
+                <span>-${formatPrice(discount)}</span>
+              </div>
+            )}
             <div className="flex justify-between text-xs text-planthia-dark/70">
               <span>Costo de envío</span>
               <span>{order.shipping_cost > 0 ? `$${formatPrice(Number(order.shipping_cost))}` : 'Gratis'}</span>

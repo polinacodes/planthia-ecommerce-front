@@ -27,7 +27,7 @@ const statusConfig = {
   paid: { label: 'Pagado', styles: 'bg-blue-100 text-blue-800' },
   shipped: { label: 'En camino', styles: 'bg-planthia-light-green/20 text-planthia-green' },
   delivered: { label: 'Entregado', styles: 'bg-planthia-dark/5 text-planthia-dark/70' },
-  failure: { label: 'Fallido', styles: 'bg-red-100 text-red-600' },
+  failure: { label: 'Cancelado', styles: 'bg-red-100 text-red-600' },
 };
 
 export default function OrdersSection({ orders, user }: OrdersSectionProps) {
@@ -175,7 +175,7 @@ export default function OrdersSection({ orders, user }: OrdersSectionProps) {
                       </div>
                       <div>
                         <p className="text-[10px] font-bold uppercase tracking-widest text-planthia-dark/40 mb-1">
-                          Pedido #PL-{order.payment_id ? order.payment_id.slice(-4).toUpperCase() : order.id}
+                          Pedido #PL-{order.id}
                         </p>
                         <h4 className="font-headline text-lg font-bold text-planthia-dark">
                           {firstItem?.name || "Pedido Especial"} {extraItemsCount > 0 ? ' y otros' : ''}
