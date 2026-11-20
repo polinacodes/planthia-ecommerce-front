@@ -1,11 +1,22 @@
 //src/components/home/Hero.tsx
 "use client";
 import { useRouter } from 'next/navigation';
-import { Star } from "lucide-react";
+import { Star, Leaf } from "lucide-react";
 import Image from "next/image";
+import { motion, useReducedMotion } from "framer-motion";
+import Logo from "@/components/layout/Logo";
+
+// Íconos sobre el círculo exterior (ángulo en grados, 0 = derecha, 90 = abajo)
+const ORBIT_ICONS = [
+  { angle: -45, kind: "flor" },
+  { angle: 45, kind: "hoja" },
+  { angle: 135, kind: "flor" },
+  { angle: 225, kind: "hoja" },
+] as const;
 
 export default function Hero() {
   const router = useRouter();
+  const reduceMotion = useReducedMotion();
 
   return (
     // <section className="relative bg-white py-20 px-6 md:px-12">
@@ -39,56 +50,71 @@ export default function Hero() {
       </div>
 
       {/* Contenido Derecho */}
-      <div className="col-span-12 lg:col-span-7 relative h-auto lg:h-full min-h-[550px] sm:min-h-[650px] md:min-h-[860px] lg:min-h-[700px] xl:min-h-[700px] 2xl:min-h-[850px] order-first lg:order-last max-[1366px]:order-first">
+      {/* Todo vive dentro de un "escenario" cuadrado: círculos, planta, íconos y card
+          se posicionan en % del escenario, así quedan alineados en cualquier pantalla
+          y solo hay que cambiar el ancho del escenario por breakpoint. */}
+      <div className="col-span-12 lg:col-span-7 order-first lg:order-last max-[1366px]:order-first flex justify-center pt-16 sm:pt-20 lg:pt-24 pb-6">
+        <div className="relative aspect-square w-[min(84vw,420px)] sm:w-[480px] lg:w-[min(100%,500px)] xl:w-[540px] 2xl:w-[680px]">
 
-        {/* CONTENEDOR DE CÍRCULOS */}
-        {/* <div className="absolute 
-             top-[36%] md:top-[40%] lg:top-1/2 max-[1366px]:top-[40%] 
-              right-0 lg:right-[-10%] 2xl:right-[-60%]
-             -translate-x-1/2 lg:translate-x-[0%] 2xl:-translate-x-[60%] max-[1366px]:-translate-x-1/2 
-             -translate-y-60 lg:-translate-y-[70%] xl:-translate-y-[60%] 2xl:-translate-y-[60%]
-             w-[90vw] h-[90vw] 
-             min-[400px]:w-[400px] min-[400px]:h-[400px] 
-             sm:w-[500px] sm:h-[500px] 
-             lg:w-[500px] lg:h-[500px] 
-             2xl:w-[820px] 2xl:h-[820px]
-             z-0 flex items-center justify-center"> */}
-          {/* Círculo Exterior */}
-          {/* <div className="absolute inset-0 border-[4px] sm:border-[6px] border-white rounded-full shadow-md"></div> */}
-          {/* Círculo Interior */}
-          {/* <div className="relative w-[92%] h-[92%] bg-white rounded-full shadow-md border border-[#F6F6F6]"></div>
-        </div> */}
+          {/* Círculo exterior */}
+          <div className="absolute inset-0 rounded-full border-[4px] sm:border-[6px] border-white shadow-md" />
+          {/* Círculo interior */}
+          <div className="absolute inset-[5%] rounded-full bg-white shadow-md border border-planthia-cream" />
 
-        {/* CONTENEDOR DE PLANTA */}
-        <div className="absolute 
-             -translate-y-6 lg:translate-y-0 2xl:-translate-y-40
-             -top-52 sm:-top-40 lg:-top-40 max-[1366px]:-top-28 
-             -left-0 -right-0 sm:-left-6 sm:-right-6 md:left-0 md:right-0 lg:left-10 lg:right-auto xl:left-14 xl:right-auto 2xl:left-14 2xl:right-auto max-[1366px]:left-0 max-[1366px]:right-0  
-             z-10 w-auto md:w-full 
-             h-[120%] lg:h-[120%] xl:h-[140%] 2xl:h-[160%] 
-             flex items-start justify-center lg:justify-start max-[1366px]:justify-center z-10">
-          <div className="relative w-full lg:w-[110%] max-[1366px]:w-full h-full">
+          {/* Íconos que giran sobre el círculo exterior */}
+          <motion.div
+            className="absolute inset-0 z-20 pointer-events-none"
+            animate={reduceMotion ? undefined : { rotate: 360 }}
+            transition={{ duration: 40, ease: "linear", repeat: Infinity }}
+          >
+            {ORBIT_ICONS.map(({ angle, kind }) => {
+              const rad = (angle * Math.PI) / 180;
+              return (
+                <div
+                  key={angle}
+                  className="absolute -translate-x-1/2 -translate-y-1/2"
+                  style={{ left: `${50 + 50 * Math.cos(rad)}%`, top: `${50 + 50 * Math.sin(rad)}%` }}
+                >
+                  {/* Gira al revés para que el ícono quede siempre derecho */}
+                  <motion.div
+                    className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 2xl:w-14 2xl:h-14 rounded-full bg-white shadow-md text-planthia-green"
+                    animate={reduceMotion ? undefined : { rotate: -360 }}
+                    transition={{ duration: 40, ease: "linear", repeat: Infinity }}
+                  >
+                    {kind === "flor" ? (
+                      <Logo symbolOnly className="w-6 h-6 sm:w-7 sm:h-7 2xl:w-8 2xl:h-8" />
+                    ) : (
+                      <Leaf className="w-5 h-5 sm:w-6 sm:h-6 2xl:w-7 2xl:h-7" />
+                    )}
+                  </motion.div>
+                </div>
+              );
+            })}
+          </motion.div>
+
+          {/* Planta: centrada en el escenario; las sogas salen por arriba del círculo */}
+          <div className="absolute z-10 left-[10%] w-[80%] -top-[14%] aspect-[1086/1448]">
             <Image
               src="/heroo.webp"
               alt="Marble Queen Pothos Planthia"
               fill
               priority
-              className="object-cover object-top transition-transform duration-700 ease-out hover:scale-110"
-              sizes="(max-width: 640px) 100vw, (max-width: 1200px) 100vw, 80vw"
+              className="object-contain transition-transform duration-700 ease-out hover:scale-105"
+              sizes="(max-width: 640px) 70vw, (max-width: 1024px) 400px, 560px"
             />
           </div>
 
           {/* CARD */}
-          <div className="absolute bottom-40 sm:bottom-40 md:bottom-80 lg:bottom-60 xl:bottom-90 2xl:bottom-120 left-4 sm:left-10 md:left-20 lg:left-0 xl:left-10 z-20
+          <div className="absolute z-30 left-0 sm:-left-[4%] bottom-[18%]
               bg-white/60
               backdrop-blur-md
               border border-white/80
-              p-4 sm:p-3 md:p-4 lg:p-3 xl:p-4 rounded-xl
+              p-3 sm:p-4 rounded-xl
               flex items-center gap-3 sm:gap-4
-              max-w-[260px] sm:max-w-[300px] lg:max-w-[300px] xl:max-w-[400px] 2xl:max-w-[450px]
+              max-w-[260px] sm:max-w-[300px]
               shadow-[0_12px_40px_0_rgba(0,0,0,0.06)]">
 
-            <div className="bg-white p-2 sm:p-2 lg:p-2 xl:p-2 rounded-xl shadow-sm flex-shrink-0">
+            <div className="bg-white p-2 rounded-xl shadow-sm flex-shrink-0">
               <Star className="w-5 h-5 sm:w-6 sm:h-6 text-planthia-green fill-planthia-green" />
             </div>
 
