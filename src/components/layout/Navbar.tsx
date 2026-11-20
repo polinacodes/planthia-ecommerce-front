@@ -297,7 +297,7 @@ function NavbarContent() {
               {/* Logo */}
               <div className="flex justify-between items-start mb-10">
                 <div className="flex flex-col">
-                  <Logo className="h-10 w-auto" symbolColor="currentColor" />
+                  <Logo className="h-8 w-auto" symbolColor="currentColor" />
                 </div>
                 <button onClick={() => setIsMobileMenuOpen(false)} className=" hover:bg-white/20 transition-colors">
                   <X size={24} />

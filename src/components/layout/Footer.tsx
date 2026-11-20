@@ -27,7 +27,7 @@ const Footer = () => {
         <div className="flex flex-col md:items-start items-center mb-6">
           <Link href="/" onClick={handleLogoClick} className="hover:opacity-80 transition-opacity">
             <h2 className="text-[#F7F5F0]">
-              <Logo className="h-10 w-auto" symbolColor="currentColor" />
+              <Logo className="h-8 w-auto" symbolColor="currentColor" />
             </h2>
           </Link>
         </div>
