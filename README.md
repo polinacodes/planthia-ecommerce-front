@@ -19,7 +19,7 @@ Este repositorio contiene el código fuente del frontend de Planthia, una plataf
 ## Características Principales
 
 * Autenticación Completa: Flujos de inicio de sesión, registro, recuperación y restablecimiento de contraseñas integrados directamente en la experiencia de usuario.
-* Doble Pasarela de Pagos: Implementación unificada en el proceso de Checkout que permite procesar transacciones mediante Mercado Pago (utilizando Bricks de integración) y PayPal.
+* Doble Pasarela de Pagos: Checkout unificado con Mercado Pago (Checkout Pro) y PayPal. El backend recalcula precios y total, confirma cada pago con la pasarela (webhooks y captura de PayPal) y descuenta stock una sola vez.
 * Catálogo y Lista de Deseos: Navegación por la tienda con capacidades para añadir productos al carrito y gestionar una lista de favoritos (Wishlist) vinculada a la sesión del usuario.
 * Gestión de Cuenta: Panel dedicado donde el usuario puede administrar su información personal y revisar el estado de sus pedidos.
 
@@ -27,21 +27,17 @@ Este repositorio contiene el código fuente del frontend de Planthia, una plataf
 
 ## Estructura de Carpetas
 
-La arquitectura del proyecto sigue las convenciones del App Router de Next.js, reflejada en la estructura de archivos visible en imagen_250.png, organizando los componentes por dominio y responsabilidad técnica:
+La arquitectura del proyecto sigue las convenciones del App Router de Next.js, organizando los componentes por dominio y responsabilidad técnica:
 
 ```text
 ├── src/
 │   ├── app/                        # Rutas y páginas de la aplicación
 │   │   ├── account/                # Panel de control del usuario autenticado
-│   │   ├── api/
-│   │   │   └── products/
-│   │   │       └── route.ts        # Handlers de rutas de API internas
 │   │   ├── checkout/
 │   │   │   └── page.tsx            # Formulario y proceso de pago unificado
 │   │   ├── forgot-password/        # Formulario de recuperación de credenciales
 │   │   ├── login/                  # Página de acceso
 │   │   ├── payment-status/         # Confirmación y estado del procesamiento del pago
-│   │   ├── payment-waiting/        # Pantalla intermedia de validación de transacciones
 │   │   ├── register/               # Formulario de alta de nuevos usuarios
 │   │   ├── set-password/           # Configuración de nueva contraseña
 │   │   ├── shop/                   # Vista principal del catálogo de productos
@@ -59,7 +55,7 @@ La arquitectura del proyecto sigue las convenciones del App Router de Next.js, r
 │   │   ├── products/               # Elementos del catálogo (tarjetas, grillas, detalles)
 │   │   ├── shop/                   # Filtros y elementos de la interfaz de la tienda
 │   │   ├── AuthModal.tsx           # Modal unificado para control de acceso de usuarios
-│   │   └── PaymentBrick.tsx        # Componente de interfaz para la pasarela de Mercado Pago
+│   │   └── DiscountFromUrl.tsx     # Guarda el cupón que llega por link (?cupon=)
 │   ├── context/                    # Contextos globales de React (Carrito, Sesión)
 │   ├── hooks/                      # Custom hooks para encapsular lógica reutilizable
 │   └── lib/                        # Clientes de configuración y utilidades de terceros
@@ -84,24 +80,23 @@ git clone https://github.com/polinacodes/planthia-ecommerce-front.git
 
 ### 2. Instalar dependencias
 
+El proyecto usa pnpm (si no lo tenés: `npm install -g pnpm`).
+
 Bash
 
 ```
-npm install
+pnpm install
 
 ```
 
 ### 3. Configurar variables de entorno
 
-Crea un archivo `.env.local` en la raíz de la carpeta `frontend/` y añade los siguientes parámetros con tus credenciales de desarrollo correspondientes:
+Crea un archivo `.env.local` en la raíz de la carpeta `frontend/` con la URL del backend. Las credenciales de Mercado Pago y PayPal viven solo en el backend:
 
 Fragmento de código
 
 ```
 NEXT_PUBLIC_STRAPI_URL=http://localhost:1337
-STRAPI_API_TOKEN=tu_strapi_api_token_aqui
-NEXT_PUBLIC_MERCADOPAGO_PUBLIC_KEY=tu_mercadopago_public_key_aqui
-NEXT_PUBLIC_PAYPAL_CLIENT_ID=tu_paypal_client_id_aqui
 
 ```
 
@@ -110,7 +105,7 @@ NEXT_PUBLIC_PAYPAL_CLIENT_ID=tu_paypal_client_id_aqui
 Bash
 
 ```
-npm run dev
+pnpm dev
 
 ```
 
@@ -118,7 +113,7 @@ El servidor web se levantará en http://localhost:3000.
 
 ## Entorno de Pruebas (Sandbox) y Credenciales de Checkout
 
-Para validar y probar el correcto funcionamiento del flujo de pagos en el Checkout sin incurrir en transacciones reales, se habilitaron entornos de prueba con las siguientes cuentas de testing:
+La tienda es una demo: los pagos funcionan en modo sandbox y **no se cobra dinero real**. Para probar el checkout completo, usá estas cuentas de prueba:
 
 ### Sandbox de PayPal
 
@@ -131,7 +126,7 @@ Utilizar estas credenciales al redirigir al flujo de autorización de PayPal:
 
 ### Sandbox de Mercado Pago
 
-Utilizar estas credenciales de usuario de prueba dentro del formulario de procesamiento integrado:
+Utilizar estas credenciales de usuario de prueba al ser redirigido a Mercado Pago (conviene abrirlo en una ventana de incógnito):
 
 -   Usuario: TESTUSER2694367433021786755
     
