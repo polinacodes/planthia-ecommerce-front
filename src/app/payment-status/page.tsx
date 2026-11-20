@@ -29,9 +29,20 @@ function PaymentStatusContent() {
   const handled = useRef(false);
 
   useEffect(() => {
-    if (urlStatus === 'failure' || urlStatus === 'pending') return;
     if (handled.current) return;
     handled.current = true;
+
+    // Canceló en PayPal: avisamos al backend para que el pedido quede cancelado
+    if (urlStatus === 'failure' && paypalToken) {
+      fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/paypal/cancel`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId, token: paypalToken }),
+      }).catch((error) => console.error('Error cancelando el pedido:', error));
+      return;
+    }
+
+    if (urlStatus === 'failure' || urlStatus === 'pending') return;
 
     // Mercado Pago: el pago ya lo confirma el webhook en el backend
     if (!paypalToken) {
