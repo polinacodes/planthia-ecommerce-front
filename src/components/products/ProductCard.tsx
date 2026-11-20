@@ -134,9 +134,13 @@ const ProductCard = ({ plant, isActive, onClick }: ProductCardProps) => {
           <Image
             src={plant.image}
             alt={plant.name}
-            width={110}
-            height={110}
-            className="object-contain sm:w-[120px] lg:w-[140px]"
+            // Se pide una versión grande (Next sirve 384 px o 640 px en pantallas retina)
+            // porque al activarse la imagen se agranda hasta ~2x con scale.
+            // El tamaño en pantalla lo fijan las clases w-[...]
+            width={300}
+            height={300}
+            quality={90}
+            className="object-contain w-[110px] h-auto sm:w-[120px] lg:w-[140px]"
             priority={isActive}
           />
         </motion.div>
