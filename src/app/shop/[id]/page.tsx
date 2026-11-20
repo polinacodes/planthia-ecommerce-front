@@ -188,7 +188,7 @@ export default function ProductPage() {
             href={`/shop?type=${product.type}`}
             className="hover:text-planthia-green transition-colors whitespace-nowrap"
           >
-            {product.type === 'plantas' ? 'Plantas' : 'Cuidados'}
+            {product.type === 'plantas' ? 'Plantas' : 'Insumos'}
           </Link>
           <span className="text-planthia-dark/30">/</span>
           <Link

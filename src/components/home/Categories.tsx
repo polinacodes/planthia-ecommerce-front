@@ -6,7 +6,7 @@ const categories = [
   { title: "Interior", img: "/interior.webp", link: "/shop?type=plantas&category=interior" },
   { title: "Exterior", img: "/exterior-2.webp", link: "/shop?type=plantas&category=exterior" },
   { title: "Aromáticas", img: "/aromaticas.webp", link: "/shop?type=plantas&category=aromaticas" },
-  { title: "Cuidados", img: "/cuidados.webp", link: "/shop?type=cuidados" },
+  { title: "Insumos", img: "/cuidados.webp", link: "/shop?type=cuidados" },
 ];
 
 export default function Categories() {
@@ -14,12 +14,16 @@ export default function Categories() {
     <section className="bg-cream pt-16 sm:pt-20 xl:pt-24 pb-20 xl:pb-24 px-4 sm:px-6 lg:px-12 max-w-[1600px] mx-auto relative z-0">
       
       {/* Encabezado */}
-      <div className="mb-16"> 
-        <h2 className="text-3xl xl:text-4xl font-extrabold text-[#1A1A1A] tracking-tight">
-          Nuestras colecciones
+      {/* Mismo sistema que el hero: etiqueta chica + título en Manrope + párrafo en gris oscuro */}
+      <div className="mb-12 lg:mb-16">
+        <span className="font-headline font-bold tracking-[0.2em] text-xs text-planthia-dark mb-3 block uppercase">
+          #TuJunglaUrbana
+        </span>
+        <h2 className="font-headline font-extrabold text-3xl sm:text-4xl xl:text-5xl leading-[1.1] text-planthia-dark">
+          Explorá por categoría
         </h2>
-        <p className="text-gray-400 mt-3 text-lg font-medium">
-          Seleccionadas para transformar cada rincón.
+        <p className="font-body text-planthia-dark/60 mt-3 text-base sm:text-lg max-w-xl leading-relaxed">
+          Plantas para cada rincón y todo lo que necesitan para crecer.
         </p>
       </div>
 

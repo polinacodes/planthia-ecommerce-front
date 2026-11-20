@@ -109,7 +109,7 @@ function NavbarContent() {
               Plantas
             </Link>
             <Link href="/shop?type=cuidados" className={`${isActive("/shop?type=cuidados") ? "text-planthia-green" : "hover:text-planthia-green"} transition-colors`}>
-              Cuidados
+              Insumos
             </Link>
           </div>
 
@@ -309,7 +309,7 @@ function NavbarContent() {
 
                 <Link href="/" className="hover:opacity-80 transition-opacity">Inicio</Link>
                 <Link href="/shop?type=plantas" className="hover:opacity-80 transition-opacity">Plantas</Link>
-                <Link href="/shop?type=cuidados" className="hover:opacity-80 transition-opacity">Cuidados</Link>
+                <Link href="/shop?type=cuidados" className="hover:opacity-80 transition-opacity">Insumos</Link>
 
                 <div className="h-px bg-planthia-cream/20 my-2" />
 

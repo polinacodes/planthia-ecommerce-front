@@ -29,7 +29,7 @@ const TypeSelector = ({ typeQuery, searchQuery, onTypeChange }: TypeSelectorProp
               : 'bg-white text-gray-500 border-gray-200 hover:border-[#5B823B] hover:text-[#5B823B]'
           }`}
       >
-        Cuidados
+        Insumos
       </button>
     </div>
   );
