@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Eye, Heart } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -8,6 +8,33 @@ import { motion } from 'framer-motion';
 import { useCart, isCartItemOfProduct } from '@/hooks/useCart';
 import { useFavorites } from '@/context/FavoritesContext';
 import { toast } from 'sonner';
+
+// Resorte suave para el movimiento de la imagen
+const SPRING = { type: "spring", stiffness: 260, damping: 30, mass: 0.9 } as const;
+
+// Breakpoint actual (para elegir cuánto se agranda la imagen)
+function useBreakpoint() {
+  const [bp, setBp] = useState<'base' | 'sm' | 'lg'>('base');
+  useEffect(() => {
+    const sm = window.matchMedia('(min-width: 640px)');
+    const lg = window.matchMedia('(min-width: 1024px)');
+    const update = () => setBp(lg.matches ? 'lg' : sm.matches ? 'sm' : 'base');
+    update();
+    sm.addEventListener('change', update);
+    lg.addEventListener('change', update);
+    return () => {
+      sm.removeEventListener('change', update);
+      lg.removeEventListener('change', update);
+    };
+  }, []);
+  return bp;
+}
+
+// Escala de la imagen según estado y pantalla (mismo tamaño visual que antes)
+const IMAGE_SCALE = {
+  active: { base: 1.3, sm: 1.34, lg: 1.94 },
+  inactive: { base: 0.9, sm: 1, lg: 1 },
+} as const;
 
 interface ProductCardProps {
   plant: any;
@@ -18,6 +45,8 @@ interface ProductCardProps {
 const ProductCard = ({ plant, isActive, onClick }: ProductCardProps) => {
   const { addItem, openCart, cart } = useCart();
   const { toggleFavorite, isFavorite } = useFavorites();
+  const bp = useBreakpoint();
+  const imageScale = IMAGE_SCALE[isActive ? 'active' : 'inactive'][bp];
 
   const favoriteActive = useMemo(() => {
     return isFavorite(plant.documentId);
@@ -55,22 +84,18 @@ const ProductCard = ({ plant, isActive, onClick }: ProductCardProps) => {
     }
   };
 
+  // Curva de animación compartida: arranca rápido y frena suave
+  const EASE = 'ease-[cubic-bezier(0.22,1,0.36,1)]';
+
   return (
-    <motion.div
+    <div
       onClick={onClick}
-      layout
-      transition={{
-        type: "spring",
-        stiffness: 400,
-        damping: 30,
-        mass: 0.8
-      }}
-      className={`relative cursor-pointer rounded-3xl p-4 sm:p-5 lg:p-6 group flex items-center ${isActive
+      className={`relative cursor-pointer rounded-3xl p-4 sm:p-5 lg:p-6 group flex items-center
+        transition-[background-color,color,box-shadow,height,min-height,scale,translate] duration-500 ${EASE}
+        ${isActive
         ? 'bg-[#5B823B] text-white lg:scale-105 z-20 shadow-lg sm:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.4)] lg:shadow-[0_35px_60px_-15px_rgba(0,0,0,0.5)] min-h-[180px] sm:min-h-[200px] lg:h-[240px]'
-        : 'bg-white text-gray-800 shadow-sm border border-gray-100 hover:shadow-lg min-h-[160px] sm:min-h-[180px] lg:h-[220px] z-10'
-        } ${!isActive && 'overflow-hidden'}`}
-      whileHover={!isActive ? { scale: 1.02, y: -2 } : {}}
-      whileTap={!isActive ? { scale: 0.98 } : {}}
+        : 'bg-white text-gray-800 shadow-sm border border-gray-100 hover:shadow-lg hover:scale-[1.02] hover:-translate-y-0.5 active:scale-[0.98] min-h-[160px] sm:min-h-[180px] lg:h-[220px] z-10 overflow-hidden'
+        }`}
     >
       {/* Icono Favorito */}
       <motion.button
@@ -94,95 +119,86 @@ const ProductCard = ({ plant, isActive, onClick }: ProductCardProps) => {
 
       {/* Contenedor principal */}
       <div className="flex items-center gap-3 sm:gap-4 h-full relative w-full">
+        {/* Imagen: siempre del mismo tamaño; al activarse solo cambia de lugar (layout="position")
+            y se agranda con scale, así framer no tiene que deformarla y la animación es fluida */}
         <motion.div
-          layout
-          transition={{
-            type: "spring",
-            stiffness: 400,
-            damping: 30,
-            mass: 0.8
-          }}
-          className={`z-20 flex-shrink-0 flex justify-center ${isActive
-            ? 'lg:absolute lg:-top-8 lg:-left-12 lg:scale-[1.7] scale-110 sm:scale-115'
-            : 'relative scale-90 sm:scale-100 -translate-x-2 sm:-translate-x-4'
+          layout="position"
+          initial={false}
+          animate={{ scale: imageScale }}
+          transition={SPRING}
+          className={`z-20 flex-shrink-0 flex justify-center transition-[translate] duration-500 ${EASE} ${isActive
+            ? 'mx-2.5 lg:mx-0 lg:absolute lg:-top-[22px] lg:-left-[38px]'
+            : 'relative -translate-x-2 sm:-translate-x-4'
             }`}
         >
           <Image
             src={plant.image}
             alt={plant.name}
-            width={isActive ? 130 : 110}
-            height={isActive ? 130 : 110}
-            className={`object-contain ${isActive ? 'sm:w-[140px] lg:w-[160px]' : 'sm:w-[120px] lg:w-[140px]'}`}
+            width={110}
+            height={110}
+            className="object-contain sm:w-[120px] lg:w-[140px]"
             priority={isActive}
           />
         </motion.div>
 
         {/* Lado Derecho: Información */}
-        <div className={`flex-1 z-10 transition-all duration-300 ${isActive ? 'lg:ml-36' : ''
+        {/* layout="position": el texto se desliza junto con la imagen en vez de saltar */}
+        <motion.div layout="position" transition={SPRING} className={`flex-1 min-w-0 z-10 ${isActive ? 'lg:ml-36' : ''
           }`}>
-          <h3 className={`font-extrabold leading-tight ${isActive
+          <h3 className={`font-extrabold leading-tight transition-[font-size] duration-500 ${EASE} ${isActive
             ? 'text-base sm:text-lg lg:text-xl'
             : 'text-sm sm:text-base lg:text-lg'
             }`}>
             {plant.name}
           </h3>
 
-          {/* Descripción */}
-          <motion.p
-            initial={false}
-            animate={{
-              opacity: isActive ? 0.9 : 0,
-              height: isActive ? 'auto' : 0,
-              marginTop: isActive ? '0.25rem' : 0,
-              marginBottom: isActive ? '0.5rem' : 0
-            }}
-            transition={{ duration: 0.1, delay: isActive ? 0.1 : 0 }}
-            className={`text-[10px] sm:text-xs leading-relaxed line-clamp-2 ${!isActive && 'pointer-events-none'
-              }`}
-          >
+          {/* Descripción: siempre visible, máximo 2 líneas con "…" */}
+          <p className={`mt-1 text-[11px] sm:text-xs leading-relaxed line-clamp-2 transition-colors duration-500 ${EASE} ${isActive ? 'text-white/90' : 'text-gray-500'
+            }`}>
             {plant.description}
-          </motion.p>
+          </p>
 
           {/* Precio */}
-          <span className={`font-bold block my-1 sm:my-2 transition-colors duration-300 ${isActive ? 'text-white' : 'text-[#5B823B]'
+          <span className={`font-bold block my-1 sm:my-2 transition-[color,font-size] duration-500 ${EASE} ${isActive ? 'text-white' : 'text-[#5B823B]'
             } ${isActive ? 'text-lg sm:text-xl lg:text-2xl' : 'text-base sm:text-lg lg:text-xl'}`}>
             ${plant.price}
           </span>
 
-          {/* Botones */}
-          <motion.div
-            initial={false}
-            animate={{
-              opacity: isActive ? 1 : 0,
-              height: isActive ? 'auto' : 0
-            }}
-            transition={{ duration: 0.1, delay: isActive ? 0.15 : 0 }}
-            className={`flex items-center gap-2 sm:gap-3 ${!isActive && 'pointer-events-none'
-              }`}
-          >
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={handleAddToCart}
-              disabled={isLimitReached}
-              className={`px-3 sm:px-4 lg:px-5 py-1.5 sm:py-2 lg:py-2.5 rounded-lg sm:rounded-xl text-xs sm:text-sm font-bold transition-colors shadow-sm cursor-pointer
-                  ${isLimitReached
-                  ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                  : "bg-white text-[#5B823B] hover:bg-gray-100"}`}
-            >
-              {isLimitReached ? 'Máximo alcanzado' : (cartItem ? 'Agregado' : 'Agregar')}
-            </motion.button>
-            <Link
-              href={`/shop/${plant.id}`}
-              className="p-2 sm:p-2.5 lg:p-3 bg-white/20 rounded-lg sm:rounded-xl hover:bg-white/30 transition-colors"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <Eye className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
-            </Link>
-          </motion.div>
-        </div>
+          {/* Botones: se despliegan animando grid-template-rows (0fr → 1fr), que es suave y no necesita medir alturas */}
+          <div className={`grid transition-[grid-template-rows,opacity] duration-500 ${EASE} ${isActive
+            ? 'grid-rows-[1fr] opacity-100'
+            : 'grid-rows-[0fr] opacity-0 pointer-events-none'
+            }`}>
+            <div className="overflow-hidden -m-1 p-1">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <motion.button
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                  onClick={handleAddToCart}
+                  disabled={isLimitReached}
+                  tabIndex={isActive ? 0 : -1}
+                  className={`flex-1 min-w-0 whitespace-nowrap px-3 sm:px-4 lg:px-5 py-1.5 sm:py-2 lg:py-2.5 rounded-lg sm:rounded-xl text-xs sm:text-sm font-bold transition-colors shadow-sm cursor-pointer
+                      ${isLimitReached
+                      ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                      : "bg-white text-[#5B823B] hover:bg-gray-100"}`}
+                >
+                  {isLimitReached ? 'Máximo alcanzado' : (cartItem ? 'Agregado' : 'Agregar')}
+                </motion.button>
+                <Link
+                  href={`/shop/${plant.id}`}
+                  tabIndex={isActive ? 0 : -1}
+                  aria-label={`Ver ${plant.name}`}
+                  className="flex-shrink-0 p-2 sm:p-2.5 lg:p-3 bg-white/20 rounded-lg sm:rounded-xl hover:bg-white/30 transition-colors"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <Eye className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+                </Link>
+              </div>
+            </div>
+          </div>
+        </motion.div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 
