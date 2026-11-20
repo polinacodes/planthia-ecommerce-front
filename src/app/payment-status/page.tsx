@@ -1,8 +1,8 @@
 'use client';
-import { useEffect, Suspense } from 'react';
+import { useEffect, useRef, useState, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useCart } from '@/hooks/useCart';
-import { CheckCircle, AlertCircle, ArrowRight, Home, ShoppingBag } from 'lucide-react';
+import { CheckCircle, AlertCircle, ArrowRight, Home, Clock, Loader2 } from 'lucide-react';
 
 function PaymentStatusContent() {
 
@@ -10,38 +10,59 @@ function PaymentStatusContent() {
   const router = useRouter();
   const { clearCart } = useCart();
 
-  const paymentId = searchParams.get('payment_id') || searchParams.get('preference_id');
-  const status = searchParams.get('status');
+  const orderId = searchParams.get('order');
+  const urlStatus = searchParams.get('status');
+  // PayPal vuelve con ?token=<id de la orden en PayPal>
+  const paypalToken = searchParams.get('token');
 
-  const orderNumber = paymentId ? `#PL-${paymentId.toString().slice(-5)}` : '82931';
+  const orderNumber = orderId ? `#PL-${orderId}` : '';
 
-  const isError = status === 'failure';
+  type ViewState = 'loading' | 'success' | 'pending' | 'error';
+  const [viewState, setViewState] = useState<ViewState>(() => {
+    if (urlStatus === 'failure') return 'error';
+    if (urlStatus === 'pending') return 'pending';
+    if (paypalToken) return 'loading';
+    return 'success';
+  });
+
+  // Evita capturar dos veces (React ejecuta los efectos dos veces en desarrollo)
+  const handled = useRef(false);
 
   useEffect(() => {
-  const handlePaymentSuccess = async () => {
-    if (status === 'approved' || status === 'success') {
-      const orderId = searchParams.get('order');
+    if (urlStatus === 'failure' || urlStatus === 'pending') return;
+    if (handled.current) return;
+    handled.current = true;
 
-      if (orderId) {
-        try {
-          await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/orders/${orderId}/status`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ order_status: 'paid' })
-          });
-        } catch (error) {
-          console.error('❌ Error actualizando orden:', error);
-        }
-      }
-      setTimeout(() => {
-        clearCart();
-        console.log("✅ Carrito limpiado");
-      }, 300);
+    // Mercado Pago: el pago ya lo confirma el webhook en el backend
+    if (!paypalToken) {
+      clearCart();
+      return;
     }
-  };
 
-  handlePaymentSuccess();
-}, [status, clearCart, searchParams]);
+    // PayPal: recién al capturar se cobra el pago
+    const capturePaypal = async () => {
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/paypal/capture`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ orderId, token: paypalToken }),
+        });
+        const data = await res.json();
+
+        if (res.ok && data.ok) {
+          clearCart();
+          setViewState('success');
+        } else {
+          setViewState('error');
+        }
+      } catch (error) {
+        console.error('Error confirmando el pago de PayPal:', error);
+        setViewState('error');
+      }
+    };
+
+    capturePaypal();
+  }, [urlStatus, paypalToken, orderId, clearCart]);
 
   const statusConfig = {
     success: {
@@ -50,6 +71,22 @@ function PaymentStatusContent() {
       bgColor: "bg-planthia-green/10",
       title: "¡Pago exitoso!",
       message: "Gracias por tu compra. Te enviamos un correo con los detalles de envío.",
+      buttonText: "Mi cuenta"
+    },
+    pending: {
+      icon: Clock,
+      iconColor: "text-planthia-green",
+      bgColor: "bg-planthia-green/10",
+      title: "Pago pendiente",
+      message: "Tu pago está en proceso. Cuando se acredite te avisamos por correo.",
+      buttonText: "Mi cuenta"
+    },
+    loading: {
+      icon: Loader2,
+      iconColor: "text-planthia-green animate-spin",
+      bgColor: "bg-planthia-green/10",
+      title: "Confirmando tu pago...",
+      message: "Estamos confirmando el pago con PayPal. No cierres esta pestaña.",
       buttonText: "Mi cuenta"
     },
     error: {
@@ -63,7 +100,8 @@ function PaymentStatusContent() {
 
   };
 
-  const current = isError ? statusConfig.error : statusConfig.success;
+  const isError = viewState === 'error';
+  const current = statusConfig[viewState];
   const Icon = current.icon;
 
   return (
@@ -83,7 +121,7 @@ function PaymentStatusContent() {
         </p>
 
         {/* Sección de Orden */}
-        {!isError && (
+        {!isError && orderNumber && (
           <div className="bg-planthia-cream/50 w-full p-4 rounded-2xl mb-8 border border-planthia-dark/5">
             <p className="text-sm text-planthia-dark/50 mb-1">Número de orden</p>
             <span className="font-headline font-bold text-lg text-planthia-green">{orderNumber}</span>
