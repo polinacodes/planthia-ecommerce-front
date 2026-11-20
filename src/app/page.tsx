@@ -14,7 +14,7 @@ export default function HomePage() {
 
 
   return (
-    <main className="relative px-0 md:px-4 lg:px-12 pt-10 pb-20">
+    <main className="relative overflow-x-clip px-0 md:px-4 lg:px-12 pt-10 pb-20">
       <Hero />
       <Categories />
       <RecommendedSection plants={featuredPlants} />
