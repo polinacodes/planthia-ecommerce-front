@@ -19,7 +19,7 @@ const HeroShop = () => {
   }, []);
 
   return (
-  <section className="relative w-full h-[260px] md:h-[300px] lg:h-[340px] mt-[-96px] overflow-hidden mb-16 bg-planthia-dark">
+  <section className="relative w-full h-[200px] md:h-[240px] lg:h-[clamp(240px,32vh,340px)] mt-[-96px] overflow-hidden mb-16 bg-planthia-dark">
   {/* Carrusel de Imágenes: fundido cruzado (la nueva aparece mientras la anterior se va),
       sobre fondo oscuro, así no se ve el destello claro entre imagen e imagen */}
   <AnimatePresence initial={false}>
@@ -39,15 +39,15 @@ const HeroShop = () => {
   <div className="absolute inset-0 bg-black/50" />
 
   {/* Contenido */}
-  <div className="relative h-full flex flex-col justify-center items-center text-center pt-16 px-6">
+  <div className="relative h-full flex flex-col justify-center items-center text-center px-6">
     <motion.h1 
-      className="text-4xl md:text-5xl font-bold text-[#FDFBF7] tracking-[0.2em] uppercase"
+      className="text-2xl sm:text-4xl lg:text-5xl font-bold text-[#FDFBF7] tracking-[0.12em] sm:tracking-[0.2em] uppercase"
       style={{ textShadow: '2px 2px 10px rgba(0,0,0,0.3)' }}
     >
       Nuestra Colección
     </motion.h1>
-    <div className="w-16 h-[1px] bg-[#FDFBF7]/50 my-4" />
-    <p className="text-[#FDFBF7]/80 font-light tracking-wide italic">
+    <div className="w-12 sm:w-16 h-[1px] bg-[#FDFBF7]/50 my-3 sm:my-4" />
+    <p className="text-sm sm:text-base text-[#FDFBF7]/80 font-light tracking-wide italic max-w-md sm:max-w-none">
       Explorá nuestra selección premium de plantas y todo para su cuidado.
     </p>
   </div>
