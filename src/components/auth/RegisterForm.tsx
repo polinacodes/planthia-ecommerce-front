@@ -37,9 +37,9 @@ export default function RegisterForm() {
 
   return (
     <form className="w-full space-y-6" onSubmit={handleSubmit}>
-      {/* <div className="relative">
+      <div className="relative">
         <label className="text-[10px] font-bold uppercase tracking-[0.1em] text-planthia-dark/40 ml-4 mb-1.5 block">
-          Nombre de usuario
+          Nombre
         </label>
         <div className="relative">
           <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-planthia-dark/20" />
@@ -52,7 +52,7 @@ export default function RegisterForm() {
             onChange={(e) => setUsername(e.target.value)}
           />
         </div>
-      </div> */}
+      </div>
 
       <div className="relative">
         <label className="text-[10px] font-bold uppercase tracking-[0.1em] text-planthia-dark/40 ml-4 mb-1.5 block">

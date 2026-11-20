@@ -146,7 +146,8 @@ export default function AccountPage() {
 
         <div className="text-center md:text-left">
           <h1 className="font-headline font-extrabold text-4xl tracking-tight text-planthia-dark capitalize">
-            Hola, {user.first_name || user.username}
+            {/* Sin nombre cargado, un saludo genérico (el username es el email) */}
+            {user.first_name ? `Hola, ${user.first_name}` : '¡Hola!'}
           </h1>
           <p className="text-planthia-dark/60 mt-2 font-body text-sm">
             Miembro desde {memberSince}

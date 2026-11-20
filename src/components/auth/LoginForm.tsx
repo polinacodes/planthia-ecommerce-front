@@ -23,7 +23,7 @@ export default function LoginForm() {
       setToken(data.jwt);
       localStorage.setItem('user', JSON.stringify(data.user));
       window.dispatchEvent(new Event('user-login'));
-      toast.success(`¡Bienvenido de nuevo, ${data.user.username}!`);
+      toast.success(data.user.first_name ? `¡Bienvenido de nuevo, ${data.user.first_name}!` : '¡Bienvenido de nuevo!');
       window.location.href = '/account';
     } catch (error) {
       toast.error(error instanceof Error ? error.message : 'Credenciales incorrectas');
