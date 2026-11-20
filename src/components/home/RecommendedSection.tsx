@@ -2,7 +2,6 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import ProductCard from '../products/ProductCard';
@@ -62,13 +61,7 @@ const RecommendedSection = ({ plants }: { plants: any[] }) => {
 
 
   return (
-    <section className="pt-12 pb-12 px-4 sm:px-6 lg:px-12 max-w-[1600px] mx-auto bg-[#F7F5F0]">
-      {/* Encabezado */}
-      <div className="mb-14 md:mb-4">
-        <h2 className="text-3xl xl:text-4xl font-extrabold text-[#1A1A1A] tracking-tight">Recomendados</h2>
-        <p className="text-gray-400 mt-3 text-lg font-medium">Las plantas ideales para armar tu jungla urbana.</p>
-      </div>
-
+    <section className="mt-12 lg:mt-0 xl:mt-10 2xl:mt-28 min-[1921px]:!mt-72 pt-12 pb-12 px-4 sm:px-6 lg:px-12 max-w-[1600px] mx-auto bg-[#F7F5F0]">
       {/* VISTA MOBILE: Scroll horizontal nativo */}
       <div className="md:hidden">
         <div className="flex gap-4 overflow-x-auto pb-4 -mr-4 pr-4 snap-x snap-mandatory">
@@ -135,15 +128,6 @@ const RecommendedSection = ({ plants }: { plants: any[] }) => {
         </button>
       </div>
 
-      {/* Botón "Ver todos" */}
-      <div className="flex justify-end mt-8">
-        <Link
-          href="/shop"
-          className="bg-planthia-green text-white px-8 py-3 rounded-full font-bold text-sm md:text-base hover:bg-opacity-90 transition-all shadow-lg shadow-planthia-green/20 active:scale-95"
-        >
-          Ver toda la colección
-        </Link>
-      </div>
     </section>
   );
 };

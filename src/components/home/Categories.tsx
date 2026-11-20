@@ -11,7 +11,7 @@ const categories = [
 
 export default function Categories() {
   return (
-    <section className="bg-cream pt-16 sm:pt-20 md:pt-48 pb-20 lg:pt-20 xl:pt-48 xl:pb-24 px-4 sm:px-6 lg:px-12 max-w-[1600px] mx-auto relative z-0">
+    <section className="bg-cream pt-16 sm:pt-20 xl:pt-24 pb-20 xl:pb-24 px-4 sm:px-6 lg:px-12 max-w-[1600px] mx-auto relative z-0">
       
       {/* Encabezado */}
       <div className="mb-16"> 
