@@ -34,12 +34,19 @@ export interface AuthResponse {
   user: UserData;
 }
 
+/** Usuario que devuelven login, registro y cambio de contraseña (sin datos sensibles) */
 export interface UserData {
   id: number;
+  documentId?: string;
   username: string;
   email: string;
-  confirmed: boolean;
-  blocked: boolean;
+  first_name?: string | null;
+  last_name?: string | null;
+  phone?: string | null;
+  address?: string | null;
+  city?: string | null;
+  zip_code?: string | null;
+  createdAt?: string;
 }
 
 // ==============
