@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import Image from 'next/image';
 import { Heart, Plus, Eye } from 'lucide-react';
 import Link from 'next/link';
-import { useCart } from '@/hooks/useCart';
+import { useCart, isCartItemOfProduct } from '@/hooks/useCart';
 import { useFavorites } from '@/context/FavoritesContext';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
@@ -27,17 +27,17 @@ const ProductCardShop = ({ product }: { product: Product }) => {
   const hasVariants = product.variants && product.variants.length > 0;
 
   const favoriteActive = useMemo(() => {
-    return isFavorite(Number(product.id));
-  }, [product.id, isFavorite]);
+    return isFavorite(product.documentId || '');
+  }, [product.documentId, isFavorite]);
 
   const handleFavorite = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation(); 
-    await toggleFavorite(Number(product.id), product.name);
+    await toggleFavorite(product.documentId || '', product.name);
   };
 
   const quantityInCart = cart
-    .filter((item: any) => String(item.id).startsWith(String(product.id)))
+    .filter((item: any) => isCartItemOfProduct(item, product))
     .reduce((acc: number, item: any) => acc + item.quantity, 0);
 
   const isAlreadyInCart = quantityInCart > 0;

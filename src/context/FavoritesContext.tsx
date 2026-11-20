@@ -1,193 +1,145 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
+/**
+ * Favoritos del usuario logueado.
+ *
+ * Los productos se identifican por su documentId (el id fijo de Strapi 5).
+ * El id numérico cambia cada vez que se republica un producto, así que no sirve
+ * para guardar favoritos.
+ *
+ * El backend (api/favorite) se encarga de que cada persona vea y borre solo
+ * sus favoritos, y de no duplicarlos.
+ */
+import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import AuthModal from '@/components/AuthModal';
 
+const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
+
 interface FavoriteItem {
-  id: number;
-  productId: number;
-  documentId?: string;
+  /** documentId del favorito (se usa para borrarlo). Vacío mientras se guarda. */
+  documentId: string | null;
+  /** documentId del producto */
+  productDocumentId: string;
+}
+
+/** Lo que devuelve GET /api/favorites */
+interface FavoriteResponse {
+  documentId: string;
+  productDocumentId: string;
 }
 
 interface FavoritesContextType {
   favorites: FavoriteItem[];
-  toggleFavorite: (productId: number, productName?: string) => Promise<void>;
-  isFavorite: (productId: number) => boolean;
+  toggleFavorite: (productDocumentId: string, productName?: string) => Promise<void>;
+  isFavorite: (productDocumentId: string) => boolean;
   clearFavorites: () => void;
   loading: boolean;
 }
 
 const FavoritesContext = createContext<FavoritesContextType | undefined>(undefined);
 
+const authHeaders = (token: string) => ({
+  'Content-Type': 'application/json',
+  Authorization: `Bearer ${token}`,
+});
+
 export const FavoritesProvider = ({ children }: { children: React.ReactNode }) => {
   const [favorites, setFavorites] = useState<FavoriteItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
-  const userDataRef = useRef<any>(null);
 
-  const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
-
-  const fetchUserData = async (token: string) => {
-    try {
-      const res = await fetch(`${STRAPI_URL}/api/users/me`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (res.ok) {
-        const data = await res.json();
-        userDataRef.current = data;
-        return data;
-      }
-    } catch (error) {
-      console.error('Error fetching user data:', error);
-    }
-    return null;
-  };
-
-  const fetchFavorites = async () => {
+  const fetchFavorites = useCallback(async () => {
     const token = localStorage.getItem('token');
-
     if (!token) {
       setFavorites([]);
       setLoading(false);
       return;
     }
 
-    const user = await fetchUserData(token);
-
-    if (!user) {
-      setFavorites([]);
-      setLoading(false);
-      return;
-    }
-
     try {
-      const res = await fetch(
-        `${STRAPI_URL}/api/favorites?populate=product`,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-
+      const res = await fetch(`${STRAPI_URL}/api/favorites`, { headers: authHeaders(token) });
       if (res.ok) {
-        const response = await res.json();
-        const mappedFavorites = response.data
-          .map((fav: any) => ({
-            id: fav.id,
+        const { data } = await res.json();
+        setFavorites(
+          ((data || []) as FavoriteResponse[]).map((fav) => ({
             documentId: fav.documentId,
-            productId: fav.product?.id,
+            productDocumentId: fav.productDocumentId,
           }))
-          .filter((fav: any) => fav.productId);
-
-        setFavorites(mappedFavorites);
+        );
+      } else {
+        setFavorites([]);
       }
-    } catch (err) {
-      console.error('Error cargando favoritos:', err);
+    } catch (error) {
+      console.error('Error cargando favoritos:', error);
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchFavorites();
     window.addEventListener('user-login', fetchFavorites);
     return () => window.removeEventListener('user-login', fetchFavorites);
-  }, [STRAPI_URL]);
+  }, [fetchFavorites]);
 
-  const getProductDocumentId = async (productId: number, token: string): Promise<string | null> => {
-    try {
-      const res = await fetch(
-        `${STRAPI_URL}/api/products?filters[id][$eq]=${productId}&fields[0]=documentId`,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      if (res.ok) {
-        const { data } = await res.json();
-        if (data && data.length > 0) return data[0].documentId;
-      }
-    } catch (error) {
-      console.error('Error:', error);
-    }
-    return null;
-  };
-
-  const toggleFavorite = async (productId: number, productName?: string) => {
+  const toggleFavorite = async (productDocumentId: string, productName?: string) => {
     const token = localStorage.getItem('token');
     if (!token) {
       setIsAuthModalOpen(true);
       return;
     }
+    if (!productDocumentId) return;
 
-    const existingFav = favorites.find(fav => fav.productId === productId);
+    const existing = favorites.find((fav) => fav.productDocumentId === productDocumentId);
 
-    if (existingFav) {
-      // ELIMINAR 
-      const updatedFavorites = favorites.filter(fav => fav.productId !== productId);
-      setFavorites(updatedFavorites);
+    if (existing) {
+      // QUITAR (se actualiza la pantalla antes y se revierte si falla)
+      setFavorites((prev) => prev.filter((fav) => fav.productDocumentId !== productDocumentId));
       toast.success(productName ? `"${productName}" quitado de favoritos` : 'Quitado de favoritos');
 
       try {
-        const deleteId = existingFav.documentId || existingFav.id;
-        const res = await fetch(`${STRAPI_URL}/api/favorites/${deleteId}`, {
+        if (!existing.documentId) throw new Error('El favorito todavía se está guardando');
+        const res = await fetch(`${STRAPI_URL}/api/favorites/${existing.documentId}`, {
           method: 'DELETE',
-          headers: { Authorization: `Bearer ${token}` },
+          headers: authHeaders(token),
         });
-        if (!res.ok) throw new Error('Error al eliminar');
-      } catch (error) {
-        // Revertir si falla
-        setFavorites([...updatedFavorites, existingFav]);
+        if (!res.ok) throw new Error('Error al quitar de favoritos');
+      } catch {
+        setFavorites((prev) => [...prev, existing]);
         toast.error('Error al quitar de favoritos');
       }
+      return;
+    }
 
-    } else {
-      // AGREGAR 
-      const tempId = Date.now() * -1;
-      const optimisticFavorites = [...favorites, { id: tempId, productId }];
-      setFavorites(optimisticFavorites);
-      toast.success(productName ? `"${productName}" agregado a favoritos` : 'Agregado a favoritos');
+    // AGREGAR
+    setFavorites((prev) => [...prev, { documentId: null, productDocumentId }]);
+    toast.success(productName ? `"${productName}" agregado a favoritos` : 'Agregado a favoritos');
 
-      try {
-        const prodDocId = await getProductDocumentId(productId, token);
-        const userDocId = userDataRef.current?.documentId;
+    try {
+      const res = await fetch(`${STRAPI_URL}/api/favorites`, {
+        method: 'POST',
+        headers: authHeaders(token),
+        body: JSON.stringify({ data: { product: productDocumentId } }),
+      });
+      const body = await res.json();
+      if (!res.ok) throw new Error(body?.error?.message || 'Error al agregar a favoritos');
 
-        if (!prodDocId || !userDocId) throw new Error('No se pudieron obtener los IDs necesarios');
-
-        const res = await fetch(`${STRAPI_URL}/api/favorites`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            data: {
-              product: prodDocId,
-              user: userDocId,
-              publishedAt: new Date(),
-            },
-          }),
-        });
-
-        if (res.ok) {
-          const { data } = await res.json();
-          setFavorites(optimisticFavorites.map(fav =>
-            fav.productId === productId
-              ? { id: data.id, documentId: data.documentId, productId }
-              : fav
-          ));
-        } else {
-          const error = await res.json();
-          throw new Error(error.error?.message || 'Error al crear');
-        }
-      } catch (error: any) {
-        // Revertir si falla
-        setFavorites(optimisticFavorites.filter(fav => fav.productId !== productId));
-        toast.error(error.message || 'Error al agregar a favoritos');
-      }
+      setFavorites((prev) =>
+        prev.map((fav) =>
+          fav.productDocumentId === productDocumentId ? { ...fav, documentId: body.data.documentId } : fav
+        )
+      );
+    } catch (error) {
+      setFavorites((prev) => prev.filter((fav) => fav.productDocumentId !== productDocumentId));
+      toast.error(error instanceof Error ? error.message : 'Error al agregar a favoritos');
     }
   };
 
-  const isFavorite = (productId: number) => favorites.some(fav => fav.productId === productId);
+  const isFavorite = (productDocumentId: string) =>
+    !!productDocumentId && favorites.some((fav) => fav.productDocumentId === productDocumentId);
 
-  const clearFavorites = () => {
-    setFavorites([]);
-  };
+  const clearFavorites = () => setFavorites([]);
 
   return (
     <FavoritesContext.Provider value={{ favorites, toggleFavorite, isFavorite, clearFavorites, loading }}>

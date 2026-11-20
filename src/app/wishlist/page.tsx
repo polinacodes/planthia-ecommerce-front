@@ -18,9 +18,9 @@ export default function WishlistPage() {
   const favoriteProducts = React.useMemo(() => {
     if (!plants || !favorites) return [];
 
-    const favoriteIds = new Set(favorites.map(fav => Number(fav.productId)));
+    const favoriteIds = new Set(favorites.map(fav => fav.productDocumentId));
 
-    return plants.filter((plant) => favoriteIds.has(Number(plant.id)));
+    return plants.filter((plant) => favoriteIds.has(plant.documentId));
   }, [plants, favorites]);
 
   const handleAddToCart = (product: any, e: React.MouseEvent) => {
@@ -37,6 +37,7 @@ export default function WishlistPage() {
 
     const wasAdded = addItem({
       id: product.id,
+      documentId: product.documentId,
       name: product.name,
       price: product.price,
       image: product.image,
@@ -50,9 +51,9 @@ export default function WishlistPage() {
     }
   };
 
-  const handleRemoveFavorite = async (id: any, name: string, e: React.MouseEvent) => {
+  const handleRemoveFavorite = async (productDocumentId: string, name: string, e: React.MouseEvent) => {
     e.preventDefault();
-    await toggleFavorite(Number(id), name);
+    await toggleFavorite(productDocumentId, name);
   };
 
   if (loading) {
@@ -178,7 +179,7 @@ export default function WishlistPage() {
 
                     {/* Botón Eliminar de Favoritos */}
                     <button
-                      onClick={(e) => handleRemoveFavorite(product.id, product.name, e)}
+                      onClick={(e) => handleRemoveFavorite(product.documentId, product.name, e)}
                       className="p-2.5 text-gray-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-all border border-transparent hover:border-rose-100"
                       title="Eliminar de la lista"
                     >

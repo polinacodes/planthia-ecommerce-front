@@ -32,8 +32,8 @@ function NavbarContent() {
 
   const previewFavorites = useMemo(() => {
     if (!plants || !favorites || !user) return [];
-    const favoriteIds = new Set(favorites.map(fav => Number(fav.productId)));
-    return plants.filter((plant) => favoriteIds.has(Number(plant.id)));
+    const favoriteIds = new Set(favorites.map(fav => fav.productDocumentId));
+    return plants.filter((plant) => favoriteIds.has(plant.documentId));
   }, [plants, favorites, user]);
 
   useEffect(() => {
@@ -66,10 +66,10 @@ function NavbarContent() {
     window.location.href = "/";
   };
 
-  const handleRemoveFavorite = async (id: number, name: string, e: React.MouseEvent) => {
+  const handleRemoveFavorite = async (productDocumentId: string, name: string, e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    await toggleFavorite(id, name);
+    await toggleFavorite(productDocumentId, name);
   };
 
   const isActive = (href: string) => {
@@ -178,7 +178,7 @@ function NavbarContent() {
                                 </div>
 
                                 <button
-                                  onClick={(e) => handleRemoveFavorite(Number(product.id), product.name, e)}
+                                  onClick={(e) => handleRemoveFavorite(product.documentId, product.name, e)}
                                   className="p-1.5 text-gray-400 hover:text-rose-600 hover:bg-rose-50 rounded-md transition-all flex-shrink-0"
                                   title="Eliminar"
                                 >

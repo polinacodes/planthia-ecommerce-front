@@ -30,6 +30,20 @@ interface CartStore {
 
 const MAX_LIMIT = 10;
 
+/**
+ * ¿Este ítem del carrito es de este producto? (con cualquiera de sus colores)
+ * Antes se usaba startsWith(id), y el producto 1 "encontraba" al 12, al 13...
+ */
+export function isCartItemOfProduct(
+  item: { id: string | number; documentId?: string },
+  product: { id: string | number; documentId?: string }
+) {
+  if (item.documentId && product.documentId) return item.documentId === product.documentId;
+  const itemId = String(item.id);
+  const productId = String(product.id);
+  return itemId === productId || itemId.startsWith(`${productId}-`);
+}
+
 export const useCart = create<CartStore>()(
   persist(
     (set, get) => ({

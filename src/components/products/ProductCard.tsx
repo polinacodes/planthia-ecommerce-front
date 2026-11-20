@@ -5,7 +5,7 @@ import { Eye, Heart } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { useCart } from '@/hooks/useCart';
+import { useCart, isCartItemOfProduct } from '@/hooks/useCart';
 import { useFavorites } from '@/context/FavoritesContext';
 import { toast } from 'sonner';
 
@@ -20,15 +20,15 @@ const ProductCard = ({ plant, isActive, onClick }: ProductCardProps) => {
   const { toggleFavorite, isFavorite } = useFavorites();
 
   const favoriteActive = useMemo(() => {
-    return isFavorite(plant.id);
-  }, [plant.id, isFavorite]);
+    return isFavorite(plant.documentId);
+  }, [plant.documentId, isFavorite]);
 
   const handleFavorite = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    await toggleFavorite(plant.id, plant.name);
+    await toggleFavorite(plant.documentId, plant.name);
   };
 
-  const cartItem = cart.find((item: any) => String(item.id).startsWith(String(plant.id)));
+  const cartItem = cart.find((item: any) => isCartItemOfProduct(item, plant));
   const quantityInCart = cartItem ? cartItem.quantity : 0;
   const isLimitReached = quantityInCart >= 10;
 
