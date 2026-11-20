@@ -33,7 +33,7 @@ export default function Hero() {
     <section className="grid grid-cols-12 gap-4 items-center lg:min-h-[50vh] xl:min-h-[70vh]">
 
       {/* Contenido Izquierdo  */}
-      <div className="col-span-12 lg:col-span-5 z-10 mt-0 lg:-mt-30 xl:-mt-30 2xl:-mt-40 md:px-0 order-last lg:order-first max-[1366px]:order-last flex flex-col items-center lg:items-start text-center lg:text-left">
+      <div className="col-span-12 lg:col-span-5 z-10 -mt-6 sm:-mt-12 md:mt-0 lg:-mt-30 xl:-mt-30 2xl:-mt-40 md:px-0 order-last lg:order-first max-[1366px]:order-last flex flex-col items-center lg:items-start text-center lg:text-left">
         <span className="font-headline font-bold tracking-[0.2em] text-xs text-planthia-dark mb-4 block uppercase">
           #RefugioVerde
         </span>
@@ -47,13 +47,13 @@ export default function Hero() {
         <div className="flex flex-row items-center gap-2 sm:gap-2 lg:gap-2">
           <button
             onClick={() => router.push('/shop')}
-            className="bg-planthia-green text-white px-6 sm:px-6 md:px-8 lg:px-6 xl:px-10 py-3 sm:py-3 md:py-4 lg:py-3 xl:py-5 font-bold hover:opacity-90 transition-all cursor-pointer
-              rounded-tl-2xl rounded-bl-sm skew-x-[-15deg] origin-bottom overflow-hidden shadow-lg shadow-planthia-green/20 flex-1 sm:flex-none text-base sm:text-lg">
-            <span className="inline-block skew-x-[15deg]">Coleccion</span>
+            className="bg-planthia-green text-white px-4 max-[374px]:px-3 sm:px-6 md:px-8 lg:px-6 xl:px-10 py-3 sm:py-3 md:py-4 lg:py-3 xl:py-5 font-bold hover:opacity-90 transition-all cursor-pointer
+              rounded-tl-2xl rounded-bl-sm skew-x-[-15deg] origin-bottom overflow-hidden shadow-lg shadow-planthia-green/20 flex-1 sm:flex-none text-base max-[374px]:text-[15px] sm:text-lg">
+            <span className="inline-block skew-x-[15deg] whitespace-nowrap">Colección</span>
           </button>
-          <button className="bg-white border border-gray-100 px-6 sm:px-6 md:px-8 lg:px-6 xl:px-10 py-3 sm:py-3 md:py-4 lg:py-3 xl:py-5 font-bold text-planthia-green hover:bg-gray-50 transition-all cursor-pointer
-              rounded-tr-sm rounded-br-2xl skew-x-[-15deg] origin-bottom shadow-sm flex-1 sm:flex-none text-base sm:text-lg">
-            <span className="inline-block skew-x-[15deg]">Cuidados</span>
+          <button className="bg-white border border-gray-100 px-4 max-[374px]:px-3 sm:px-6 md:px-8 lg:px-6 xl:px-10 py-3 sm:py-3 md:py-4 lg:py-3 xl:py-5 font-bold text-planthia-green hover:bg-gray-50 transition-all cursor-pointer
+              rounded-tr-sm rounded-br-2xl skew-x-[-15deg] origin-bottom shadow-sm flex-1 sm:flex-none text-base max-[374px]:text-[15px] sm:text-lg">
+            <span className="inline-block skew-x-[15deg] whitespace-nowrap">Guía de cuidados</span>
           </button>
         </div>
       </div>
@@ -89,11 +89,11 @@ export default function Hero() {
              flex items-start justify-center lg:justify-start max-[1366px]:justify-center z-10">
           <div className="relative w-full lg:w-[110%] max-[1366px]:w-full h-full overflow-y-clip" style={{ containerType: "size" }}>
             {/* MARCO DE LA PLANTA: mide exactamente lo que medía la imagen con object-cover + object-top
-                (por el alto o por el ancho, lo que sea mayor). Los círculos van adentro en %,
+                (por el alto o por el ancho, lo que sea mayor; entre 640 y 767 px, por el alto
+                para que no se corte abajo). Los círculos van adentro en %,
                 así siempre quedan centrados en la maceta y escalan junto con la planta. */}
             <div
-              className="absolute top-0 left-1/2 -translate-x-1/2 aspect-[1086/1448]"
-              style={{ width: "max(100cqw, 75cqh)" }}
+              className="absolute top-0 left-1/2 -translate-x-1/2 aspect-[1086/1448] w-[max(100cqw,75cqh)] sm:max-md:w-[75cqh]"
             >
               {/* CÍRCULOS (centrados en la maceta; para subirlos o bajarlos, cambiá top-[51%]) */}
               <div className="absolute left-[51%] top-[48%] -translate-x-1/2 -translate-y-1/2 w-[66%] sm:w-[80%] aspect-square">
