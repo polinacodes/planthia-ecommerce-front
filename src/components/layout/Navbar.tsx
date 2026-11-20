@@ -9,6 +9,7 @@ import { ShoppingCart, User, LogOut, Settings, Menu, X, Heart, Trash2 } from "lu
 import SearchBar from "./SearchBar";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from '@/hooks/useCart';
+import { clearPendingDiscountCode } from '@/lib/discountCode';
 import { useFavorites } from '@/context/FavoritesContext';
 import { usePlants } from '@/hooks/usePlants';
 import { getToken, getUser, removeToken, removeUser, UserData } from "@/lib/auth";
@@ -26,6 +27,7 @@ function NavbarContent() {
   const searchParams = useSearchParams();
   const cart = useCart((state) => state.cart);
   const toggleCart = useCart((state) => state.toggleCart);
+  const clearCart = useCart((state) => state.clearCart);
   const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
 
   const { favorites, toggleFavorite, clearFavorites } = useFavorites();
@@ -61,6 +63,9 @@ function NavbarContent() {
     removeToken();
     removeUser();
     clearFavorites();
+    // El carrito y el cupón pendiente son de esta persona: no deben quedar para quien use el equipo después
+    clearCart();
+    clearPendingDiscountCode();
     setUser(null);
     setIsUserMenuOpen(false);
     setIsMobileMenuOpen(false);

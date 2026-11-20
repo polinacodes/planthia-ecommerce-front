@@ -41,7 +41,8 @@ export default function NewsletterPopup() {
       const data = await res.json();
 
       if (res.ok) {
-        toast.success('¡Suscripción exitosa! Revisá tu email.');
+        // El mensaje lo arma el backend (cambia si la persona se vuelve a suscribir)
+        toast.success(data.message || '¡Suscripción exitosa! Revisá tu email.');
         setTimeout(() => closePopup(), 2000);
       } else {
         toast.error(data.error?.message || 'Algo salió mal, intentá de nuevo.');

@@ -64,7 +64,9 @@ const ProductCard = ({ plant, isActive, onClick }: ProductCardProps) => {
   const handleAddToCart = (e: React.MouseEvent) => {
     e.stopPropagation();
 
-    const selectedVariant = plant.variants && plant.variants.length > 0 ? plant.variants[0] : null;
+    // Primer color con stock (antes tomaba siempre el primero, aunque estuviera agotado)
+    const variants = plant.variants ?? [];
+    const selectedVariant = variants.find((v: any) => (v.stock ?? 0) > 0) ?? variants[0] ?? null;
     const uniqueId = selectedVariant ? `${plant.id}-${selectedVariant.color.toLowerCase()}` : plant.id;
     const stockValue = selectedVariant ? selectedVariant.stock : (plant.stock || 0);
 

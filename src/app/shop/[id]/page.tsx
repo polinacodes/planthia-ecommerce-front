@@ -61,7 +61,8 @@ export default function ProductPage() {
     if (product) {
       setSelectedImage(product.image);
       if (product.variants && product.variants.length > 0) {
-        setSelectedVariant(product.variants[0]);
+        // Arranca con el primer color que tenga stock (si todos están agotados, el primero)
+        setSelectedVariant(product.variants.find((v: any) => (v.stock ?? 0) > 0) ?? product.variants[0]);
       } else {
         setSelectedVariant(null);
       }
