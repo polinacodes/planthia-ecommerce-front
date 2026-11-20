@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useRef, useState, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
+import { clearPendingDiscountCode } from '@/lib/discountCode';
 import { useCart } from '@/hooks/useCart';
 import { CheckCircle, AlertCircle, ArrowRight, Home, Clock, Loader2 } from 'lucide-react';
 
@@ -47,6 +48,7 @@ function PaymentStatusContent() {
     // Mercado Pago: el pago ya lo confirma el webhook en el backend
     if (!paypalToken) {
       clearCart();
+      clearPendingDiscountCode();
       return;
     }
 
@@ -62,6 +64,7 @@ function PaymentStatusContent() {
 
         if (res.ok && data.ok) {
           clearCart();
+          clearPendingDiscountCode();
           setViewState('success');
         } else {
           setViewState('error');

@@ -1,5 +1,6 @@
 //src/app/layout.tsx
 import type { Metadata } from "next";
+import DiscountFromUrl from "@/components/DiscountFromUrl";
 import { Manrope, Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "../components/layout/Navbar";
@@ -45,6 +46,8 @@ export default function RootLayout({
           <Suspense fallback={null}>
             <NewsletterPopup />
           </Suspense>
+          {/* Cupón por link (?cupon=...): lo guarda para el checkout */}
+          <DiscountFromUrl />
           <Toaster
             position="bottom-right"
             toastOptions={{

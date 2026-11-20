@@ -1,5 +1,6 @@
 'use client';
-import { useState, useEffect } from 'react'; 
+import { useState, useEffect, useRef } from 'react';
+import { getPendingDiscountCode, clearPendingDiscountCode, normalizeDiscountCode } from '@/lib/discountCode'; 
 import { useCart } from '@/hooks/useCart';
 import { LockKeyhole, Wallet, CreditCard } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -108,6 +109,18 @@ export default function CheckoutPage() {
   const shippingCost = subtotal >= 10000 ? 0 : 1500; 
   const total = subtotal + shippingCost - discountAmount;
 
+  // CUPÓN QUE LLEGÓ POR LINK (?cupon=...): se aplica solo una vez que hay productos
+  const pendingCodeTried = useRef(false);
+  useEffect(() => {
+    if (pendingCodeTried.current || subtotal <= 0) return;
+    const pendingCode = getPendingDiscountCode();
+    if (!pendingCode) return;
+    pendingCodeTried.current = true;
+    setDiscountCode(pendingCode);
+    applyDiscount(pendingCode);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [subtotal]);
+
   // AUTOCOMPLETADO DE DATOS 
   useEffect(() => {
     const loadUserData = async () => {
@@ -200,10 +213,10 @@ export default function CheckoutPage() {
     }
   };
 
-  const applyDiscount = async () => {
+  const applyDiscount = async (codeFromLink?: string) => {
     setDiscountError('');
     // Al copiar y pegar el código suelen colarse espacios
-    const code = discountCode.trim().toUpperCase();
+    const code = normalizeDiscountCode(codeFromLink ?? discountCode);
     setDiscountCode(code);
 
     if (!code) {
@@ -228,6 +241,8 @@ export default function CheckoutPage() {
           description: `Se ha aplicado un ${data.discountAmount}% de descuento (-$${formatPrice(calculatedDiscount)})`,
         });
       } else {
+        // Si el cupón guardado del link ya no sirve, no se vuelve a intentar
+        if (codeFromLink) clearPendingDiscountCode();
         setDiscountError(data.message || 'Código inválido');
         setDiscountAmount(0);
         toast.error(data.message || 'Código inválido');
@@ -456,7 +471,7 @@ export default function CheckoutPage() {
                   <label className="text-sm font-semibold text-planthia-dark/70 block mb-2">¿Tenés un código de descuento?</label>
                   <div className="flex flex-col sm:flex-row gap-3">
                     <input type="text" placeholder="WELCOME10_XXXXXX" value={discountCode} onChange={handleDiscountChange} className="flex-1 px-4 py-3 bg-planthia-cream border-none rounded-xl focus:ring-2 focus:ring-planthia-green outline-none placeholder:text-planthia-dark/30" />
-                    <button type="button" onClick={applyDiscount} className="px-4 sm:px-4 py-3 bg-planthia-green text-white rounded-xl font-bold hover:bg-planthia-light-green transition-all cursor-pointer">Aplicar</button>
+                    <button type="button" onClick={() => applyDiscount()} className="px-4 sm:px-4 py-3 bg-planthia-green text-white rounded-xl font-bold hover:bg-planthia-light-green transition-all cursor-pointer">Aplicar</button>
                   </div>
                 </div>
                 {discountAmount > 0 && (
