@@ -1,12 +1,16 @@
 'use client'
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '@/hooks/useCart';
+import { useCartStockCheck } from '@/hooks/useCartStockCheck';
 import { X, Trash2, Plus, Minus, Truck, Check } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 export const CartDrawer = () => {
   const { cart, isOpen, closeCart, removeItem, updateQuantity, getTotalPrice } = useCart();
   const router = useRouter();
+  // Al abrir el carrito se revisa el stock real
+  useCartStockCheck(isOpen);
+  const hasSoldOut = cart.some((item) => (item.stock ?? 0) <= 0);
 
   const formatPrice = (value: number) => Math.round(value).toLocaleString('es-AR');
 
@@ -99,6 +103,9 @@ export const CartDrawer = () => {
                       </div>
 
                       <p className="text-[11px] font-medium text-planthia-dark/60">${formatPrice(item.price)}</p>
+                      {(item.stock ?? 0) <= 0 && (
+                        <p className="text-[10px] font-bold uppercase tracking-wider text-red-700">Sin stock · quitalo para continuar</p>
+                      )}
 
                       <div className="flex items-center border border-planthia-dark/10 w-fit mt-2 rounded-full px-2 py-1">
                         <button
@@ -133,12 +140,16 @@ export const CartDrawer = () => {
                 <span className="text-xs font-bold uppercase">Total</span>
                 <span className="text-xs font-bold">${formatPrice(getTotalPrice())}</span>
               </div>
+              {hasSoldOut && (
+                <p className="text-[11px] text-red-700 mb-3">Hay productos sin stock en tu carrito. Quitalos para finalizar la compra.</p>
+              )}
               <button
                 onClick={() => {
                   closeCart();
                   router.push('/checkout');
                 }}
-                className="w-full bg-planthia-green text-white py-4 text-[10px] font-bold uppercase tracking-widest hover:bg-planthia-green transition-colors cursor-pointer">
+                disabled={hasSoldOut}
+                className="w-full bg-planthia-green text-white py-4 text-[10px] font-bold uppercase tracking-widest hover:bg-planthia-green transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed">
                 Finalizar Compra
               </button>
             </div>

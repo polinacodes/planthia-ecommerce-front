@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { getPendingDiscountCode, clearPendingDiscountCode, normalizeDiscountCode } from '@/lib/discountCode'; 
 import { useCart } from '@/hooks/useCart';
+import { useCartStockCheck } from '@/hooks/useCartStockCheck';
 import { LockKeyhole, Wallet, CreditCard } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
@@ -84,6 +85,9 @@ const formatPrice = (value: number) => Math.round(value).toLocaleString('es-AR')
 // COMPONENTE PRINCIPAL
 export default function CheckoutPage() {
   const { cart, getTotalPrice, clearCart } = useCart();
+  // Al entrar al checkout se revisa el stock real de lo que hay en el carrito
+  const { recheck } = useCartStockCheck(true);
+  const soldOutItems = cart.filter((item) => (item.stock ?? 0) <= 0);
   const router = useRouter();
 
   // Estados
@@ -264,6 +268,11 @@ export default function CheckoutPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (soldOutItems.length > 0) {
+      toast.error('Quitá los productos sin stock para finalizar la compra');
+      return;
+    }
+
     const allFields = new Set(Object.keys(formData) as Array<keyof FormData>);
     setTouchedFields(allFields);
 
@@ -325,6 +334,8 @@ export default function CheckoutPage() {
       } else {
         // El backend explica qué pasó (sin stock, cupón usado, etc.)
         toast.error(data.error?.message || 'Error al procesar el pedido');
+        // Si fue por stock (alguien compró justo antes), se actualiza el carrito para mostrarlo
+        recheck();
       }
     } catch (error) {
       toast.error('Error de conexión');
@@ -456,6 +467,9 @@ export default function CheckoutPage() {
                     <div className="flex-grow">
                       <p className="font-bold">{item.name}</p>
                       <p className="text-sm text-planthia-dark/70">Cant: {item.quantity}</p>
+                      {(item.stock ?? 0) <= 0 && (
+                        <p className="text-xs font-bold text-red-700 mt-1">Sin stock</p>
+                      )}
                       <p className="text-planthia-green font-semibold mt-1">${formatPrice(Number(item.price))}</p>
                     </div>
                   </div>
@@ -490,7 +504,13 @@ export default function CheckoutPage() {
                   <span className="text-2xl font-extrabold text-planthia-green">${formatPrice(total)}</span>
                 </div>
               </div>
-              <button type="submit" disabled={loading} className="w-full py-4 rounded-full bg-planthia-green text-white font-bold text-lg hover:bg-planthia-light-green transition-all shadow-lg disabled:opacity-50 cursor-pointer">
+              {soldOutItems.length > 0 && (
+                <div className="rounded-xl bg-red-50 border border-red-200 p-4 text-sm text-red-800">
+                  <p className="font-bold mb-1">Algunos productos se quedaron sin stock</p>
+                  <p>{soldOutItems.map((item) => item.name).join(', ')}. Quitalos del carrito para finalizar la compra.</p>
+                </div>
+              )}
+              <button type="submit" disabled={loading || soldOutItems.length > 0} className="w-full py-4 rounded-full bg-planthia-green text-white font-bold text-lg hover:bg-planthia-light-green transition-all shadow-lg disabled:opacity-50 cursor-pointer">
                 {loading ? 'Procesando...' : 'Finalizar Compra'}
               </button>
               <p className="text-center text-xs text-planthia-dark/50 flex items-center justify-center gap-2">
