@@ -96,7 +96,7 @@ export default function Hero() {
               style={{ width: "max(100cqw, 75cqh)" }}
             >
               {/* CÍRCULOS (centrados en la maceta; para subirlos o bajarlos, cambiá top-[51%]) */}
-              <div className="absolute left-[51%] top-[51%] -translate-x-1/2 -translate-y-1/2 w-[66%] sm:w-[80%] aspect-square">
+              <div className="absolute left-[51%] top-[48%] -translate-x-1/2 -translate-y-1/2 w-[66%] sm:w-[80%] aspect-square">
                 {/* Círculo Exterior */}
                 <div className="absolute inset-0 border-[4px] sm:border-[6px] border-white rounded-full shadow-md" />
                 {/* Círculo Interior */}
