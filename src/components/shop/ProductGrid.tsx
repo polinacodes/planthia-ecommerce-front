@@ -18,7 +18,9 @@ const ProductGrid = ({ products, isLoading, activeFiltersText, productsPerPage }
       <EmptyState 
       className="pb-16 pt-0"
         title="Uy, parece que esa plantita todavía no llegó a nuestra selva."
-  description={<>No encontramos nada para <span className="font-bold text-[#5B823B]">{activeFiltersText}, </span></>}
+  description={activeFiltersText
+        ? <>No encontramos nada para <span className="font-bold text-[#5B823B]">{activeFiltersText}</span>, </>
+        : <>Todavía no hay productos en esta sección, </>}
       />
     );
   }

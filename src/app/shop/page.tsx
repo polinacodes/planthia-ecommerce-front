@@ -1,11 +1,10 @@
 "use client";
 
-import CategoryFilters from '@/components/shop/CategoryFilters';
+import CategorySelector from '@/components/shop/CategorySelector';
 import HeroShop from '@/components/shop/HeroShop';
 import Pagination from '@/components/shop/Pagination';
 import ProductGrid from '@/components/shop/ProductGrid';
 import ShopToolbar from '@/components/shop/ShopToolbar';
-import TypeSelector from '@/components/shop/TypeSelector';
 import { usePlants } from '@/hooks/usePlants';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useState, Suspense } from 'react';
@@ -159,17 +158,11 @@ const ShopPageContent = () => {
       <HeroShop />
       <div className="max-w-[1400px] mx-auto px-6 sm:px-12">
 
-        <TypeSelector
+        <CategorySelector
           typeQuery={typeQuery}
-          searchQuery={searchQuery}
-          onTypeChange={(type) => updateFilter('type', type)}
-        />
-
-        <CategoryFilters
-          type={typeQuery}
           categoryQuery={categoryQuery}
-          onFilterChange={updateFilter}
           hasSearch={!!searchQuery}
+          onFilterChange={updateFilter}
         />
 
         <ShopToolbar
