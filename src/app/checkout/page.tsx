@@ -257,9 +257,14 @@ export default function CheckoutPage() {
 
     setLoading(true);
     try {
+      // Si hay sesión, el backend puede actualizar los datos guardados del perfil
+      const token = localStorage.getItem('token');
       const res = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/orders/checkout`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
         body: JSON.stringify({
           email: formData.email,
           first_name: formData.first_name,
@@ -268,7 +273,8 @@ export default function CheckoutPage() {
           address: formData.address,
           city: formData.city,
           zip_code: formData.zip_code,
-          cart: cart.map(item => ({ name: item.name, quantity: item.quantity, price: item.price, productId: item.id, image: item.image || '' })),
+          // Precios, envío, descuento y total los recalcula el backend: acá solo viajan productos y cantidades
+          cart: cart.map(item => ({ productId: item.id, color: item.color, quantity: item.quantity })),
           payment_method: paymentMethod,
           subtotal: subtotal,
           shipping_cost: shippingCost,
@@ -299,7 +305,8 @@ export default function CheckoutPage() {
         router.push(`/payment-status?orderId=${data.orderId}&status=approved`);
 
       } else {
-        toast.error('Error al procesar el pedido');
+        // El backend explica qué pasó (sin stock, cupón usado, etc.)
+        toast.error(data.error?.message || 'Error al procesar el pedido');
       }
     } catch (error) {
       toast.error('Error de conexión');
