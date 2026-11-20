@@ -41,13 +41,13 @@ const HeroShop = () => {
   {/* Contenido */}
   <div className="relative h-full flex flex-col justify-center items-center text-center px-6">
     <motion.h1 
-      className="text-2xl sm:text-4xl lg:text-5xl font-bold text-[#FDFBF7] tracking-[0.12em] sm:tracking-[0.2em] uppercase"
+      className="text-2xl sm:text-4xl lg:text-5xl [@media(min-width:1024px)_and_(max-height:850px)]:text-3xl font-bold text-[#FDFBF7] tracking-[0.12em] sm:tracking-[0.2em] uppercase"
       style={{ textShadow: '2px 2px 10px rgba(0,0,0,0.3)' }}
     >
       Nuestra Colección
     </motion.h1>
-    <div className="w-12 sm:w-16 h-[1px] bg-[#FDFBF7]/50 my-3 sm:my-4" />
-    <p className="text-sm sm:text-base text-[#FDFBF7]/80 font-light tracking-wide italic max-w-md sm:max-w-none">
+    <div className="w-12 sm:w-16 h-[1px] bg-[#FDFBF7]/50 my-3 sm:my-4 [@media(min-width:1024px)_and_(max-height:850px)]:my-2.5" />
+    <p className="text-sm sm:text-base [@media(min-width:1024px)_and_(max-height:850px)]:text-sm text-[#FDFBF7]/80 font-light tracking-wide italic max-w-md sm:max-w-none">
       Explorá nuestra selección premium de plantas y todo para su cuidado.
     </p>
   </div>
