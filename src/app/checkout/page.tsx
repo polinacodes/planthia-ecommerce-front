@@ -202,7 +202,11 @@ export default function CheckoutPage() {
 
   const applyDiscount = async () => {
     setDiscountError('');
-    if (!discountCode.trim()) {
+    // Al copiar y pegar el código suelen colarse espacios
+    const code = discountCode.trim().toUpperCase();
+    setDiscountCode(code);
+
+    if (!code) {
       toast.error('Por favor, ingresá un código de descuento');
       return;
     }
@@ -211,7 +215,7 @@ export default function CheckoutPage() {
       const res = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/validate-discount`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ code: discountCode }),
+        body: JSON.stringify({ code }),
       });
       const data = await res.json();
       if (res.ok) {
