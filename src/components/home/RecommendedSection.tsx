@@ -61,7 +61,7 @@ const RecommendedSection = ({ plants }: { plants: any[] }) => {
 
 
   return (
-    <section className="mt-12 lg:mt-0 xl:mt-10 2xl:mt-28 min-[1921px]:!mt-72 pt-12 pb-12 px-4 sm:px-6 lg:px-12 max-w-[1600px] mx-auto bg-[#F7F5F0]">
+    <section className="mt-12 lg:mt-0 xl:mt-10 2xl:mt-28 min-[1921px]:!mt-72 pt-8 lg:pt-12 pb-8 px-4 sm:px-6 lg:px-12 max-w-[1600px] mx-auto bg-[#F7F5F0]">
       {/* VISTA MOBILE: Scroll horizontal nativo */}
       <div className="md:hidden">
         <div className="flex gap-4 overflow-x-auto pb-4 -mr-4 pr-4 snap-x snap-mandatory">
@@ -105,7 +105,7 @@ const RecommendedSection = ({ plants }: { plants: any[] }) => {
               }`}
           >
             {visiblePlants.map((plant) => (
-              <div key={`carousel-${plant.id}`} className="py-14 w-full">
+              <div key={`carousel-${plant.id}`} className="pt-6 pb-4 lg:pt-14 lg:pb-6 w-full">
                 
                 <ProductCard
                   plant={plant}
