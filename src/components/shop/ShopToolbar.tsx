@@ -31,7 +31,7 @@ const ShopToolbar = ({
   const showFilters = typeQuery === 'plantas';
 
   return (
-    <div className="flex justify-between items-center border-b border-gray-200 pb-4 md:pb-6 mb-6 md:mb-12">
+    <div className="flex justify-between items-center border-b border-gray-200 pb-4 md:pb-6 mb-6 md:mb-8">
       {/* SECCIÓN FILTRAR - Solo visible en plantas */}
       {showFilters && (
         <div className="flex items-center gap-6">

@@ -19,7 +19,7 @@ const HeroShop = () => {
   }, []);
 
   return (
-  <section className="relative w-full h-[200px] md:h-[240px] lg:h-[clamp(240px,32vh,340px)] mt-[-96px] overflow-hidden mb-16 bg-planthia-dark">
+  <section className="relative w-full h-[200px] md:h-[240px] lg:h-[clamp(200px,22vh,260px)] mt-[-96px] overflow-hidden mb-10 md:mb-12 bg-planthia-dark">
   {/* Carrusel de Imágenes: fundido cruzado (la nueva aparece mientras la anterior se va),
       sobre fondo oscuro, así no se ve el destello claro entre imagen e imagen */}
   <AnimatePresence initial={false}>
