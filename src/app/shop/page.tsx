@@ -20,6 +20,20 @@ const matchesAny = (productValue: unknown, filterValues: string[]) => {
   return filterValues.some((value) => text.includes(normalize(value)));
 };
 
+// Casillas de luz que vienen de Strapi (metadata.light_shade / light_indirect / light_sun)
+const LIGHT_FLAGS: Record<string, string> = {
+  sombra: 'light_shade',
+  indirecta: 'light_indirect',
+  sol: 'light_sun',
+};
+
+// Usa las casillas si el producto las tiene; si no (backend sin actualizar), busca la palabra en el texto
+const matchesLight = (metadata: any, filterValues: string[]) => {
+  const hasFlags = typeof metadata?.light_sun === 'boolean';
+  if (!hasFlags) return matchesAny(metadata?.light, filterValues);
+  return filterValues.some((value) => metadata?.[LIGHT_FLAGS[value]] === true);
+};
+
 const ShopPageContent = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -109,7 +123,7 @@ const ShopPageContent = () => {
           product.subcategory?.name?.toLowerCase() !== categoryQuery.toLowerCase()) return false;
         if (lightQuery) {
           const lightValues = lightQuery.split(',');
-          if (!matchesAny(product.metadata?.light, lightValues)) return false;
+          if (!matchesLight(product.metadata, lightValues)) return false;
         }
         if (petQuery && !product.metadata?.pet_friendly) return false;
         if (diffQuery) {
