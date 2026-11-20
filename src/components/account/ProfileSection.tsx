@@ -62,7 +62,8 @@ export default function ProfileSection({ user, onUserUpdate }: ProfileSectionPro
     const token = localStorage.getItem('token');
 
     try {
-      const response = await fetch(`http://localhost:1337/api/users/${user.id}`, {
+      // Ruta propia del backend: cada persona solo puede editar sus datos
+      const response = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/profile`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
