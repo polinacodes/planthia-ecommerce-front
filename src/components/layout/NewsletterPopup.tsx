@@ -28,7 +28,6 @@ export default function NewsletterPopup() {
     setLoading(true);
 
     try {
-      const url = `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/newsletter/subscribe`;
       const res = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/newsletter/subscribe`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
