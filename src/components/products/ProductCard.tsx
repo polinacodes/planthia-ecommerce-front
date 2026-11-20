@@ -128,7 +128,7 @@ const ProductCard = ({ plant, isActive, onClick }: ProductCardProps) => {
           transition={SPRING}
           className={`z-20 flex-shrink-0 flex justify-center transition-[translate] duration-500 ${EASE} ${isActive
             ? 'mx-2.5 lg:mx-0 lg:absolute lg:-top-[22px] lg:-left-[38px]'
-            : 'relative -translate-x-2 sm:-translate-x-4'
+            : 'relative -translate-x-2 sm:-translate-x-4 -mr-3 sm:-mr-5 lg:-mr-6'
             }`}
         >
           <Image
