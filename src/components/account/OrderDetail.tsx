@@ -23,7 +23,9 @@ export interface OrderItem {
   price: number;
   quantity: number;
   image: string;
-  productId?: string;
+  productId?: string | number;
+  documentId?: string;
+  color?: string | null;
 }
 
 export interface OrderData {

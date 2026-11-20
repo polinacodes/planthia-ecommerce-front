@@ -50,50 +50,66 @@ export default function OrdersSection({ orders, user }: OrdersSectionProps) {
     return sortedOrders.slice(0, visibleOrdersCount);
   }, [sortedOrders, visibleOrdersCount]);
 
+  /**
+   * "Volver a comprar": busca cada producto con su precio y stock ACTUALES y
+   * lo agrega al carrito con el mismo color. Usa el documentId (fijo); los
+   * pedidos viejos que no lo tienen se buscan por el id numérico.
+   */
   const handleBuyAgain = async (items: OrderItem[]) => {
     const toastId = toast.loading("Verificando stock y precios actuales...");
     let atLeastOneAdded = false;
+    const strapiUrl = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
 
     try {
       for (const item of items) {
-        const idParaBuscar = item.productId || String(item.id);
-        const strapiUrl = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
-        const res = await fetch(`${strapiUrl}/api/products?filters[id][$eq]=${idParaBuscar}&populate=*`);
+        // Pedidos viejos guardaban "123" o "123-color" en productId
+        const [legacyId, ...legacyColor] = String(item.productId ?? item.id ?? '').split('-');
+        const color = (item.color || legacyColor.join('-') || '').toLowerCase() || null;
 
-        if (!res.ok) {
-          console.error(`Error en la petición a Strapi. Status: ${res.status}`);
-          continue;
-        }
+        const filter = item.documentId
+          ? `filters[documentId][$eq]=${encodeURIComponent(item.documentId)}`
+          : `filters[id][$eq]=${encodeURIComponent(legacyId)}`;
+        const res = await fetch(`${strapiUrl}/api/products?${filter}&populate=variants`);
+        if (!res.ok) continue;
 
         const json = await res.json();
-        const currentProduct = json.data && json.data.length > 0 ? json.data[0] : null;
-
+        const currentProduct = json.data?.[0];
         if (!currentProduct) {
-          console.error(`No se encontró el producto con ID ${idParaBuscar}. Asegurate de que exista y esté PUBLICADO.`);
+          toast.error(`"${item.name}" ya no está disponible.`, { id: toastId });
           continue;
         }
 
-        const attributes = currentProduct.attributes || currentProduct;
-        const currentStock = attributes.stock ?? 0;
+        const variant = color
+          ? ((currentProduct.variants || []) as { color?: string; stock?: number; image?: string }[]).find(
+              (v) => (v.color || '').toLowerCase() === color
+            )
+          : null;
 
+        if (color && !variant) {
+          toast.error(`"${item.name}" ya no está disponible en ese color.`, { id: toastId });
+          continue;
+        }
+
+        const currentStock = variant ? Number(variant.stock) || 0 : Number(currentProduct.stock) || 0;
         if (currentStock <= 0) {
-          toast.error(`"${attributes.name}" no se agregó por falta de stock.`, { id: toastId });
+          toast.error(`"${currentProduct.name}" no se agregó por falta de stock.`, { id: toastId });
           continue;
         }
 
         const productToCart = {
-          id: String(currentProduct.id),
+          id: variant ? `${currentProduct.id}-${color}` : String(currentProduct.id),
           documentId: currentProduct.documentId,
-          name: attributes.name,
-          price: attributes.price,
-          image: attributes.image?.url || item.image,
+          name: currentProduct.name,
+          color: variant?.color,
+          price: currentProduct.price,
+          image: variant?.image || currentProduct.image || item.image,
           stock: currentStock,
-          quantity: item.quantity
+          quantity: 1,
         };
 
         addItem(productToCart);
-
-        if (item.quantity > 1 && typeof updateQuantity === 'function') {
+        if (item.quantity > 1) {
+          // updateQuantity respeta el stock disponible
           updateQuantity(productToCart.id, item.quantity);
         }
 
