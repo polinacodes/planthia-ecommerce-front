@@ -95,12 +95,12 @@ export default function Hero() {
               className="absolute top-0 left-1/2 -translate-x-1/2 aspect-[1086/1448]"
               style={{ width: "max(100cqw, 75cqh)" }}
             >
-              {/* CÍRCULOS (centro = maceta: 51% del ancho, 55,5% del alto de la foto) */}
-              <div className="absolute left-[51%] top-[55.5%] -translate-x-1/2 -translate-y-1/2 w-[66%] sm:w-[80%] aspect-square">
+              {/* CÍRCULOS (centrados en la maceta; para subirlos o bajarlos, cambiá top-[51%]) */}
+              <div className="absolute left-[51%] top-[51%] -translate-x-1/2 -translate-y-1/2 w-[66%] sm:w-[80%] aspect-square">
                 {/* Círculo Exterior */}
                 <div className="absolute inset-0 border-[4px] sm:border-[6px] border-white rounded-full shadow-md" />
                 {/* Círculo Interior */}
-                <div className="absolute inset-[10%] bg-white rounded-full shadow-md border border-[#F6F6F6]" />
+                <div className="absolute inset-[6%] bg-white rounded-full shadow-md border border-[#F6F6F6]" />
 
                 {/* Íconos que giran sobre el círculo exterior (detrás de la planta) */}
                 <motion.div
