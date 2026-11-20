@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 
 interface Product {
   id: string;
+  documentId?: string;
   name: string;
   price: number;
   description: string;
@@ -53,6 +54,7 @@ const ProductCardShop = ({ product }: { product: Product }) => {
     } else {
       const wasAdded = addItem({
         id: product.id,
+        documentId: product.documentId,
         name: product.name,
         price: product.price,
         image: product.image,

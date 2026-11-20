@@ -165,6 +165,7 @@ export default function ProductPage() {
 
     const wasAdded = addItem({
       id: uniqueId,
+      documentId: product.documentId,
       name: product.name,
       color: selectedVariant?.color,
       price: product.price,

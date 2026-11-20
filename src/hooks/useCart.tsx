@@ -5,6 +5,7 @@ import { toast } from 'sonner';
 interface CartItem {
   id: string;
   productId?: string;
+  documentId?: string; // identificador fijo de Strapi 5 (el id numérico cambia al republicar)
   name: string;
   price: number;
   image: string;

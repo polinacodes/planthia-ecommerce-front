@@ -41,6 +41,7 @@ const ProductCard = ({ plant, isActive, onClick }: ProductCardProps) => {
 
     const wasAdded = addItem({
       id: uniqueId,
+      documentId: plant.documentId,
       name: plant.name,
       color: selectedVariant?.color,
       price: plant.price,

@@ -274,7 +274,7 @@ export default function CheckoutPage() {
           city: formData.city,
           zip_code: formData.zip_code,
           // Precios, envío, descuento y total los recalcula el backend: acá solo viajan productos y cantidades
-          cart: cart.map(item => ({ productId: item.id, color: item.color, quantity: item.quantity })),
+          cart: cart.map(item => ({ documentId: item.documentId, productId: item.id, color: item.color, quantity: item.quantity })),
           payment_method: paymentMethod,
           subtotal: subtotal,
           shipping_cost: shippingCost,

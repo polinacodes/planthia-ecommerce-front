@@ -83,6 +83,7 @@ export default function OrdersSection({ orders, user }: OrdersSectionProps) {
 
         const productToCart = {
           id: String(currentProduct.id),
+          documentId: currentProduct.documentId,
           name: attributes.name,
           price: attributes.price,
           image: attributes.image?.url || item.image,
