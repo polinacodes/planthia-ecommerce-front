@@ -1,12 +1,13 @@
 //src/components/layout/Footer.tsx
 "use client";
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Globe } from 'lucide-react';
 import Link from 'next/link';
 import Logo from './Logo';
 import { usePathname } from 'next/navigation';
 import { HOME_CONTAINER, PAGE_CONTAINER } from '@/lib/layout';
+import { getToken, getUser } from '@/lib/auth';
 
 // Columnas de links: solo páginas que existen
 const COLUMNS = [
@@ -14,9 +15,7 @@ const COLUMNS = [
     title: 'Shop',
     links: [
       { label: 'Plantas', href: '/shop?type=plantas' },
-      { label: 'Aromáticas', href: '/shop?type=plantas&category=aromaticas' },
       { label: 'Insumos', href: '/shop?type=cuidados' },
-      { label: 'Sustratos', href: '/shop?type=cuidados&category=sustratos' },
     ],
   },
   {
@@ -26,15 +25,19 @@ const COLUMNS = [
       { label: 'Blog', href: '/blog' },
     ],
   },
-  {
-    title: 'Mi cuenta',
-    links: [
-      { label: 'Mis pedidos', href: '/account' },
-      { label: 'Favoritos', href: '/wishlist' },
-      { label: 'Mi perfil', href: '/account?tab=perfil' },
-    ],
-  },
 ];
+
+// "Mi cuenta" cambia según si hay sesión iniciada
+const ACCOUNT_LINKS = {
+  guest: [
+    { label: 'Ingresar', href: '/login' },
+    { label: 'Registrarte', href: '/register' },
+  ],
+  user: [
+    { label: 'Mi perfil', href: '/account?tab=perfil' },
+    { label: 'Favoritos', href: '/wishlist' },
+  ],
+};
 
 const SOCIAL_CLASS = 'p-2 bg-white/10 rounded-full hover:bg-[#C1D37F] hover:text-[#5B823B] transition-all';
 
@@ -42,6 +45,14 @@ const Footer = () => {
   const pathname = usePathname();
   // Mismo contenedor que la página (así se alinea con la newsletter y los títulos)
   const container = pathname === '/' ? HOME_CONTAINER : PAGE_CONTAINER;
+
+  // Se revisa al cambiar de página (igual que en el nav), así se actualiza al iniciar o cerrar sesión
+  const [isLogged, setIsLogged] = useState(false);
+  useEffect(() => {
+    setIsLogged(!!(getUser() && getToken()));
+  }, [pathname]);
+
+  const columns = [...COLUMNS, { title: 'Mi cuenta', links: isLogged ? ACCOUNT_LINKS.user : ACCOUNT_LINKS.guest }];
 
   const handleLogoClick = (e: React.MouseEvent) => {
     if (pathname === '/') {
@@ -68,7 +79,7 @@ const Footer = () => {
             </p>
           </div>
 
-          {COLUMNS.map((column) => (
+          {columns.map((column) => (
             <nav key={column.title} aria-label={column.title}>
               <p className="font-headline font-bold text-xs uppercase tracking-[0.18em] text-white/70 mb-4">{column.title}</p>
               <ul className="space-y-2.5">
