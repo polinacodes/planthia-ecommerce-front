@@ -5,10 +5,9 @@ import { useEffect, useMemo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import { toast } from 'sonner';
 import { ArrowUp, Droplets, Leaf, MapPin, PawPrint, Scissors, Sun, Thermometer, Wind } from 'lucide-react';
 import { usePlants } from '@/hooks/usePlants';
-import { useCart, isCartItemOfProduct } from '@/hooks/useCart';
+import ProductRow from '@/components/products/ProductRow';
 import { careTipsList, difficultyLabel, getRecommendedProducts, isGuidePlant, slugify } from '@/lib/guide';
 
 const formatPrice = (value: number) => Math.round(value).toLocaleString('es-AR');
@@ -23,49 +22,6 @@ function Fact({ icon: Icon, label, value }: { icon: any; label: string; value?: 
         <Icon size={13} /> {label}
       </p>
       <p className="font-headline font-bold text-[15px] text-planthia-dark mt-1.5 leading-snug">{value}</p>
-    </div>
-  );
-}
-
-// Insumo recomendado, con botón para sumarlo al carrito
-function SupplyRow({ product, reason }: { product: any; reason: string }) {
-  const { addItem, cart } = useCart();
-  const inCart = cart.some((item) => isCartItemOfProduct(item, product));
-  const hasVariants = Array.isArray(product.variants) && product.variants.length > 0;
-  const outOfStock = (Number(product.stock) || 0) <= 0;
-
-  const handleAdd = () => {
-    const added = addItem({
-      id: String(product.id),
-      documentId: product.documentId,
-      name: product.name,
-      price: product.price,
-      image: product.image,
-      quantity: 1,
-      stock: Number(product.stock) || 0,
-    });
-    if (added) toast.success(`${product.name} agregado`);
-  };
-
-  return (
-    <div className={`${CARD} p-3 flex items-center gap-4`}>
-      <Link href={`/shop/${product.id}`} className="relative w-16 h-16 rounded-xl bg-planthia-cream overflow-hidden flex-shrink-0">
-        <Image src={product.image} alt={product.name} fill sizes="64px" className="object-contain p-1" />
-      </Link>
-      <div className="flex-1 min-w-0">
-        <Link href={`/shop/${product.id}`} className="font-headline font-bold text-[15px] text-planthia-dark hover:text-planthia-green">
-          {product.name}
-        </Link>
-        <p className="text-xs text-planthia-dark/50">{reason}</p>
-        <p className="font-headline font-extrabold text-planthia-green mt-0.5">${formatPrice(product.price)}</p>
-      </div>
-      {hasVariants ? (
-        <Link href={`/shop/${product.id}`} className="btn btn-secondary btn-sm">Ver</Link>
-      ) : (
-        <button onClick={handleAdd} disabled={outOfStock} className="btn btn-primary btn-sm">
-          {outOfStock ? 'Sin stock' : inCart ? 'Agregado' : 'Agregar'}
-        </button>
-      )}
     </div>
   );
 }
@@ -192,7 +148,7 @@ export default function GuideDetailPage() {
             {recommended.length > 0 ? (
               <div className="space-y-3">
                 {recommended.map(({ product, reason }) => (
-                  <SupplyRow key={product.documentId} product={product} reason={reason} />
+                  <ProductRow key={product.documentId} product={product} reason={reason} />
                 ))}
               </div>
             ) : (

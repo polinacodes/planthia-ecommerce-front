@@ -83,6 +83,7 @@ function NavbarContent() {
     if (href === "/shop?type=plantas") return pathname === "/shop" && searchParams.get("type") === "plantas";
     if (href === "/shop?type=cuidados") return pathname === "/shop" && searchParams.get("type") === "cuidados";
     if (href === "/guia") return pathname.startsWith("/guia");
+    if (href === "/blog") return pathname.startsWith("/blog");
     return false;
   };
 
@@ -116,6 +117,9 @@ function NavbarContent() {
             </Link>
             <Link href="/guia" className={`${isActive("/guia") ? "text-planthia-green" : "hover:text-planthia-green"} transition-colors`}>
               Guía de cuidados
+            </Link>
+            <Link href="/blog" className={`${isActive("/blog") ? "text-planthia-green" : "hover:text-planthia-green"} transition-colors`}>
+              Blog
             </Link>
           </div>
 
@@ -316,6 +320,7 @@ function NavbarContent() {
                 <Link href="/shop?type=plantas" className="hover:opacity-80 transition-opacity">Plantas</Link>
                 <Link href="/shop?type=cuidados" className="hover:opacity-80 transition-opacity">Insumos</Link>
                 <Link href="/guia" className="hover:opacity-80 transition-opacity">Guía de cuidados</Link>
+                <Link href="/blog" className="hover:opacity-80 transition-opacity">Blog</Link>
 
                 <div className="h-px bg-planthia-cream/20 my-2" />
 
