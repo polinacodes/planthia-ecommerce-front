@@ -41,7 +41,7 @@ export default function BenefitsBar() {
       className="bg-white border-t border-planthia-dark/[0.06]"
     >
       <div className={`${HOME_CONTAINER} py-10 sm:py-12`}>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-y-8 max-w-5xl mx-auto">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-y-8">
           {BENEFITS.map((benefit) =>
             benefit.href ? (
               <Link key={benefit.title} href={benefit.href} className={`${itemClass} hover:opacity-75 transition-opacity`}>
