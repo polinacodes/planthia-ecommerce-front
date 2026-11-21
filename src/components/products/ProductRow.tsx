@@ -54,7 +54,7 @@ export default function ProductRow({ product, reason, compact = false }: { produ
             disabled={outOfStock}
             aria-label={outOfStock ? 'Sin stock' : `Agregar ${product.name} al carrito`}
             title={outOfStock ? 'Sin stock' : inCart ? 'Agregado' : 'Agregar al carrito'}
-            className={`btn w-9 h-9 p-0 rounded-full ${inCart ? 'btn-secondary' : 'btn-primary'}`}
+            className={inCart ? 'btn btn-secondary w-9 h-9 p-0 rounded-full' : 'w-9 h-9 rounded-full flex items-center justify-center bg-planthia-green text-white hover:bg-[#C1D37F] hover:text-[#5B823B] transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed'}
           >
             {inCart ? <Check size={16} /> : <Plus size={16} />}
           </button>

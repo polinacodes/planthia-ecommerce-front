@@ -45,7 +45,7 @@ export default function NewsletterBlock({ containerClassName }: { containerClass
                 type="submit"
                 disabled={loading}
                 aria-label="Suscribirme"
-                className="group flex-none w-12 h-12 rounded-full bg-white text-[#5B823B] flex items-center justify-center cursor-pointer hover:scale-105 transition-transform disabled:opacity-60"
+                className="group flex-none w-12 h-12 rounded-full bg-white text-[#5B823B] hover:bg-[#C1D37F] flex items-center justify-center cursor-pointer transition-colors disabled:opacity-60"
               >
                 {loading ? <Loader2 size={20} className="animate-spin" /> : <ArrowRight size={20} className="transition-transform duration-300 group-hover:translate-x-0.5" />}
               </button>
