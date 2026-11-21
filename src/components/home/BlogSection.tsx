@@ -48,7 +48,7 @@ export default function BlogSection() {
       </div>
 
       {/* En celular se deslizan de costado; desde tablet, grilla */}
-      <div className="-mx-4 sm:-mx-6 md:mx-0 px-4 sm:px-6 md:px-0 flex md:grid md:grid-cols-3 gap-5 lg:gap-8 overflow-x-auto md:overflow-visible snap-x snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <div className="-mx-4 sm:-mx-6 md:mx-0 px-4 sm:px-6 md:px-0 flex md:grid md:grid-cols-3 gap-5 lg:gap-8 scroll-px-4 sm:scroll-px-6 md:scroll-px-0 overflow-x-auto md:overflow-visible snap-x snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {articles.map((article) => (
           <div key={article.documentId} className="flex-[0_0_80%] sm:flex-[0_0_55%] md:flex-auto snap-start">
             <ArticleCard article={article} />

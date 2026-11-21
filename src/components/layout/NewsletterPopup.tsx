@@ -2,13 +2,11 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
-import { toast } from 'sonner';
+import { useNewsletterSubscribe } from '@/hooks/useNewsletterSubscribe';
 import Image from 'next/image';
 
 export default function NewsletterPopup() {
   const [isOpen, setIsOpen] = useState(false);
-  const [email, setEmail] = useState('');
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const hasSeenPopup = localStorage.getItem('hasSeenNewsletter');
@@ -23,36 +21,8 @@ export default function NewsletterPopup() {
     localStorage.setItem('hasSeenNewsletter', 'true');
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-
-    try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/newsletter/subscribe`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          data: {
-            email: email
-          }
-        }),
-      });
-
-      const data = await res.json();
-
-      if (res.ok) {
-        // El mensaje lo arma el backend (cambia si la persona se vuelve a suscribir)
-        toast.success(data.message || '¡Suscripción exitosa! Revisá tu email.');
-        setTimeout(() => closePopup(), 2000);
-      } else {
-        toast.error(data.error?.message || 'Algo salió mal, intentá de nuevo.');
-      }
-    } catch (err) {
-      toast.error('Error de conexión');
-    } finally {
-      setLoading(false);
-    }
-  };
+  // Misma suscripción que el bloque de la home; al suscribirse, el popup se cierra a los 2 segundos
+  const { email, setEmail, loading, handleSubmit } = useNewsletterSubscribe(() => setTimeout(() => closePopup(), 2000));
 
   return (
     <AnimatePresence>

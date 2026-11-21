@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import PageHeader from '@/components/layout/PageHeader';
 import TextTabs from '@/components/layout/TextTabs';
+import NewsletterBlock from '@/components/layout/NewsletterBlock';
 import ArticleCard, { FeaturedArticleCard } from '@/components/blog/ArticleCard';
 import { BLOG_CATEGORIES, getArticles, isBlogCategory } from '@/lib/blog';
 
@@ -57,6 +58,8 @@ export default async function BlogPage({ searchParams }: { searchParams: Promise
             <Link href="/blog" className="btn btn-secondary btn-md">Ver todos los artículos</Link>
           </div>
         )}
+
+        <NewsletterBlock className="mt-20 sm:mt-24" />
       </div>
     </main>
   );

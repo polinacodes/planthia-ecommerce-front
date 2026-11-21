@@ -2,7 +2,8 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import Link from 'next/link';
+import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import ProductCard from '../products/ProductCard';
 
@@ -64,9 +65,30 @@ const RecommendedSection = ({ plants }: { plants: any[] }) => {
 
 
   return (
-    <section className="mt-12 lg:-mt-[110px] xl:mt-0 2xl:mt-0 min-[1921px]:!mt-0 pt-8 lg:pt-12 pb-8 px-4 sm:px-6 lg:px-12 max-w-[1600px] mx-auto bg-[#F7F5F0]">
-      {/* Título solo para lectores de pantalla: ordena los títulos de la página sin cambiar el diseño */}
-      <h2 className="sr-only">Plantas destacadas</h2>
+    <>
+    {/* Encabezado: mismo sistema que "Explorá por categoría" */}
+    <div className="pt-16 sm:pt-20 px-4 sm:px-6 lg:px-12 max-w-[1600px] mx-auto flex items-end justify-between gap-6 mb-8 sm:mb-10">
+      <div>
+        <span className="font-headline font-bold tracking-[0.2em] text-xs text-planthia-dark mb-3 block uppercase">
+          #LasMásElegidas
+        </span>
+        <h2 className="font-headline font-extrabold text-3xl sm:text-4xl xl:text-5xl leading-[1.1] text-planthia-dark">
+          Más vendidas
+        </h2>
+        <p className="font-body text-planthia-dark/60 mt-3 text-base sm:text-lg max-w-xl leading-relaxed">
+          Las favoritas de nuestra comunidad verde.
+        </p>
+      </div>
+      <Link
+        href="/shop"
+        className="group hidden md:inline-flex flex-none items-center gap-2 pb-2 font-headline font-bold text-xs uppercase tracking-[0.15em] text-planthia-green hover:text-planthia-green-dark transition-colors"
+      >
+        Ver todo el shop
+        <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
+      </Link>
+    </div>
+
+    <section aria-label="Más vendidas" className="pt-2 lg:pt-4 pb-8 px-4 sm:px-6 lg:px-12 max-w-[1600px] mx-auto bg-[#F7F5F0]">
       {/* VISTA MOBILE: Scroll horizontal nativo */}
       <div className="md:hidden">
         <div className="flex gap-4 overflow-x-auto pb-4 -mr-4 pr-4 snap-x snap-mandatory">
@@ -134,6 +156,7 @@ const RecommendedSection = ({ plants }: { plants: any[] }) => {
       </div>
 
     </section>
+    </>
   );
 };
 
