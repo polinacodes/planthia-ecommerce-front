@@ -354,7 +354,7 @@ export default function OrderDetail({ order, user, onBack, onBuyAgain }: OrderDe
               <button 
                 onClick={handleLocalBuyAgain}
                 disabled={isProcessing}
-                className={`w-full mt-4 py-3 bg-planthia-green text-planthia-ice rounded-xl font-bold text-xs hover:bg-planthia-light-green transition-all shadow-sm cursor-pointer flex items-center justify-center gap-2 ${
+                className={`w-full mt-4 py-3 bg-planthia-green text-planthia-ice rounded-full font-headline font-bold text-xs hover:bg-planthia-green-dark transition-colors shadow-sm cursor-pointer flex items-center justify-center gap-2 ${
                   isProcessing ? 'opacity-60 cursor-not-allowed' : ''
                 }`}
               >

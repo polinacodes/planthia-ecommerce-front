@@ -245,10 +245,10 @@ export default function ProductPage() {
           {/* COLUMNA DERECHA: INFO y COMPRA */}
           <div className="flex flex-col -mt-8 lg:mt-16 justify-center space-y-6 lg:space-y-8 lg:pl-12">
             <div className="space-y-4">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-manrope text-planthia-dark leading-tight break-words">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-headline font-extrabold text-planthia-dark leading-tight break-words">
                 {product.name}
               </h1>
-              <p className="text-planthia-dark/60 text-base lg:text-lg leading-relaxed max-w-md italic">
+              <p className="text-planthia-dark/60 text-base lg:text-lg leading-relaxed max-w-md">
                 {product.description}
               </p>
             </div>
@@ -282,14 +282,14 @@ export default function ProductPage() {
 
             {/* PRECIO + BOTÓN AGREGAR + FAVORITOS - SIEMPRE EN LÍNEA */}
             <div className="flex items-center gap-4 sm:gap-6 pt-4 lg:pt-6">
-              <span className="text-2xl sm:text-3xl lg:text-4xl font-light text-planthia-dark flex-shrink-0">
+              <span className="text-2xl sm:text-3xl lg:text-4xl font-headline font-extrabold text-planthia-dark flex-shrink-0">
                 ${product.price.toLocaleString('es-AR')}
               </span>
 
               {/* BOTÓN AGREGAR */}
-              <div className={`flex-1 flex items-center overflow-hidden transition-all duration-300 min-h-[48px] sm:min-h-[56px] lg:min-h-[60px] ${isOutOfStock
+              <div className={`flex-1 flex items-center overflow-hidden rounded-full font-headline transition-colors duration-200 min-h-[48px] sm:min-h-[52px] ${isOutOfStock
                 ? "bg-gray-300 cursor-not-allowed"
-                : "bg-planthia-green hover:bg-planthia-dark text-planthia-cream"
+                : "bg-planthia-green hover:bg-planthia-green-dark text-white"
                 }`}>
                 {quantityInCart > 0 ? (
                   <div className="flex w-full items-center px-2 sm:px-4">
@@ -312,8 +312,8 @@ export default function ProductPage() {
                       <span className="xl:hidden text-base sm:text-lg font-bold">
                         {quantityInCart}
                       </span>
-                      <span className="hidden xl:block text-[10px] font-bold tracking-[0.2em] whitespace-nowrap">
-                        {quantityInCart} EN EL CARRITO
+                      <span className="hidden xl:block text-sm font-bold whitespace-nowrap">
+                        {quantityInCart} en el carrito
                       </span>
                     </div>
 
@@ -329,9 +329,9 @@ export default function ProductPage() {
                   <button
                     onClick={handleAddToCart}
                     disabled={isOutOfStock}
-                    className="w-full py-3 sm:py-4 lg:py-5 px-4 sm:px-6 lg:px-8 cursor-pointer uppercase text-[10px] tracking-[0.2em] font-bold transition-all"
+                    className="w-full h-full min-h-[48px] sm:min-h-[52px] px-6 cursor-pointer text-base font-bold"
                   >
-                    {isOutOfStock ? "Sin Stock" : "Agregar"}
+                    {isOutOfStock ? "Sin stock" : "Agregar al carrito"}
                   </button>
                 )}
               </div>
@@ -341,8 +341,8 @@ export default function ProductPage() {
                 onClick={() => toggleFavorite(product.documentId, product.name)}
                 className={`p-2 sm:p-3 lg:p-4 rounded-full cursor-pointer border transition-all duration-300 group flex-shrink-0
                     ${active
-                    ? "border-planthia-dark/10 bg-transparent hover:bg-planthia-green"
-                    : "border-planthia-dark/10 hover:bg-planthia-green text-planthia-green hover:text-planthia-cream"
+                    ? "border-[#dfe5d8] bg-white hover:border-planthia-green hover:bg-[#f3f7ef]"
+                    : "border-[#dfe5d8] bg-white text-planthia-green hover:border-planthia-green hover:bg-[#f3f7ef]"
                   }`}
               >
                 <Heart
@@ -350,7 +350,7 @@ export default function ProductPage() {
                   strokeWidth={1.5}
                   className={`transition-all duration-300 sm:w-5 sm:h-5
                       ${active
-                      ? "text-planthia-green fill-planthia-green group-hover:text-planthia-ice"
+                      ? "text-planthia-green fill-planthia-green"
                       : "group-hover:fill-current"
                     }`}
                 />
@@ -362,7 +362,7 @@ export default function ProductPage() {
         {/* SECCIÓN: PODRÍA INTERESARTE */}
         {relatedProducts.length > 0 && (
           <section className="mt-20 lg:mt-32 pb-20 border-t border-planthia-dark/5 pt-16 lg:pt-20">
-            <h2 className="text-2xl lg:text-3xl font-manrope text-planthia-dark mb-8 lg:mb-12">Podría interesarte</h2>
+            <h2 className="text-2xl lg:text-3xl font-headline font-extrabold text-planthia-dark mb-8 lg:mb-12">Podría interesarte</h2>
 
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
               {relatedProducts.map((relatedP) => (

@@ -38,7 +38,7 @@ export default function RegisterForm() {
   return (
     <form className="w-full space-y-6" onSubmit={handleSubmit}>
       <div className="relative">
-        <label className="text-[10px] font-bold uppercase tracking-[0.1em] text-planthia-dark/40 ml-4 mb-1.5 block">
+        <label className="text-sm font-semibold text-planthia-dark mb-1.5 block">
           Nombre
         </label>
         <div className="relative">
@@ -47,7 +47,7 @@ export default function RegisterForm() {
             type="text"
             required
             placeholder="Tu nombre"
-            className="w-full pl-12 pr-4 py-4 bg-planthia-cream/20 border border-planthia-dark/5 rounded-2xl focus:outline-none focus:border-planthia-green transition-all"
+            className="w-full pl-12 pr-4 py-4 bg-planthia-cream border border-transparent rounded-xl focus:outline-none focus:border-planthia-green focus:bg-white transition-all"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
@@ -55,8 +55,8 @@ export default function RegisterForm() {
       </div>
 
       <div className="relative">
-        <label className="text-[10px] font-bold uppercase tracking-[0.1em] text-planthia-dark/40 ml-4 mb-1.5 block">
-          Correo Electrónico
+        <label className="text-sm font-semibold text-planthia-dark mb-1.5 block">
+          Email
         </label>
         <div className="relative">
           <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-planthia-dark/20" />
@@ -64,7 +64,7 @@ export default function RegisterForm() {
             type="email"
             required
             placeholder="tu@email.com"
-            className="w-full pl-12 pr-4 py-4 bg-planthia-cream/20 border border-planthia-dark/5 rounded-2xl focus:outline-none focus:border-planthia-green transition-all"
+            className="w-full pl-12 pr-4 py-4 bg-planthia-cream border border-transparent rounded-xl focus:outline-none focus:border-planthia-green focus:bg-white transition-all"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
@@ -72,7 +72,7 @@ export default function RegisterForm() {
       </div>
 
       <div className="relative">
-        <label className="text-[10px] font-bold uppercase tracking-[0.1em] text-planthia-dark/40 ml-4 mb-1.5 block">
+        <label className="text-sm font-semibold text-planthia-dark mb-1.5 block">
           Contraseña
         </label>
         <div className="relative">
@@ -80,7 +80,7 @@ export default function RegisterForm() {
             type={showPassword ? "text" : "password"}
             required
             placeholder="••••••••"
-            className="w-full px-5 py-4 bg-planthia-cream/20 border border-planthia-dark/5 rounded-2xl focus:outline-none focus:border-planthia-green transition-all"
+            className="w-full px-5 py-4 bg-planthia-cream border border-transparent rounded-xl focus:outline-none focus:border-planthia-green focus:bg-white transition-all"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
@@ -100,10 +100,10 @@ export default function RegisterForm() {
       <button
         type="submit"
         disabled={loading}
-        className="w-full mt-4 flex items-center justify-center uppercase bg-planthia-dark text-white font-bold py-4 hover:bg-planthia-dark/90 cursor-pointer transition-all shadow-lg disabled:opacity-50"
+        className="btn btn-primary btn-lg w-full mt-4"
       >
         {loading ? 'Creando cuenta...' : 'Crear cuenta'}
-        {!loading && <ArrowRight className="ml-2 w-4 h-4" />}
+        {!loading && <ArrowRight className="w-4 h-4" />}
       </button>
     </form>
   );

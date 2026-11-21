@@ -34,7 +34,7 @@ const EmptyState = ({ title = "Uy, parece que esa plantita todavía no llegó a 
         <SearchX size={40} className="text-[#5B823B]/40" strokeWidth={1.5} />
       </div>
 
-      <h2 className="text-xl sm:text-2xl font-manrope font-bold text-planthia-dark text-center px-4">
+      <h2 className="text-xl sm:text-2xl font-headline font-bold text-planthia-dark text-center px-4">
         {title}
       </h2>
 
@@ -53,7 +53,7 @@ const EmptyState = ({ title = "Uy, parece que esa plantita todavía no llegó a 
 
       <button
         onClick={() => window.location.href = '/shop'}
-        className="mt-12 bg-[#5B823B] text-white px-8 py-3 rounded-full font-bold hover:bg-[#4a6a30] transition-colors text-sm sm:text-base"
+        className="btn btn-primary btn-md mt-12"
       >
         Ver toda la colección
       </button>

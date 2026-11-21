@@ -91,7 +91,7 @@ export default function WishlistPage() {
 
         {/* Encabezado */}
         <div className="border-b border-planthia-dark/10 pb-6 mb-8">
-          <h1 className="text-2xl sm:text-2xl font-manrope text-planthia-dark mb-0">
+          <h1 className="text-2xl sm:text-2xl font-headline font-extrabold text-planthia-dark mb-0">
             Mi Lista de Favoritos
           </h1>
           {/* <p className="text-sm text-planthia-dark/60 ">
@@ -156,7 +156,7 @@ export default function WishlistPage() {
           
                       <Link
                         href={`/shop/${product.id}`}
-                        className="flex-1 sm:w-40 justify-center text-center bg-planthia-green hover:bg-planthia-dark text-white px-4 py-2.5 rounded-xl transition-all flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-wider"
+                        className="btn btn-primary btn-md flex-1 sm:w-40"
                       >
                         <ShoppingCart size={14} />
                         <span>Ver opciones</span>
@@ -166,10 +166,10 @@ export default function WishlistPage() {
                       <button
                         onClick={(e) => handleAddToCart(product, e)}
                         disabled={isOutOfStock}
-                        className={`flex-1 sm:w-40 justify-center text-white px-4 py-2.5 rounded-xl transition-all flex items-center gap-2 text-xs font-bold uppercase tracking-wider
+                        className={`btn btn-md flex-1 sm:w-40 text-white
                             ${isOutOfStock
                             ? "bg-gray-300 cursor-not-allowed"
-                            : "bg-planthia-green hover:bg-planthia-dark"
+                            : "bg-planthia-green hover:bg-planthia-green-dark"
                           }`}
                       >
                         <ShoppingCart size={14} />

@@ -68,7 +68,7 @@ function UnsubscribeContent() {
             <button
               onClick={handleUnsubscribe}
               disabled={status === 'loading'}
-              className="w-full bg-planthia-green text-white py-3.5 rounded-xl font-bold hover:opacity-90 transition-opacity disabled:opacity-60 cursor-pointer"
+              className="btn btn-primary btn-lg w-full"
             >
               {status === 'loading' ? 'Procesando...' : 'Confirmar baja'}
             </button>

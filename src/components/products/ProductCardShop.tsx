@@ -112,7 +112,7 @@ const ProductCardShop = ({ product }: { product: Product }) => {
           href={`/shop/${product.id}`}
           className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 hidden md:flex z-10"
         >
-          <div className="bg-[#5B823B]/20 backdrop-blur-sm p-2 rounded-lg text-[#5B823B] hover:bg-planthia-light-green hover:text-white transition-colors">
+          <div className="bg-white/80 backdrop-blur-sm p-2 rounded-full text-[#5B823B] hover:bg-planthia-green hover:text-white transition-colors">
             <Eye size={20} />
           </div>
         </Link>
@@ -136,12 +136,12 @@ const ProductCardShop = ({ product }: { product: Product }) => {
           <button
             onClick={handleAction}
             disabled={isOutOfStock}
-            className={`text-white p-2 md:px-4 md:py-2 rounded-lg transition-all flex items-center justify-center gap-2 min-w-[40px]
+            className={`text-white font-headline font-bold p-2 md:px-4 md:py-2 rounded-full transition-colors flex items-center justify-center gap-2 min-w-[40px]
               ${isOutOfStock 
                 ? "bg-gray-400 cursor-not-allowed" 
                 : isAlreadyInCart 
-                  ? "bg-planthia-light-green hover:bg-planthia-green" 
-                  : "bg-planthia-green hover:bg-planthia-light-green"
+                  ? "bg-planthia-light-green hover:bg-planthia-green-dark" 
+                  : "bg-planthia-green hover:bg-planthia-green-dark"
               }`}
           >
             {/* VISTA MOBILE */}

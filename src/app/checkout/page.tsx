@@ -352,7 +352,7 @@ export default function CheckoutPage() {
           <h2 className="text-2xl font-bold mb-4">Tu carrito está vacío</h2>
           <button
             onClick={() => router.push('/shop')}
-            className="bg-planthia-green text-white px-6 py-3 rounded-full"
+            className="btn btn-primary btn-md"
           >
             Seguir comprando
           </button>
@@ -519,7 +519,7 @@ export default function CheckoutPage() {
                   <label className="text-sm font-semibold text-planthia-dark/70 block mb-2">¿Tenés un código de descuento?</label>
                   <div className="flex flex-col sm:flex-row gap-3">
                     <input type="text" placeholder="WELCOME10_XXXXXX" value={discountCode} onChange={handleDiscountChange} className="flex-1 px-4 py-3 bg-planthia-cream border-none rounded-xl focus:ring-2 focus:ring-planthia-green outline-none placeholder:text-planthia-dark/30" />
-                    <button type="button" onClick={() => applyDiscount()} className="px-4 sm:px-4 py-3 bg-planthia-green text-white rounded-xl font-bold hover:bg-planthia-light-green transition-all cursor-pointer">Aplicar</button>
+                    <button type="button" onClick={() => applyDiscount()} className="btn btn-primary btn-lg">Aplicar</button>
                   </div>
                 </div>
                 {discountAmount > 0 && (
@@ -545,8 +545,8 @@ export default function CheckoutPage() {
                   <p>{soldOutItems.map((item) => item.name).join(', ')}. Quitalos del carrito para finalizar la compra.</p>
                 </div>
               )}
-              <button type="submit" disabled={loading || soldOutItems.length > 0} className="w-full py-4 rounded-full bg-planthia-green text-white font-bold text-lg hover:bg-planthia-light-green transition-all shadow-lg disabled:opacity-50 cursor-pointer">
-                {loading ? 'Procesando...' : 'Finalizar Compra'}
+              <button type="submit" disabled={loading || soldOutItems.length > 0} className="btn btn-primary btn-lg w-full">
+                {loading ? 'Procesando...' : 'Finalizar compra'}
               </button>
               <p className="text-center text-xs text-planthia-dark/50 flex items-center justify-center gap-2">
                 <LockKeyhole size={14} /> Pago seguro y encriptado

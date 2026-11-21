@@ -13,7 +13,7 @@ import { Suspense } from "react";
 
 const manrope = Manrope({
   subsets: ["latin"],
-  variable: "--font-manrope",
+  variable: "--font-headline",
 });
 
 const inter = Inter({
@@ -55,7 +55,7 @@ export default function RootLayout({
                 background: '#FDFCF0',
                 color: '#1C1C1C',
                 border: '1px solid rgba(28, 28, 28, 0.1)',
-                fontFamily: 'var(--font-manrope)',
+                fontFamily: 'var(--font-headline)',
               },
             }}
           />

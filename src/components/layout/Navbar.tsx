@@ -199,7 +199,7 @@ function NavbarContent() {
                             <Link
                               href="/wishlist"
                               onClick={() => setIsWishlistMenuOpen(false)}
-                              className="block text-center w-full bg-planthia-green hover:bg-planthia-dark text-white py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-colors"
+                              className="btn btn-primary btn-sm w-full"
                             >
                               Ver todos
                             </Link>

@@ -85,7 +85,7 @@ export default function NewsletterPopup() {
               <span className="inline-block px-3 py-1 rounded-full bg-planthia-light-green/20 text-planthia-green font-bold text-[10px] uppercase tracking-[0.2em] mb-4 self-start">
                 Exclusive Access
               </span>
-              <h2 className="text-4xl font-manrope font-extrabold text-planthia-dark mb-3">
+              <h2 className="text-4xl font-headline font-extrabold text-planthia-dark mb-3">
                 Bienvenido a Planthia<span className="text-planthia-green">.</span>
               </h2>
               <p className="font-body text-planthia-dark/70 text-lg mb-6">
@@ -103,7 +103,7 @@ export default function NewsletterPopup() {
                 />
                 <button
                   disabled={loading}
-                  className="w-full bg-planthia-green text-white font-headline font-bold py-3 px-6 rounded-full hover:bg-planthia-light-green transition-all flex items-center justify-center"
+                  className="btn btn-primary btn-lg w-full"
                 >
                   {loading ? 'Enviando...' : 'Quiero mi regalo →'}
                 </button>

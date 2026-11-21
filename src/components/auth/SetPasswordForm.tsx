@@ -81,15 +81,15 @@ export default function SetPasswordForm({ code }: { code: string | null }) {
   return (
     <form className="space-y-6 w-full" onSubmit={handleSubmit}>
       <div className="relative">
-        <label className="text-[10px] font-bold uppercase tracking-[0.1em] text-planthia-dark/40 ml-4 mb-1.5 block">
-          Nueva Contraseña
+        <label className="text-sm font-semibold text-planthia-dark mb-1.5 block">
+          Nueva contraseña
         </label>
         <div className="flex items-center gap-3">
           <div className="relative flex-1">
             <input
               type={showPassword ? 'text' : 'password'}
               required
-              className={`w-full px-5 py-4 bg-planthia-cream/20 border rounded-xl focus:outline-none transition-all ${
+              className={`w-full px-5 py-4 bg-planthia-cream border rounded-xl focus:bg-white focus:outline-none transition-all ${
                 passwordValid ? 'border-planthia-green/50' : 'border-planthia-dark/5'
               }`}
               value={password}
@@ -118,15 +118,15 @@ export default function SetPasswordForm({ code }: { code: string | null }) {
       </div>
 
       <div className="relative">
-        <label className="text-[10px] font-bold uppercase tracking-[0.1em] text-planthia-dark/40 ml-4 mb-1.5 block">
-          Confirmar Contraseña
+        <label className="text-sm font-semibold text-planthia-dark mb-1.5 block">
+          Confirmar contraseña
         </label>
         <div className="flex items-center gap-3">
           <div className="relative flex-1">
             <input
               type={showPassword ? 'text' : 'password'}
               required
-              className={`w-full px-5 py-4 bg-planthia-cream/20 border rounded-xl focus:outline-none transition-all ${
+              className={`w-full px-5 py-4 bg-planthia-cream border rounded-xl focus:bg-white focus:outline-none transition-all ${
                 passwordsMatch ? 'border-planthia-green/50' : 'border-planthia-dark/5'
               }`}
               value={confirmPassword}
@@ -171,10 +171,10 @@ export default function SetPasswordForm({ code }: { code: string | null }) {
       <button
         type="submit"
         disabled={loading || !passwordValid || !passwordsMatch}
-        className="w-full mt-4 flex items-center justify-center bg-planthia-dark text-white font-bold py-4 hover:bg-planthia-dark/90 transition-all shadow-lg disabled:opacity-20 disabled:grayscale disabled:cursor-not-allowed"
+        className="btn btn-primary btn-lg w-full mt-4"
       >
-        {loading ? 'Guardando...' : 'Establecer Contraseña'}
-        {!loading && <ArrowRight className="ml-2 w-4 h-4" />}
+        {loading ? 'Guardando...' : 'Guardar contraseña'}
+        {!loading && <ArrowRight className="w-4 h-4" />}
       </button>
     </form>
   );

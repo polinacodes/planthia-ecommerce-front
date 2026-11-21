@@ -149,8 +149,8 @@ export const CartDrawer = () => {
                   router.push('/checkout');
                 }}
                 disabled={hasSoldOut}
-                className="w-full bg-planthia-green text-white py-4 text-[10px] font-bold uppercase tracking-widest hover:bg-planthia-green transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed">
-                Finalizar Compra
+                className="btn btn-primary btn-lg w-full">
+                Finalizar compra
               </button>
             </div>
           </motion.div>

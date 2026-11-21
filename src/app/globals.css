@@ -4,11 +4,13 @@
   --color-planthia-green: #588534;
   --color-planthia-dark: #0F110E;
   --color-planthia-light-green: #739D52;
+  --color-planthia-green-dark: #3F6224; /* hover de los botones verdes */
   --color-planthia-cream: #F6F6F6;
   --color-planthia-ice: #FFFFFF;
 
   
---background-image-planthia-gradient: linear-gradient(to bottom, #F6F6F6,  #739D52);
+/* Fondo "luz de ventana" (login, registro, contraseñas, estado del pago): crema con luz salvia y terracota */
+--background-image-planthia-gradient: radial-gradient(60% 55% at 85% 10%, rgb(115 157 82 / 0.38) 0%, rgb(115 157 82 / 0) 70%), radial-gradient(55% 50% at 8% 95%, rgb(201 123 79 / 0.28) 0%, rgb(201 123 79 / 0) 70%);
 
   /* Tipografías */
   --font-headline: var(--font-manrope);
@@ -22,3 +24,37 @@
 
 
 
+
+
+/* ============================================
+   SISTEMA DE BOTONES PLANTHIA
+   Forma píldora, Manrope 700, un solo hover (verde oscuro).
+   Uso: className="btn btn-primary btn-lg w-full"
+   Los botones inclinados del hero son la excepción (firma de la home).
+   ============================================ */
+@layer components {
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 9999px;
+    font-family: var(--font-headline);
+    font-weight: 700;
+    line-height: 1;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s, opacity 0.2s;
+  }
+  .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+  .btn-lg { height: 3.25rem; padding: 0 1.75rem; font-size: 1rem; }
+  .btn-md { height: 2.75rem; padding: 0 1.375rem; font-size: 0.875rem; }
+  .btn-sm { height: 2.25rem; padding: 0 1rem; font-size: 0.8125rem; }
+
+  .btn-primary { background-color: var(--color-planthia-green); color: #fff; }
+  .btn-primary:not(:disabled):hover { background-color: var(--color-planthia-green-dark); }
+
+  .btn-secondary { background-color: #fff; color: var(--color-planthia-green); border: 1.5px solid #dfe5d8; }
+  .btn-secondary:not(:disabled):hover { border-color: var(--color-planthia-green); background-color: #f3f7ef; }
+}

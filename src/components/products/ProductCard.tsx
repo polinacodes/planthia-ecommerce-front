@@ -183,7 +183,7 @@ const ProductCard = ({ plant, isActive, onClick }: ProductCardProps) => {
                   onClick={handleAddToCart}
                   disabled={isLimitReached}
                   tabIndex={isActive ? 0 : -1}
-                  className={`flex-1 min-w-0 whitespace-nowrap px-3 sm:px-4 lg:px-5 py-1.5 sm:py-2 lg:py-2.5 rounded-lg sm:rounded-xl text-xs sm:text-sm font-bold transition-colors shadow-sm cursor-pointer
+                  className={`flex-1 min-w-0 whitespace-nowrap px-3 sm:px-4 lg:px-5 py-1.5 sm:py-2 lg:py-2.5 rounded-full font-headline text-xs sm:text-sm font-bold transition-colors shadow-sm cursor-pointer
                       ${isLimitReached
                       ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                       : "bg-white text-[#5B823B] hover:bg-gray-100"}`}
@@ -194,7 +194,7 @@ const ProductCard = ({ plant, isActive, onClick }: ProductCardProps) => {
                   href={`/shop/${plant.id}`}
                   tabIndex={isActive ? 0 : -1}
                   aria-label={`Ver ${plant.name}`}
-                  className="flex-shrink-0 p-2 sm:p-2.5 lg:p-3 bg-white/20 rounded-lg sm:rounded-xl hover:bg-white/30 transition-colors"
+                  className="flex-shrink-0 p-2 sm:p-2.5 lg:p-3 bg-white/20 rounded-full hover:bg-white/30 transition-colors"
                   onClick={(e) => e.stopPropagation()}
                 >
                   <Eye className="w-4 h-4 sm:w-5 sm:h-5 text-white" />

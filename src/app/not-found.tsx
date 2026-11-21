@@ -8,7 +8,7 @@ export default function NotFound() {
       <p className="text-planthia-dark/60 mb-8">La página que buscás no existe o fue movida.</p>
       <Link
         href="/"
-        className="bg-planthia-dark text-white font-bold py-3 px-8 rounded-full hover:bg-planthia-green transition-colors"
+        className="btn btn-primary btn-md"
       >
         Volver al inicio
       </Link>

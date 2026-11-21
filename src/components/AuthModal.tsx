@@ -43,7 +43,7 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
                 <Link
                   href="/login"
                   onClick={onClose}
-                  className="block w-full bg-planthia-green text-white font-headline font-bold py-3 px-6 rounded-full hover:bg-planthia-dark transition-colors text-sm uppercase tracking-wider text-center shadow-md"
+                  className="btn btn-primary btn-md w-full"
                 >
                   Ingresar
                 </Link>
@@ -51,7 +51,7 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
                 <Link
                   href="/register"
                   onClick={onClose}
-                  className="block w-full bg-transparent text-planthia-dark border border-planthia-dark/20 font-headline font-bold py-3 px-6 rounded-full hover:bg-planthia-cream/50 transition-colors text-sm uppercase tracking-wider text-center"
+                  className="btn btn-secondary btn-md w-full"
                 >
                   Crear cuenta
                 </Link>

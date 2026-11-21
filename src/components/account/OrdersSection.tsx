@@ -155,7 +155,7 @@ export default function OrdersSection({ orders, user }: OrdersSectionProps) {
           </p>
           <Link
             href="/shop"
-            className="inline-block bg-planthia-green text-planthia-ice px-6 py-3 rounded-full font-bold text-sm hover:bg-planthia-light-green transition-all shadow-sm"
+            className="inline-block bg-planthia-green text-planthia-ice px-6 py-3 rounded-full font-headline font-bold text-sm hover:bg-planthia-green-dark transition-colors shadow-sm"
           >
             Explorar Colección
           </Link>
@@ -238,7 +238,7 @@ export default function OrdersSection({ orders, user }: OrdersSectionProps) {
                         {/* Conectamos la función acá */}
                         <button
                           onClick={() => handleBuyAgain(itemsArray)}
-                          className="flex-1 py-4 bg-planthia-green text-planthia-ice rounded-xl font-bold text-sm hover:bg-planthia-light-green transition-all shadow-sm cursor-pointer"
+                          className="flex-1 py-4 bg-planthia-green text-planthia-ice rounded-full font-headline font-bold text-sm hover:bg-planthia-green-dark transition-colors shadow-sm cursor-pointer"
                         >
                           Comprar de nuevo
                         </button>
@@ -261,7 +261,7 @@ export default function OrdersSection({ orders, user }: OrdersSectionProps) {
             <div className="flex justify-center pt-8">
               <button
                 onClick={() => setVisibleOrdersCount((prev) => prev + 3)}
-                className="bg-planthia-green text-planthia-ice px-8 py-3.5 rounded-full font-bold text-sm hover:bg-planthia-light-green transition-all shadow-sm cursor-pointer tracking-wide"
+                className="bg-planthia-green text-planthia-ice px-8 py-3.5 rounded-full font-headline font-bold text-sm hover:bg-planthia-green-dark transition-colors shadow-sm cursor-pointer tracking-wide"
               >
                 Ver más
               </button>

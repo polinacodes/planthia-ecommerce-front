@@ -107,7 +107,7 @@ export default function ProfileSection({ user, onUserUpdate }: ProfileSectionPro
         {!isEditing && (
           <button
             onClick={() => setIsEditing(true)}
-            className="flex items-center justify-center gap-2 px-5 py-3 bg-planthia-cream border border-planthia-dark/10 rounded-xl font-bold text-sm text-planthia-dark hover:bg-planthia-dark/5 transition-colors cursor-pointer self-start sm:self-center shadow-sm"
+            className="btn btn-secondary btn-md self-start sm:self-center"
           >
             <Pencil size={14} />
             Editar datos
@@ -247,7 +247,7 @@ export default function ProfileSection({ user, onUserUpdate }: ProfileSectionPro
               type="button"
               onClick={handleCancel}
               disabled={isSubmitting}
-              className="flex-1 sm:flex-none justify-center px-4 sm:px-6 py-4 border border-planthia-dark/10 bg-planthia-cream text-planthia-dark rounded-xl font-bold text-sm hover:bg-planthia-dark/5 transition-all cursor-pointer disabled:opacity-50 flex items-center gap-2"
+              className="btn btn-secondary btn-lg flex-1 sm:flex-none"
             >
               <X size={16} />
               Cancelar
@@ -256,7 +256,7 @@ export default function ProfileSection({ user, onUserUpdate }: ProfileSectionPro
             <button
               type="submit"
               disabled={isSubmitting}
-              className="flex-1 sm:flex-none justify-center px-5 sm:px-8 py-3 bg-planthia-green text-planthia-ice rounded-xl font-bold text-sm hover:bg-planthia-light-green transition-all shadow-sm flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+              className="flex-1 sm:flex-none justify-center px-5 sm:px-8 py-3 bg-planthia-green text-planthia-ice rounded-full font-headline font-bold text-sm hover:bg-planthia-green-dark transition-colors shadow-sm flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
             >
               {isSubmitting ? (
                 <>
