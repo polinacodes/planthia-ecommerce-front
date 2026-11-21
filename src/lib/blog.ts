@@ -9,7 +9,7 @@ export interface Article {
   title: string;
   slug: string;
   excerpt?: string | null;
-  cover?: string | null;
+  cover?: { url: string; alternativeText?: string | null } | null;
   category: BlogCategory;
   reading_time?: number | null;
   content?: string | null;
@@ -54,9 +54,11 @@ export async function getArticles(category?: BlogCategory): Promise<Article[]> {
     sort: 'publishedAt:desc',
     'pagination[pageSize]': '100',
   });
-  ['title', 'slug', 'excerpt', 'cover', 'category', 'reading_time', 'publishedAt'].forEach((field, i) =>
+  ['title', 'slug', 'excerpt', 'category', 'reading_time', 'publishedAt'].forEach((field, i) =>
     params.set(`fields[${i}]`, field),
   );
+  params.set('populate[cover][fields][0]', 'url');
+  params.set('populate[cover][fields][1]', 'alternativeText');
   if (category) params.set('filters[category][$eq]', category);
 
   const json = await strapiFetch(`/api/articles?${params}`);
@@ -67,6 +69,8 @@ export async function getArticle(slug: string): Promise<Article | null> {
   const params = new URLSearchParams({
     'filters[slug][$eq]': slug,
     'populate[products][populate][0]': 'variants',
+    'populate[cover][fields][0]': 'url',
+    'populate[cover][fields][1]': 'alternativeText',
   });
   const json = await strapiFetch(`/api/articles?${params}`);
   return json?.data?.[0] ?? null;

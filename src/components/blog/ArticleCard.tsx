@@ -7,8 +7,8 @@ import { Article, categoryLabel, formatArticleDate } from '@/lib/blog';
 function Cover({ article, sizes, priority }: { article: Article; sizes: string; priority?: boolean }) {
   return article.cover ? (
     <Image
-      src={article.cover}
-      alt={article.title}
+      src={article.cover.url}
+      alt={article.cover.alternativeText || article.title}
       fill
       sizes={sizes}
       priority={priority}

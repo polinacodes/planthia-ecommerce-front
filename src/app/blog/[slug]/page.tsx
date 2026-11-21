@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: article.title,
       description: article.excerpt ?? undefined,
       type: 'article',
-      images: article.cover ? [article.cover] : undefined,
+      images: article.cover ? [article.cover.url] : undefined,
     },
   };
 }
@@ -61,7 +61,7 @@ export default async function ArticlePage({ params }: Props) {
         {/* Portada */}
         {article.cover && (
           <div className="relative aspect-[16/9] rounded-3xl overflow-hidden mt-10 bg-white">
-            <Image src={article.cover} alt={article.title} fill priority sizes="(max-width: 1100px) 100vw, 1100px" className="object-cover" />
+            <Image src={article.cover.url} alt={article.cover.alternativeText || article.title} fill priority sizes="(max-width: 1100px) 100vw, 1100px" className="object-cover" />
           </div>
         )}
 
