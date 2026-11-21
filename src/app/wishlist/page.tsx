@@ -156,7 +156,7 @@ export default function WishlistPage() {
           
                       <Link
                         href={`/shop/${product.id}`}
-                        className="btn btn-primary btn-md flex-1 sm:w-40"
+                        className="btn btn-primary btn-md flex-1 sm:flex-none sm:w-40"
                       >
                         <ShoppingCart size={14} />
                         <span>Ver opciones</span>
@@ -166,7 +166,7 @@ export default function WishlistPage() {
                       <button
                         onClick={(e) => handleAddToCart(product, e)}
                         disabled={isOutOfStock}
-                        className={`btn btn-md flex-1 sm:w-40 text-white
+                        className={`btn btn-md flex-1 sm:flex-none sm:w-40 text-white
                             ${isOutOfStock
                             ? "bg-gray-300 cursor-not-allowed"
                             : "bg-planthia-green hover:bg-planthia-green-dark"

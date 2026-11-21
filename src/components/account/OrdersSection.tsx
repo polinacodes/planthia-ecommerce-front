@@ -238,7 +238,7 @@ export default function OrdersSection({ orders, user }: OrdersSectionProps) {
                         {/* Conectamos la función acá */}
                         <button
                           onClick={() => handleBuyAgain(itemsArray)}
-                          className="flex-1 py-4 bg-planthia-green text-planthia-ice rounded-full font-headline font-bold text-sm hover:bg-planthia-green-dark transition-colors shadow-sm cursor-pointer"
+                          className="flex-1 py-4 bg-planthia-green text-planthia-ice rounded-xl font-headline font-bold text-sm hover:bg-planthia-green-dark transition-colors shadow-sm cursor-pointer"
                         >
                           Comprar de nuevo
                         </button>
