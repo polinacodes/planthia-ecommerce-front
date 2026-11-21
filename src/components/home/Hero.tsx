@@ -1,10 +1,10 @@
 //src/components/home/Hero.tsx
 "use client";
+import { useId } from "react";
 import { useRouter } from 'next/navigation';
 import { Star } from "lucide-react";
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
-import Logo from "@/components/layout/Logo";
 
 // Íconos sobre el círculo exterior (ángulo en grados: 0 = derecha, 90 = abajo)
 const ORBIT_ICONS = [
@@ -15,6 +15,25 @@ const ORBIT_ICONS = [
 ] as const;
 
 // Hoja con relleno (con la nervadura calada)
+// Flor rellena de cinco pétalos (el logo anterior): en los íconos que giran combina mejor con la hoja
+function FlowerFilled({ className }: { className?: string }) {
+  const maskId = useId();
+  return (
+    <svg viewBox="0 0 64 64" className={className} aria-hidden="true">
+      <mask id={maskId}>
+        <rect width="64" height="64" fill="#fff" />
+        <circle cx="32" cy="32" r="5.2" fill="#000" />
+      </mask>
+      <g mask={`url(#${maskId})`} fill="currentColor">
+        {[0, 72, 144, 216, 288].map((angle) => (
+          <ellipse key={angle} cx="32" cy="20" rx="8" ry="12.5" transform={`rotate(${angle} 32 32)`} />
+        ))}
+      </g>
+      <circle cx="32" cy="32" r="2.6" fill="currentColor" />
+    </svg>
+  );
+}
+
 function LeafFilled({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
@@ -129,7 +148,7 @@ export default function Hero() {
                           transition={{ duration: 40, ease: "linear", repeat: Infinity }}
                         >
                           {kind === "flor" ? (
-                            <Logo symbolOnly className="w-4 h-4 sm:w-5 sm:h-5 2xl:w-6 2xl:h-6" />
+                            <FlowerFilled className="w-4 h-4 sm:w-5 sm:h-5 2xl:w-6 2xl:h-6" />
                           ) : (
                             <LeafFilled className="w-3.5 h-3.5 sm:w-4 sm:h-4 2xl:w-5 2xl:h-5" />
                           )}
