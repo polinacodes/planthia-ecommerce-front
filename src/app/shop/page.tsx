@@ -172,7 +172,7 @@ const ShopPageContent = () => {
     <div className="min-h-screen bg-cream pb-16 ">
       {/* Banner con foto anterior: se reemplazó por el encabezado limpio (mismo estilo que la guía y el blog) */}
       {/* <HeroShop /> */}
-      <div className="max-w-[1400px] mx-auto px-6 sm:px-12">
+      <div className="max-w-[1600px] mx-auto px-6 sm:px-12">
 
         <PageHeader
           eyebrow="#TuJunglaUrbana"

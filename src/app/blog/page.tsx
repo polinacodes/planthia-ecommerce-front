@@ -29,7 +29,7 @@ export default async function BlogPage({ searchParams }: { searchParams: Promise
 
   return (
     <main className="min-h-screen bg-planthia-cream pb-24">
-      <div className="max-w-[1400px] mx-auto px-6 sm:px-12">
+      <div className="max-w-[1600px] mx-auto px-6 sm:px-12">
         <PageHeader eyebrow="#DiarioVerde" title="Blog" subtitle="Ideas, trucos y cuidados para tu jungla urbana." />
 
         <div className="border-b border-planthia-dark/10 flex items-end justify-between gap-6">

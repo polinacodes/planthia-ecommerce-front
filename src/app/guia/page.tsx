@@ -1,12 +1,13 @@
 // src/app/guia/page.tsx
 'use client';
 
-import { Suspense, useMemo } from 'react';
+import { Suspense, useEffect, useMemo, useState } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Search, X } from 'lucide-react';
 import { usePlants } from '@/hooks/usePlants';
 import GuideCard from '@/components/guide/GuideCard';
 import PageHeader from '@/components/layout/PageHeader';
+import Pagination from '@/components/shop/Pagination';
 import TextTabs from '@/components/layout/TextTabs';
 import { GUIDE_FILTERS, GuideFilterId, isGuidePlant, matchesSearch } from '@/lib/guide';
 
@@ -36,9 +37,16 @@ function GuideContent() {
       .sort((a, b) => a.name.localeCompare(b.name, 'es'));
   }, [products, filterId, query]);
 
+  // 12 fichas por página (entran justo en 2, 3 o 4 columnas). Al cambiar búsqueda o filtro, vuelve a la 1
+  const PER_PAGE = 12;
+  const [currentPage, setCurrentPage] = useState(1);
+  useEffect(() => { setCurrentPage(1); }, [filterId, query]);
+  const totalPages = Math.ceil(plants.length / PER_PAGE);
+  const pagePlants = plants.slice((currentPage - 1) * PER_PAGE, currentPage * PER_PAGE);
+
   return (
     <main className="min-h-screen bg-planthia-cream pb-24">
-      <div className="max-w-[1400px] mx-auto px-6 sm:px-12">
+      <div className="max-w-[1600px] mx-auto px-6 sm:px-12">
         {/* Encabezado limpio (mismo estilo que la tienda y el blog), con el buscador a la derecha */}
         <PageHeader
           eyebrow="#GuíaPlanthia"
@@ -87,7 +95,7 @@ function GuideContent() {
           </div>
         ) : plants.length > 0 ? (
           <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
-            {plants.map((plant) => <GuideCard key={plant.documentId} plant={plant} />)}
+            {pagePlants.map((plant) => <GuideCard key={plant.documentId} plant={plant} />)}
           </div>
         ) : (
           <div className="text-center py-16">
@@ -96,6 +104,8 @@ function GuideContent() {
             <button onClick={() => router.replace(pathname)} className="btn btn-secondary btn-md">Ver todas las plantas</button>
           </div>
         )}
+
+        <Pagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
       </div>
     </main>
   );

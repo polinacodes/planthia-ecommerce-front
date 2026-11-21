@@ -53,7 +53,7 @@ export default async function ArticlePage({ params }: Props) {
 
   return (
     <main className="min-h-screen bg-planthia-cream pb-24">
-      <article className="max-w-[1400px] mx-auto px-6 sm:px-12">
+      <article className="max-w-[1600px] mx-auto px-6 sm:px-12">
         {/* Encabezado alineado a la izquierda, como el resto de las secciones */}
         <header className="pt-8 sm:pt-12">
           <nav className="text-[10px] uppercase tracking-[0.2em] text-planthia-dark/60 mb-6 flex flex-wrap gap-x-2">
@@ -83,14 +83,14 @@ export default async function ArticlePage({ params }: Props) {
               alt={article.cover.alternativeText || article.title}
               fill
               priority
-              sizes="(max-width: 1400px) 100vw, 1300px"
+              sizes="(max-width: 1600px) 100vw, 1500px"
               className="object-cover"
             />
           </div>
         )}
 
         {/* Texto a la izquierda + columna fija a la derecha (índice y productos) */}
-        <div className="grid lg:grid-cols-[minmax(0,1fr)_300px] xl:grid-cols-[minmax(0,1fr)_340px] gap-12 xl:gap-20 mt-12 sm:mt-16">
+        <div className="grid lg:grid-cols-[minmax(0,760px)_300px] xl:grid-cols-[minmax(0,760px)_340px] lg:justify-between gap-12 xl:gap-20 mt-12 sm:mt-16">
           <div className="max-w-[720px] min-w-0">
             {article.content && <ArticleContent content={article.content} />}
 

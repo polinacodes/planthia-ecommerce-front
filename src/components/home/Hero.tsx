@@ -37,8 +37,8 @@ export default function Hero() {
         <span className="font-headline font-bold tracking-[0.2em] text-xs text-planthia-dark mb-4 block uppercase">
           #RefugioVerde
         </span>
-        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-headline font-extrabold leading-[1.1] mb-6 lg:mb-8 text-planthia-dark">
-          Llená de Vida <br className="hidden sm:block" /> Tus Espacios
+        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-headline font-extrabold leading-[1.05] tracking-tight mb-6 lg:mb-8 text-planthia-dark">
+          Llená de vida <br className="hidden sm:block" /> tus espacios
         </h1>
         <p className="font-body text-planthia-dark/60 text-base sm:text-lg max-w-md mb-8 lg:mb-10 leading-relaxed mx-auto lg:mx-0">
           Somos especialistas en plantas. En Planthia encontrás todo lo que necesitás para crear tu propio refugio verde en un solo lugar
