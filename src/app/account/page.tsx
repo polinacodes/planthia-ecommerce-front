@@ -53,6 +53,11 @@ export default function AccountPage() {
   const [user, setUser] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);
 
+  // /account?tab=perfil abre directo la pestaña del perfil (la usa el footer)
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).get('tab') === 'perfil') setActiveTab('profile');
+  }, []);
+
   useEffect(() => {
     const fetchUserData = async () => {
       const token = localStorage.getItem('token');
