@@ -256,9 +256,9 @@ export default function ProductPage() {
             </div>
 
             {/* GRID DE INFO */}
-            <div className={`py-8 lg:py-10 border-y border-planthia-dark/10 ${product.type === 'plantas'
-              ? 'grid grid-cols-2 gap-y-8 lg:gap-y-10 gap-x-4 lg:gap-x-8'
-              : 'grid grid-cols-1 sm:grid-cols-3 gap-6 lg:gap-8'
+            <div className={`border-y border-planthia-dark/10 ${product.type === 'plantas'
+              ? 'pt-8 lg:pt-10 pb-6 lg:pb-7 grid grid-cols-2 gap-y-8 lg:gap-y-10 gap-x-4 lg:gap-x-8'
+              : 'py-8 lg:py-10 grid grid-cols-1 sm:grid-cols-3 gap-6 lg:gap-8'
               }`}>
               {product.type === 'plantas' ? (
                 <>
@@ -269,9 +269,9 @@ export default function ProductPage() {
                   {/* Link a la ficha completa en la guía de cuidados */}
                   <Link
                     href={`/guia/${slugify(product.name)}`}
-                    className="col-span-2 btn btn-secondary btn-md w-full border-planthia-green"
+                    className="group col-span-2 flex items-center justify-center gap-2.5 border-t border-planthia-dark/10 pt-6 lg:pt-7 text-xs font-headline font-bold uppercase tracking-[0.15em] text-planthia-green hover:text-planthia-green-dark transition-colors"
                   >
-                    <BookOpen size={18} /> Ver guía de cuidados
+                    <BookOpen size={18} className="transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-110" /> Ver guía de cuidados
                   </Link>
                 </>
               ) : (
