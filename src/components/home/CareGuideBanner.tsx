@@ -22,7 +22,7 @@ export default function CareGuideBanner() {
         </div>
         <div className="relative min-h-[260px] md:min-h-[420px]">
           <Image
-            src="/cuidados.webp"
+            src="/guia-banner.webp"
             alt="Persona regando sus plantas"
             fill
             sizes="(max-width: 768px) 100vw, 50vw"
