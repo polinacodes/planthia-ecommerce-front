@@ -15,7 +15,7 @@ export default function Categories() {
       
       {/* Encabezado */}
       {/* Mismo sistema que el hero: etiqueta chica + título en Manrope + párrafo en gris oscuro */}
-      <div className="mb-12 lg:mb-16">
+      <div className="mb-8 sm:mb-10">
         <span className="font-headline font-bold tracking-[0.2em] text-xs text-planthia-dark mb-3 block uppercase">
           #TuJunglaUrbana
         </span>

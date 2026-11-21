@@ -67,7 +67,7 @@ const RecommendedSection = ({ plants }: { plants: any[] }) => {
   return (
     <>
     {/* Encabezado: mismo sistema que "Explorá por categoría" */}
-    <div className="pt-16 sm:pt-20 px-4 sm:px-6 lg:px-12 max-w-[1600px] mx-auto flex items-end justify-between gap-6 mb-8 sm:mb-10">
+    <div className="pt-16 sm:pt-20 px-4 sm:px-6 lg:px-12 max-w-[1600px] mx-auto flex items-end justify-between gap-6 mb-8 sm:mb-10 md:mb-6">
       <div>
         <span className="font-headline font-bold tracking-[0.2em] text-xs text-planthia-dark mb-3 block uppercase">
           #LasMásElegidas
@@ -88,7 +88,7 @@ const RecommendedSection = ({ plants }: { plants: any[] }) => {
       </Link>
     </div>
 
-    <section aria-label="Más vendidas" className="pt-2 lg:pt-4 pb-8 px-4 sm:px-6 lg:px-12 max-w-[1600px] mx-auto bg-[#F7F5F0]">
+    <section aria-label="Más vendidas" className="pt-2 md:pt-0 pb-8 px-4 sm:px-6 lg:px-12 max-w-[1600px] mx-auto bg-[#F7F5F0]">
       {/* VISTA MOBILE: Scroll horizontal nativo */}
       <div className="md:hidden">
         <div className="flex gap-4 overflow-x-auto pb-4 -mr-4 pr-4 snap-x snap-mandatory">
@@ -132,7 +132,7 @@ const RecommendedSection = ({ plants }: { plants: any[] }) => {
               }`}
           >
             {visiblePlants.map((plant) => (
-              <div key={`carousel-${plant.id}`} className="pt-6 pb-4 lg:pt-14 lg:pb-6 w-full">
+              <div key={`carousel-${plant.id}`} className="pt-4 pb-4 lg:pb-6 w-full">
                 
                 <ProductCard
                   plant={plant}

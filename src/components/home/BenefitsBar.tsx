@@ -21,20 +21,20 @@ const BENEFITS: Benefit[] = [
   { Icon: Leaf, title: 'Guía de cuidados', text: 'Para cada una de nuestras plantas', href: '/guia' },
 ];
 
-function BenefitContent({ benefit: { Icon, title, text } }: { benefit: Benefit }) {
+function BenefitContent({ benefit: { Icon, title } }: { benefit: Benefit }) {
   return (
     <>
-      <Icon className="w-7 h-7 flex-shrink-0 text-planthia-green" strokeWidth={1.5} />
-      <div className="min-w-0">
-        <p className="font-headline font-bold text-[15px] leading-snug text-planthia-green-dark">{title}</p>
-        <p className="text-sm text-planthia-green-dark/70 leading-snug">{text}</p>
-      </div>
+      <Icon className="w-6 h-6 md:w-5 md:h-5 lg:w-6 lg:h-6 flex-shrink-0 text-planthia-green" strokeWidth={1.5} />
+      <span className="font-headline font-bold text-sm lg:text-[15px] leading-snug text-planthia-green-dark">{title}</span>
     </>
   );
 }
 
 export default function BenefitsBar() {
-  const itemClass = 'flex items-center gap-4 snap-start flex-[0_0_78%] min-[480px]:flex-[0_0_55%] md:flex-auto';
+  // Celular: grilla 2 × 2 (ícono arriba, texto abajo). Desde tablet: una línea, centrados y con separadores.
+  const itemClass =
+    'flex flex-col md:flex-row items-center justify-center gap-2 md:gap-2.5 lg:gap-3 text-center md:text-left px-3 py-5 md:py-0 ' +
+    'border-planthia-dark/[0.08] [&:nth-child(odd)]:border-r [&:nth-child(-n+2)]:border-b md:!border-b-0 md:border-l md:[&:nth-child(odd)]:border-r-0 md:first:border-l-0';
 
   return (
     // Sale del contenedor de la home para ocupar todo el ancho de la pantalla.
@@ -43,8 +43,8 @@ export default function BenefitsBar() {
       aria-label="Beneficios"
       className="relative left-1/2 w-screen -translate-x-1/2 mt-12 lg:-mt-[110px] xl:mt-0 2xl:mt-0 min-[1921px]:!mt-0 bg-white border-y border-planthia-dark/[0.06]"
     >
-      <div className={`${HOME_CONTAINER} py-7 md:py-9`}>
-        <div className="-mx-4 sm:-mx-6 md:mx-0 px-4 sm:px-6 md:px-0 scroll-px-4 sm:scroll-px-6 flex md:grid md:grid-cols-2 xl:grid-cols-4 gap-8 md:gap-y-6 overflow-x-auto md:overflow-visible snap-x snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <div className={`${HOME_CONTAINER} md:py-7`}>
+        <div className="grid grid-cols-2 md:grid-cols-4">
           {BENEFITS.map((benefit) =>
             benefit.href ? (
               <Link key={benefit.title} href={benefit.href} className={`${itemClass} hover:opacity-75 transition-opacity`}>
