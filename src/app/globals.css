@@ -88,19 +88,3 @@
   }
   .pill-crescent:hover { --ring: var(--color-planthia-green); --fill: #eaf1e3; }
 }
-
-/* ============================================
-   Entrada del hero (CSS: arranca apenas se pinta la página, sin esperar al JavaScript)
-   Solo opacidad: mover texto grande con transform lo redibuja en cada cuadro y "tironea"
-   .hero-in: el bloque de texto completo aparece con un fundido
-   .hero-fade: la planta aparece con un fundido, apenas después
-   ============================================ */
-@keyframes hero-fade {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-.hero-in { animation: hero-fade 0.8s ease-out both; }
-.hero-fade { animation: hero-fade 1s ease-out 0.15s both; }
-@media (prefers-reduced-motion: reduce) {
-  .hero-in, .hero-fade { animation: none; }
-}

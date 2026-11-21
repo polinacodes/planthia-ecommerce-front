@@ -54,7 +54,7 @@ export default function Hero() {
       {/* Contenido Izquierdo  */}
       {/* Los márgenes negativos acercan el texto a la planta cuando van apilados (celular y tablet).
           En tablet vertical (md) la planta crece con el ancho, por eso el margen usa vw. */}
-      <div className="hero-in col-span-12 lg:col-span-5 z-10 -mt-[120px] max-[370px]:-mt-[150px] sm:-mt-[172px] md:mt-[calc(32.3vw-424px)] lg:-mt-30 xl:-mt-30 2xl:-mt-40 md:px-0 order-last lg:order-first max-[1366px]:order-last flex flex-col items-center lg:items-start text-center lg:text-left">
+      <div className="col-span-12 lg:col-span-5 z-10 -mt-[120px] max-[370px]:-mt-[150px] sm:-mt-[172px] md:mt-[calc(32.3vw-424px)] lg:-mt-30 xl:-mt-30 2xl:-mt-40 md:px-0 order-last lg:order-first max-[1366px]:order-last flex flex-col items-center lg:items-start text-center lg:text-left">
         <span className="font-headline font-bold tracking-[0.2em] text-xs text-planthia-dark mb-4 block uppercase">
           #RefugioVerde
         </span>
@@ -84,7 +84,7 @@ export default function Hero() {
       </div>
 
       {/* Contenido Derecho */}
-      <div className="hero-fade col-span-12 lg:col-span-7 relative h-auto lg:h-full min-h-[550px] sm:min-h-[650px] md:min-h-[860px] lg:min-h-[700px] xl:min-h-[700px] 2xl:min-h-[850px] order-first lg:order-last max-[1366px]:order-first">
+      <div className="col-span-12 lg:col-span-7 relative h-auto lg:h-full min-h-[550px] sm:min-h-[650px] md:min-h-[860px] lg:min-h-[700px] xl:min-h-[700px] 2xl:min-h-[850px] order-first lg:order-last max-[1366px]:order-first">
 
         {/* CONTENEDOR DE CÍRCULOS */}
         {/* <div className="absolute 
