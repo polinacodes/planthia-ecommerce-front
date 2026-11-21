@@ -94,7 +94,7 @@ export default function ProfileSection({ user, onUserUpdate }: ProfileSectionPro
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
           <h2 className="font-headline font-bold text-2xl text-planthia-dark">
-            Información Personal
+            Información personal
           </h2>
           <p className="text-sm text-planthia-dark/60 mt-1">
             {isEditing 
@@ -160,7 +160,7 @@ export default function ProfileSection({ user, onUserUpdate }: ProfileSectionPro
             <p className="text-sm font-medium text-planthia-dark py-2 border-b border-planthia-dark/5">{user.city || '—'}</p>
           </div>
           <div>
-            <span className="block text-xs font-bold uppercase tracking-wider text-planthia-dark/40 mb-1">Código Postal</span>
+            <span className="block text-xs font-bold uppercase tracking-wider text-planthia-dark/40 mb-1">Código postal</span>
             <p className="text-sm font-medium text-planthia-dark py-2 border-b border-planthia-dark/5">{user.zip_code || '—'}</p>
           </div>
         </div>
@@ -229,7 +229,7 @@ export default function ProfileSection({ user, onUserUpdate }: ProfileSectionPro
             </div>
 
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-planthia-dark/60 mb-2">Código Postal</label>
+              <label className="block text-xs font-bold uppercase tracking-wider text-planthia-dark/60 mb-2">Código postal</label>
               <input
                 type="text"
                 name="zip_code"

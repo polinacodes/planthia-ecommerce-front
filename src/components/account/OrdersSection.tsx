@@ -146,7 +146,7 @@ export default function OrdersSection({ orders, user, selectedOrder, onSelectOrd
     <>
       <div className="flex items-center justify-between mb-6">
         <h2 className="font-headline font-bold text-2xl text-planthia-dark">
-          Mis Pedidos Recientes
+          Mis pedidos recientes
         </h2>
       </div>
 

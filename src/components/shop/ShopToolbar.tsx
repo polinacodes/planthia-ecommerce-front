@@ -60,7 +60,7 @@ const ShopToolbar = ({
                   >
                     {/* Necesidad de Luz */}
                     <div className="mb-6">
-                      <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3">Necesidad de Luz</p>
+                      <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3">Necesidad de luz</p>
                       <div className="space-y-2">
                         {['sombra', 'indirecta', 'sol'].map((luz) => (
                           <label key={luz} className="flex items-center gap-3 cursor-pointer group">

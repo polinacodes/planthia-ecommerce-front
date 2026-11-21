@@ -43,7 +43,7 @@ export const CartDrawer = () => {
           >
             {/* Header */}
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-sm font-bold uppercase tracking-[0.2em] text-planthia-dark">Tu Carrito</h2>
+              <h2 className="text-sm font-bold uppercase tracking-[0.2em] text-planthia-dark">Tu carrito</h2>
               <button onClick={closeCart} className="hover:rotate-90 transition-transform duration-300 cursor-pointer">
                 <X size={20} strokeWidth={1.5} />
               </button>

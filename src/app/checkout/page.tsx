@@ -372,7 +372,7 @@ export default function CheckoutPage() {
             <section className="space-y-6">
               <div className="flex items-center gap-3">
                 <span className="w-8 h-8 rounded-full bg-planthia-light-green/20 flex items-center justify-center text-planthia-green font-bold">1</span>
-                <h2 className="text-2xl font-bold font-headline tracking-tight">Información de Envío</h2>
+                <h2 className="text-2xl font-bold font-headline tracking-tight">Información de envío</h2>
               </div>
               <div className="bg-white p-8 rounded-2xl space-y-6 shadow-sm border border-planthia-dark/5">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -430,7 +430,7 @@ export default function CheckoutPage() {
                     error={touchedFields.has('city') ? formErrors.city : undefined}
                   />
                   <InputField
-                    label="Código Postal"
+                    label="Código postal"
                     placeholder="1234"
                     value={formData.zip_code}
                     onChange={(val) => updateField('zip_code', val)}
@@ -445,7 +445,7 @@ export default function CheckoutPage() {
             <section className="space-y-6">
               <div className="flex items-center gap-3">
                 <span className="w-8 h-8 rounded-full bg-planthia-light-green/20 flex items-center justify-center text-planthia-green font-bold">2</span>
-                <h2 className="text-2xl font-bold font-headline tracking-tight">Método de Pago</h2>
+                <h2 className="text-2xl font-bold font-headline tracking-tight">Método de pago</h2>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <PaymentOption label="PayPal" description="Tarjetas de crédito internacionales" icon={<img src="/icons/paypal.svg" alt="PayPal" className="w-30 h-30 object-contain" />} selected={paymentMethod === 'paypal'} onSelect={() => setPaymentMethod('paypal')} />
@@ -457,7 +457,7 @@ export default function CheckoutPage() {
           {/* Sidebar Resumen */}
           <aside className="lg:col-span-5 sticky top-8">
             <div className="bg-white p-8 rounded-2xl space-y-8 shadow-sm border border-planthia-dark/5">
-              <h3 className="text-xl font-bold font-headline">Resumen del Pedido</h3>
+              <h3 className="text-xl font-bold font-headline">Resumen del pedido</h3>
               <div className="space-y-6 max-h-[410px] overflow-y-auto pr-2 pb-4 custom-scrollbar">
                 {cart.map((item) => (
                   <div key={item.id} className="flex items-center gap-4">
