@@ -33,7 +33,9 @@ export default function Hero() {
     <section className="grid grid-cols-12 gap-4 items-center lg:min-h-[50vh] xl:min-h-[70vh]">
 
       {/* Contenido Izquierdo  */}
-      <div className="col-span-12 lg:col-span-5 z-10 -mt-6 sm:-mt-12 md:mt-0 lg:-mt-30 xl:-mt-30 2xl:-mt-40 md:px-0 order-last lg:order-first max-[1366px]:order-last flex flex-col items-center lg:items-start text-center lg:text-left">
+      {/* Los márgenes negativos acercan el texto a la planta cuando van apilados (celular y tablet).
+          En tablet vertical (md) la planta crece con el ancho, por eso el margen usa vw. */}
+      <div className="col-span-12 lg:col-span-5 z-10 -mt-[120px] max-[370px]:-mt-[150px] sm:-mt-[172px] md:mt-[calc(32.3vw-424px)] lg:-mt-30 xl:-mt-30 2xl:-mt-40 md:px-0 order-last lg:order-first max-[1366px]:order-last flex flex-col items-center lg:items-start text-center lg:text-left">
         <span className="font-headline font-bold tracking-[0.2em] text-xs text-planthia-dark mb-4 block uppercase">
           #RefugioVerde
         </span>
@@ -97,10 +99,10 @@ export default function Hero() {
                 para que no se corte abajo). --plant-scale achica solo la planta (desde arriba, así las sogas siguen saliendo del tope); los círculos mantienen su tamaño y bajan/suben con la maceta. 1 = tamaño original. Los círculos van adentro en %,
                 así siempre quedan centrados en la maceta y escalan junto con la planta. */}
             <div
-              className="absolute top-0 left-1/2 -translate-x-1/2 aspect-[1086/1448] w-[max(100cqw,75cqh)] sm:max-md:w-[75cqh] [--plant-scale:0.92]"
+              className="absolute top-0 left-1/2 -translate-x-1/2 aspect-[1086/1448] w-[max(100cqw,75cqh)] sm:max-md:w-[75cqh] [--plant-scale:0.92] max-[370px]:[--plant-scale:0.86]"
             >
               {/* CÍRCULOS (centrados en la maceta; para subirlos o bajarlos, cambiá el 48% de top-[calc(48%*…)]) */}
-              <div className="absolute left-[51%] top-[calc(50%*var(--plant-scale))] -translate-x-1/2 -translate-y-1/2 w-[66%] sm:w-[80%] aspect-square">
+              <div className="absolute left-[51%] top-[calc(50%*var(--plant-scale))] -translate-x-1/2 -translate-y-1/2 w-[78%] max-[370px]:w-[66%] sm:w-[80%] aspect-square">
                 {/* Círculo Exterior */}
                 <div className="absolute inset-0 border-[4px] sm:border-[6px] border-white rounded-full shadow-md" />
                 {/* Círculo Interior */}

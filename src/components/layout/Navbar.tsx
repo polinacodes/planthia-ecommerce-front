@@ -108,7 +108,7 @@ function NavbarContent() {
             </Link>
           </div>
 
-          <div className="hidden md:flex items-center gap-8 font-body text-base font-semibold text-planthia-dark/70">
+          <div className="hidden md:flex items-center gap-5 lg:gap-8 font-body text-sm lg:text-base font-semibold text-planthia-dark/70 whitespace-nowrap">
             <Link href="/shop?type=plantas" className={`${isActive("/shop?type=plantas") ? "text-planthia-green" : "hover:text-planthia-green"} transition-colors`}>
               Plantas
             </Link>
