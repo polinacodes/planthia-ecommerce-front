@@ -2,6 +2,7 @@
 'use client'
 import Hero from "@/components/home/Hero";
 import Categories from "@/components/home/Categories"
+import CareGuideBanner from "@/components/home/CareGuideBanner";
 import RecommendedSection from '@/components/home/RecommendedSection';
 import { usePlants } from "@/hooks/usePlants";
 
@@ -18,6 +19,7 @@ export default function HomePage() {
       <Hero />
       <RecommendedSection plants={featuredPlants} />
       <Categories />
+      <CareGuideBanner />
     </main>
   );
 }

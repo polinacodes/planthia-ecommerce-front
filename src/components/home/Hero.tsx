@@ -51,7 +51,8 @@ export default function Hero() {
               rounded-tl-2xl rounded-bl-sm skew-x-[-15deg] origin-bottom overflow-hidden shadow-lg shadow-planthia-green/20 flex-1 sm:flex-none text-[15px] max-[374px]:text-sm sm:text-lg lg:text-[15px] xl:text-base 2xl:text-lg">
             <span className="inline-block skew-x-[15deg] whitespace-nowrap">Ver colección</span>
           </button>
-          <button className="bg-white border border-gray-100 px-4 max-[374px]:px-3 sm:px-6 md:px-8 lg:px-4 xl:px-7 2xl:px-10 py-3 sm:py-3 md:py-4 lg:py-3 xl:py-3.5 2xl:py-5 font-bold text-planthia-green hover:bg-gray-50 transition-all cursor-pointer
+          <button
+            onClick={() => router.push('/guia')} className="bg-white border border-gray-100 px-4 max-[374px]:px-3 sm:px-6 md:px-8 lg:px-4 xl:px-7 2xl:px-10 py-3 sm:py-3 md:py-4 lg:py-3 xl:py-3.5 2xl:py-5 font-bold text-planthia-green hover:bg-gray-50 transition-all cursor-pointer
               rounded-tr-sm rounded-br-2xl skew-x-[-15deg] origin-bottom shadow-sm flex-1 sm:flex-none text-[15px] max-[374px]:text-sm sm:text-lg lg:text-[15px] xl:text-base 2xl:text-lg">
             <span className="inline-block skew-x-[15deg] whitespace-nowrap">Guía de cuidados</span>
           </button>

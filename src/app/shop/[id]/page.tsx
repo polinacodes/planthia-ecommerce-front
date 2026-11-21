@@ -5,7 +5,8 @@ import Image from 'next/image';
 import { usePlants } from '@/hooks/usePlants';
 import { useParams } from 'next/navigation';
 import { motion, AnimatePresence } from "framer-motion";
-import { Sun, Droplets, Thermometer, ArrowUp, Heart, PawPrint, Ruler, Package, HandHeart } from "lucide-react";
+import { Sun, Droplets, Thermometer, ArrowUp, ArrowRight, Heart, PawPrint, Ruler, Package, HandHeart } from "lucide-react";
+import { slugify } from '@/lib/guide';
 import Link from 'next/link'
 import ProductCardShop from '@/components/products/ProductCardShop';
 import EmptyState from '@/components/products/EmptyState';
@@ -265,6 +266,13 @@ export default function ProductPage() {
                   <CareItem icon={Droplets} label="Riego" value={product.metadata?.water || "No especificado"} />
                   <CareItem icon={ArrowUp} label="Crecimiento" value={product.metadata?.growth || "No especificado"} />
                   <CareItem icon={Thermometer} label="Humedad" value={product.metadata?.humidity || "No especificado"} />
+                  {/* Link a la ficha completa en la guía de cuidados */}
+                  <Link
+                    href={`/guia/${slugify(product.name)}`}
+                    className="col-span-2 inline-flex items-center gap-2 text-sm font-headline font-bold text-planthia-green hover:text-planthia-green-dark w-fit"
+                  >
+                    Ver guía de cuidados completa <ArrowRight size={16} />
+                  </Link>
                 </>
               ) : (
                 <>
