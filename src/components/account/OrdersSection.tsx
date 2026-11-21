@@ -20,9 +20,12 @@ interface OrdersSectionProps {
     zip_code: string | null;
     email: string;
   };
+  /** Pedido abierto en detalle (lo maneja la página, para mostrarlo en el encabezado y el menú) */
+  selectedOrder: OrderData | null;
+  onSelectOrder: (order: OrderData | null) => void;
 }
 
-const statusConfig = {
+export const statusConfig = {
   pending: { label: 'Pendiente', styles: 'bg-amber-100 text-amber-800' },
   paid: { label: 'Pagado', styles: 'bg-blue-100 text-blue-800' },
   shipped: { label: 'En camino', styles: 'bg-planthia-light-green/20 text-planthia-green' },
@@ -30,9 +33,8 @@ const statusConfig = {
   failure: { label: 'Cancelado', styles: 'bg-red-100 text-red-600' },
 };
 
-export default function OrdersSection({ orders, user }: OrdersSectionProps) {
+export default function OrdersSection({ orders, user, selectedOrder, onSelectOrder: setSelectedOrder }: OrdersSectionProps) {
   const [visibleOrdersCount, setVisibleOrdersCount] = useState(3);
-  const [selectedOrder, setSelectedOrder] = useState<OrderData | null>(null);
 
   const router = useRouter();
   const { addItem, updateQuantity } = useCart();

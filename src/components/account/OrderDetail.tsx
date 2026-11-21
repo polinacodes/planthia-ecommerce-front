@@ -76,6 +76,10 @@ const getStepIndex = (status: string) => {
   }
 };
 
+// Las tres cajas del detalle (productos, envío y pago) comparten el mismo estilo
+const CARD = 'bg-white border border-planthia-dark/[0.06] rounded-[20px] p-6';
+const CARD_TITLE = 'font-headline font-bold text-base text-planthia-dark flex items-center gap-2 pb-3 border-b border-planthia-dark/5';
+
 const steps = [
   { label: 'Pagado' },
   { label: 'En preparación' },
@@ -120,7 +124,8 @@ export default function OrderDetail({ order, user, onBack, onBuyAgain }: OrderDe
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
       {/* Cabecera del Detalle */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-planthia-dark/5 pb-6">
+      {/* En escritorio el número de pedido va en el encabezado de la página y "volver" en el menú lateral */}
+      <div className="lg:hidden flex flex-col gap-3 border-b border-planthia-dark/5 pb-5">
         <button
           onClick={onBack}
           className="flex items-center gap-2 text-sm font-bold text-planthia-green/70 hover:text-planthia-green transition-colors group w-fit cursor-pointer"
@@ -128,11 +133,11 @@ export default function OrderDetail({ order, user, onBack, onBuyAgain }: OrderDe
           <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
           Volver a mis pedidos
         </button>
-        <div className="text-left sm:text-right">
-          <p className="text-[12px] font-bold uppercase tracking-widest text-planthia-green">
+        <div>
+          <p className="font-headline font-extrabold text-xl text-planthia-dark">
             Pedido #PL-{order.id}
           </p>
-          <p className="text-xs text-planthia-dark/60 flex items-center gap-1 sm:justify-end mt-1">
+          <p className="text-xs text-planthia-dark/60 flex items-center gap-1 mt-1">
             <Calendar size={14} />
             Compra realizada el {new Date(order.createdAt).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}
           </p>
@@ -179,7 +184,7 @@ export default function OrderDetail({ order, user, onBack, onBuyAgain }: OrderDe
       )}
 
       {/* Línea de Progreso Dinámica */}
-      <div className="bg-planthia-ice/40 border border-planthia-dark/5 rounded-3xl p-4 sm:p-6 lg:p-8 overflow-hidden">
+      <div className="bg-white border border-planthia-dark/[0.06] rounded-[20px] p-4 sm:p-6 overflow-hidden">
         <div className="relative flex justify-between items-start max-w-3xl mx-auto">
           <div className="absolute left-[12.5%] right-[12.5%] top-4 h-1 z-0">
             <div className="absolute inset-0 bg-planthia-dark/10 rounded-full" />
@@ -268,17 +273,17 @@ export default function OrderDetail({ order, user, onBack, onBuyAgain }: OrderDe
 
       {/* Cuerpo Principal */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        <div className="lg:col-span-8 space-y-4">
-          <h3 className="font-headline font-bold text-lg text-planthia-dark flex items-center gap-2">
-            <ShoppingBag size={18} className="text-planthia-green" />
-            Productos en este pedido
+        <div className={`lg:col-span-8 ${CARD}`}>
+          <h3 className={CARD_TITLE}>
+            <ShoppingBag size={16} className="text-planthia-green" />
+            Productos
           </h3>
 
-          <div className="border border-planthia-dark/5 bg-white rounded-3xl divide-y divide-planthia-dark/5 overflow-hidden">
+          <div className="divide-y divide-planthia-dark/5">
             {itemsArray.map((item, idx) => (
-              <div key={`${item.id || item.productId}-${idx}`} className="p-6 flex gap-4 items-center justify-between">
+              <div key={`${item.id || item.productId}-${idx}`} className="py-4 flex gap-4 items-center justify-between">
                 <div className="flex gap-4 items-center">
-                  <div className="relative w-16 h-16 rounded-xl overflow-hidden bg-planthia-cream flex-shrink-0 border border-planthia-dark/5">
+                  <div className="relative w-14 h-14 rounded-xl overflow-hidden bg-planthia-cream flex-shrink-0">
                     <Image
                       alt={item.name}
                       src={item.image || "/products/placeholder.webp"}
@@ -287,17 +292,17 @@ export default function OrderDetail({ order, user, onBack, onBuyAgain }: OrderDe
                     />
                   </div>
                   <div>
-                    <h4 className="font-headline uppercase font-bold text-sm text-planthia-dark">{item.name}</h4>
-                    <p className="text-xs text-planthia-dark/60 mt-0.5">Cantidad: {item.quantity}</p>
+                    <h4 className="font-headline font-bold text-[15px] text-planthia-dark">{item.name}</h4>
+                    <p className="text-[13px] text-planthia-dark/55 mt-0.5">
+                      {item.quantity} × ${formatPrice(Number(item.price))}
+                      {item.color ? ` · ${item.color}` : ''}
+                    </p>
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="font-headline font-bold text-sm text-planthia-dark">
+                  <p className="font-headline font-bold text-[15px] text-planthia-dark">
                     ${formatPrice(item.price * item.quantity)}
                   </p>
-                  {item.quantity > 1 && (
-                    <p className="text-[10px] text-planthia-dark/40 mt-0.5">${formatPrice(Number(item.price))} c/u</p>
-                  )}
                 </div>
               </div>
             ))}
@@ -306,12 +311,12 @@ export default function OrderDetail({ order, user, onBack, onBuyAgain }: OrderDe
 
         {/* Columna Derecha */}
         <div className="lg:col-span-4 space-y-6">
-          <div className="bg-planthia-ice/30 border border-planthia-dark/5 rounded-3xl p-6 space-y-4">
-            <h4 className="font-headline font-bold text-sm text-planthia-dark flex items-center gap-2 border-b border-planthia-dark/5 pb-3">
+          <div className={`${CARD} space-y-4`}>
+            <h4 className={CARD_TITLE}>
               <MapPin size={16} className="text-planthia-green" />
-              Datos de Envío y Facturación
+              Envío
             </h4>
-            <div className="text-xs space-y-2 text-planthia-dark/80">
+            <div className="text-sm space-y-1 text-planthia-dark/70 leading-relaxed">
               <p className="font-bold text-planthia-dark capitalize">
                 {shipping?.first_name || shipping?.last_name ? `${shipping.first_name || ''} ${shipping.last_name || ''}` : 'Cliente Planthia'}
               </p>
@@ -322,30 +327,30 @@ export default function OrderDetail({ order, user, onBack, onBuyAgain }: OrderDe
             </div>
           </div>
 
-          <div className="bg-planthia-ice/30 border border-planthia-dark/5 rounded-3xl p-6 space-y-3 text-sm">
-            <h4 className="font-headline font-bold text-sm text-planthia-dark flex items-center gap-2 border-b border-planthia-dark/5 pb-3">
+          <div className={`${CARD} space-y-3 text-sm`}>
+            <h4 className={CARD_TITLE}>
               <CreditCard size={16} className="text-planthia-green" />
-              Resumen de Pago
+              Resumen de pago
             </h4>
-            <div className="flex justify-between text-xs text-planthia-dark/70 pt-1">
+            <div className="flex justify-between text-planthia-dark/70 pt-1">
               <span>Subtotal</span>
               <span>${formatPrice(Number(order.subtotal || order.total - (order.shipping_cost || 0)))}</span>
             </div>
             {discount > 0 && (
-              <div className="flex justify-between text-xs text-planthia-green">
+              <div className="flex justify-between text-planthia-green">
                 <span>Descuento</span>
                 <span>-${formatPrice(discount)}</span>
               </div>
             )}
-            <div className="flex justify-between text-xs text-planthia-dark/70">
-              <span>Costo de envío</span>
+            <div className="flex justify-between text-planthia-dark/70">
+              <span>Envío</span>
               <span>{order.shipping_cost > 0 ? `$${formatPrice(Number(order.shipping_cost))}` : 'Gratis'}</span>
             </div>
-            <div className="flex justify-between text-xs text-planthia-dark/60 pb-2">
+            <div className="flex justify-between text-planthia-dark/70 pb-2">
               <span>Método</span>
               <span><span className="capitalize">{order.payment_method || 'Tarjeta'}</span></span>
             </div>
-            <div className="flex justify-between font-headline font-extrabold text-base text-planthia-dark border-t border-planthia-dark/5 pt-3">
+            <div className="flex justify-between items-baseline font-headline font-extrabold text-xl text-planthia-dark border-t border-planthia-dark/5 pt-3">
               <span>Total</span>
               <span>${formatPrice(Number(order.total))}</span>
             </div>
@@ -354,9 +359,7 @@ export default function OrderDetail({ order, user, onBack, onBuyAgain }: OrderDe
               <button 
                 onClick={handleLocalBuyAgain}
                 disabled={isProcessing}
-                className={`w-full mt-4 py-3 bg-planthia-green text-planthia-ice rounded-full font-headline font-bold text-xs hover:bg-planthia-green-dark transition-colors shadow-sm cursor-pointer flex items-center justify-center gap-2 ${
-                  isProcessing ? 'opacity-60 cursor-not-allowed' : ''
-                }`}
+                className="btn btn-primary btn-lg w-full mt-4"
               >
                 {isProcessing ? (
                   <>
