@@ -3,6 +3,7 @@
 import Hero from "@/components/home/Hero";
 import Categories from "@/components/home/Categories"
 import CareGuideBanner from "@/components/home/CareGuideBanner";
+import BlogSection from "@/components/home/BlogSection";
 import RecommendedSection from '@/components/home/RecommendedSection';
 import { usePlants } from "@/hooks/usePlants";
 
@@ -20,6 +21,7 @@ export default function HomePage() {
       <RecommendedSection plants={featuredPlants} />
       <Categories />
       <CareGuideBanner />
+      <BlogSection />
     </main>
   );
 }

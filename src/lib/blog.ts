@@ -50,10 +50,10 @@ async function strapiFetch(path: string) {
   }
 }
 
-export async function getArticles(category?: BlogCategory): Promise<Article[]> {
+export async function getArticles(category?: BlogCategory, limit = 100): Promise<Article[]> {
   const params = new URLSearchParams({
     sort: 'publishedAt:desc',
-    'pagination[pageSize]': '100',
+    'pagination[pageSize]': String(limit),
   });
   ['title', 'slug', 'excerpt', 'category', 'reading_time', 'publishedAt'].forEach((field, i) =>
     params.set(`fields[${i}]`, field),
