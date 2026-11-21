@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { usePlants } from '@/hooks/usePlants';
 import { useParams } from 'next/navigation';
 import { motion, AnimatePresence } from "framer-motion";
-import { Sun, Droplets, Thermometer, ArrowUp, ArrowRight, Heart, PawPrint, Ruler, Package, HandHeart } from "lucide-react";
+import { Sun, Droplets, Thermometer, ArrowUp, Heart, PawPrint, Ruler, Package, HandHeart, BookOpen } from "lucide-react";
 import { slugify } from '@/lib/guide';
 import Link from 'next/link'
 import ProductCardShop from '@/components/products/ProductCardShop';
@@ -269,9 +269,9 @@ export default function ProductPage() {
                   {/* Link a la ficha completa en la guía de cuidados */}
                   <Link
                     href={`/guia/${slugify(product.name)}`}
-                    className="col-span-2 inline-flex items-center gap-2 text-sm font-headline font-bold text-planthia-green hover:text-planthia-green-dark w-fit"
+                    className="col-span-2 btn btn-secondary btn-md w-full border-planthia-green"
                   >
-                    Ver guía de cuidados completa <ArrowRight size={16} />
+                    <BookOpen size={18} /> Ver guía de cuidados
                   </Link>
                 </>
               ) : (
