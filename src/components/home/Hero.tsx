@@ -100,7 +100,7 @@ export default function Hero() {
               className="absolute top-0 left-1/2 -translate-x-1/2 aspect-[1086/1448] w-[max(100cqw,75cqh)] sm:max-md:w-[75cqh] [--plant-scale:0.92]"
             >
               {/* CÍRCULOS (centrados en la maceta; para subirlos o bajarlos, cambiá el 48% de top-[calc(48%*…)]) */}
-              <div className="absolute left-[51%] top-[calc(48%*var(--plant-scale))] -translate-x-1/2 -translate-y-1/2 w-[66%] sm:w-[80%] aspect-square">
+              <div className="absolute left-[51%] top-[calc(50%*var(--plant-scale))] -translate-x-1/2 -translate-y-1/2 w-[66%] sm:w-[80%] aspect-square">
                 {/* Círculo Exterior */}
                 <div className="absolute inset-0 border-[4px] sm:border-[6px] border-white rounded-full shadow-md" />
                 {/* Círculo Interior */}
