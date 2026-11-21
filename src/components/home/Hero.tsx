@@ -44,17 +44,20 @@ export default function Hero() {
           Somos especialistas en plantas. En Planthia encontrás todo lo que necesitás para crear tu propio refugio verde en un solo lugar
         </p>
 
-        <div className="flex flex-row items-center gap-2 sm:gap-2 lg:gap-2">
+        {/* Botones encastrados: "Ir al shop" termina redondo y "Guía de cuidados" arranca con
+            un borde en media luna que lo abraza, separados por unos píxeles (ver .pill-crescent) */}
+        <div className="hero-pills flex flex-row items-center">
           <button
             onClick={() => router.push('/shop')}
-            className="bg-planthia-green text-white px-4 max-[374px]:px-3 sm:px-6 md:px-8 lg:px-4 xl:px-7 2xl:px-10 py-3 sm:py-3 md:py-4 lg:py-3 xl:py-3.5 2xl:py-5 font-bold hover:opacity-90 transition-all cursor-pointer
-              rounded-tl-2xl rounded-bl-sm skew-x-[-15deg] origin-bottom overflow-hidden shadow-lg shadow-planthia-green/20 flex-1 sm:flex-none text-[15px] max-[374px]:text-sm sm:text-lg lg:text-[15px] xl:text-base 2xl:text-lg">
-            <span className="inline-block skew-x-[15deg] whitespace-nowrap">Ver colección</span>
+            className="relative z-10 h-[var(--pill-h)] rounded-full bg-planthia-green text-white px-6 sm:px-8 2xl:px-10 font-headline font-bold whitespace-nowrap hover:bg-planthia-green-dark transition-colors cursor-pointer shadow-md shadow-planthia-green/20 flex-1 sm:flex-none text-[15px] max-[374px]:text-sm sm:text-lg lg:text-[15px] xl:text-base 2xl:text-lg"
+          >
+            Ir al shop
           </button>
           <button
-            onClick={() => router.push('/guia')} className="bg-white border border-gray-100 px-4 max-[374px]:px-3 sm:px-6 md:px-8 lg:px-4 xl:px-7 2xl:px-10 py-3 sm:py-3 md:py-4 lg:py-3 xl:py-3.5 2xl:py-5 font-bold text-planthia-green hover:bg-gray-50 transition-all cursor-pointer
-              rounded-tr-sm rounded-br-2xl skew-x-[-15deg] origin-bottom shadow-sm flex-1 sm:flex-none text-[15px] max-[374px]:text-sm sm:text-lg lg:text-[15px] xl:text-base 2xl:text-lg">
-            <span className="inline-block skew-x-[15deg] whitespace-nowrap">Guía de cuidados</span>
+            onClick={() => router.push('/guia')}
+            className="pill-crescent h-[var(--pill-h)] pr-6 sm:pr-8 2xl:pr-10 font-headline font-bold whitespace-nowrap text-planthia-green-dark cursor-pointer flex-1 sm:flex-none text-[15px] max-[374px]:text-sm sm:text-lg lg:text-[15px] xl:text-base 2xl:text-lg"
+          >
+            Guía de cuidados
           </button>
         </div>
       </div>

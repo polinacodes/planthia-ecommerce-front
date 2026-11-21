@@ -57,4 +57,34 @@
 
   .btn-secondary { background-color: #fff; color: var(--color-planthia-green); border: 1.5px solid #dfe5d8; }
   .btn-secondary:not(:disabled):hover { border-color: var(--color-planthia-green); background-color: #f3f7ef; }
+
+  /* ============================================
+     Botones encastrados del hero
+     --pill-h: alto de los botones · --pill-gap: separación entre los dos
+     .pill-crescent: botón con el borde izquierdo en media luna. Se superpone a la mitad
+     del botón anterior y una máscara circular le "muerde" el lado izquierdo; la línea
+     del borde curvo se dibuja con un degradé circular del mismo radio.
+     ============================================ */
+  .hero-pills { --pill-h: 3rem; --pill-gap: 6px; }
+  @media (min-width: 640px) { .hero-pills { --pill-h: 3.5rem; } }
+  @media (min-width: 1024px) { .hero-pills { --pill-h: 3.25rem; } }
+  @media (min-width: 1536px) { .hero-pills { --pill-h: 4rem; } }
+
+  .pill-crescent {
+    --cut: calc(var(--pill-h) / 2 + var(--pill-gap));
+    --ring: #dfe5d8;
+    --fill: #ffffff;
+    margin-left: calc(var(--pill-h) / -2);
+    padding-left: calc(var(--cut) + 1.25rem);
+    border: 1.5px solid var(--ring);
+    border-left: 0;
+    border-radius: 0 9999px 9999px 0;
+    background:
+      radial-gradient(circle at 0 50%, transparent var(--cut), var(--ring) var(--cut), var(--ring) calc(var(--cut) + 1.5px), transparent calc(var(--cut) + 1.5px)),
+      var(--fill);
+    -webkit-mask: radial-gradient(circle at 0 50%, transparent var(--cut), #000 calc(var(--cut) + 0.5px));
+    mask: radial-gradient(circle at 0 50%, transparent var(--cut), #000 calc(var(--cut) + 0.5px));
+    transition: color 0.2s;
+  }
+  .pill-crescent:hover { --ring: var(--color-planthia-green); --fill: #eaf1e3; }
 }

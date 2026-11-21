@@ -176,7 +176,7 @@ const ShopPageContent = () => {
 
         <PageHeader
           eyebrow="#TuJunglaUrbana"
-          title="Tienda"
+          title="Shop"
           subtitle="Plantas y todo lo que necesitan para crecer."
         >
           <TypeSwitch typeQuery={typeQuery} hasSearch={!!searchQuery} onFilterChange={updateFilter} />
