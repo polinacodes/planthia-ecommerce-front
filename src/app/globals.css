@@ -88,3 +88,23 @@
   }
   .pill-crescent:hover { --ring: var(--color-planthia-green); --fill: #eaf1e3; }
 }
+
+/* ============================================
+   Entrada del hero (CSS: arranca apenas se pinta la página, sin esperar al JavaScript)
+   .hero-in: sube y aparece (la demora de cada parte va en style={{ animationDelay }})
+   .hero-fade: la planta aparece con un fundido
+   ============================================ */
+@keyframes hero-fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes hero-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.hero-in { animation: hero-fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.hero-fade { animation: hero-fade 0.9s ease-out 0.1s both; }
+@media (prefers-reduced-motion: reduce) {
+  .hero-in, .hero-fade { animation: none; }
+}
+

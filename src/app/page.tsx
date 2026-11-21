@@ -23,7 +23,7 @@ export default function HomePage() {
     <>
     <main className="relative overflow-x-clip px-0 md:px-4 lg:px-12 pt-10 pb-20">
       <Hero />
-      <Reveal><RecommendedSection plants={featuredPlants} /></Reveal>
+      <RecommendedSection plants={featuredPlants} />
       <Categories />
       <Reveal><CareGuideBanner /></Reveal>
       <BlogSection />

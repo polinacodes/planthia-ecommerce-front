@@ -1,5 +1,6 @@
 // src/app/guia/[slug]/page.tsx
 'use client';
+import { motion } from 'framer-motion';
 
 import { useEffect, useMemo } from 'react';
 import Image from 'next/image';
@@ -73,7 +74,15 @@ export default function GuideDetailPage() {
         <section className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] gap-6 lg:gap-12">
           {/* Foto sin fondo, como en la ficha de producto: ocupa toda la altura de la columna de datos */}
           <div className="relative aspect-square max-h-[420px] lg:max-h-none lg:aspect-auto lg:min-h-[480px] w-full">
-            <Image src={plant.image} alt={plant.name} fill priority sizes="(max-width: 1024px) 100vw, 560px" className="object-contain" />
+            {/* Misma entrada y hover que la foto de la ficha de producto */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.2, ease: 'easeOut' }}
+              className="absolute inset-0"
+            >
+              <Image src={plant.image} alt={plant.name} fill priority sizes="(max-width: 1024px) 100vw, 560px" className="object-contain transition-transform duration-500 ease-in-out hover:scale-105" />
+            </motion.div>
           </div>
 
           <div>
