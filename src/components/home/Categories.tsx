@@ -37,6 +37,7 @@ export default function Categories() {
                 src={cat.img} 
                 alt={cat.title}
                 fill
+                sizes="(max-width: 768px) 50vw, 25vw"
                 className="object-cover transform transition-transform duration-700 group-hover:scale-110"
               />
             </div>

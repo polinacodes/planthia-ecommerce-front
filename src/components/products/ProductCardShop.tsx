@@ -75,11 +75,12 @@ const ProductCardShop = ({ product }: { product: Product }) => {
 
       {/* Contenedor de Imagen */}
       <div className="relative aspect-square w-full bg-[#f9f9f9] overflow-hidden group">
-        <Link href={`/shop/${product.id}`}>
+        <Link href={`/shop/${product.id}`} className="absolute inset-0">
           <Image
             src={product.image}
             alt={product.name}
             fill
+            sizes="(max-width: 640px) 50vw, (max-width: 1280px) 33vw, 25vw"
             className="object-cover group-hover:scale-105 transition-transform duration-500"
           />
         </Link>
