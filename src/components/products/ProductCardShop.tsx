@@ -1,3 +1,4 @@
+import { productPath } from '@/lib/products';
 import React, { useMemo } from 'react';
 import Image from 'next/image';
 import { Heart, Plus, Eye } from 'lucide-react';
@@ -50,7 +51,7 @@ const ProductCardShop = ({ product }: { product: Product }) => {
     e.stopPropagation();
 
     if (hasVariants) {
-      router.push(`/shop/${product.id}`);
+      router.push(productPath(product));
     } else {
       const wasAdded = addItem({
         id: product.id,
@@ -75,7 +76,7 @@ const ProductCardShop = ({ product }: { product: Product }) => {
 
       {/* Contenedor de Imagen */}
       <div className="relative aspect-square w-full bg-[#f9f9f9] overflow-hidden group">
-        <Link href={`/shop/${product.id}`} className="absolute inset-0">
+        <Link href={productPath(product)} className="absolute inset-0">
           <Image
             src={product.image}
             alt={product.name}
@@ -110,7 +111,7 @@ const ProductCardShop = ({ product }: { product: Product }) => {
         </button>
 
         <Link
-          href={`/shop/${product.id}`}
+          href={productPath(product)}
           className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 hidden md:flex z-10"
         >
           <div className="bg-white/80 backdrop-blur-sm p-2 rounded-full text-[#5B823B] hover:bg-planthia-green hover:text-white transition-colors">

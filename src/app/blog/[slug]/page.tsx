@@ -14,13 +14,16 @@ type Props = { params: Promise<{ slug: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const article = await getArticle(slug);
-  if (!article) return { title: 'Artículo no encontrado | Planthia' };
+  if (!article) return { title: 'Artículo no encontrado' };
 
   return {
-    title: `${article.title} | Blog Planthia`,
+    title: article.title,
+    alternates: { canonical: `/blog/${article.slug}` },
     description: article.excerpt ?? undefined,
     openGraph: {
-      title: article.title,
+      title: `${article.title} | Planthia`,
+      url: `/blog/${article.slug}`,
+      publishedTime: article.publishedAt,
       description: article.excerpt ?? undefined,
       type: 'article',
       images: article.cover ? [article.cover.url] : undefined,

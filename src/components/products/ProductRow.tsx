@@ -1,6 +1,7 @@
 // src/components/products/ProductRow.tsx
 'use client';
 
+import { productPath } from '@/lib/products';
 import Image from 'next/image';
 import Link from 'next/link';
 import { toast } from 'sonner';
@@ -35,17 +36,17 @@ export default function ProductRow({ product, reason, compact = false }: { produ
   if (compact) {
     return (
       <div className="flex items-center gap-3 py-3">
-        <Link href={`/shop/${product.id}`} className="relative w-12 h-12 rounded-xl bg-white overflow-hidden flex-shrink-0">
+        <Link href={productPath(product)} className="relative w-12 h-12 rounded-xl bg-white overflow-hidden flex-shrink-0">
           <Image src={product.image} alt={product.name} fill sizes="48px" className="object-contain p-1" />
         </Link>
         <div className="flex-1 min-w-0">
-          <Link href={`/shop/${product.id}`} className="block font-headline font-bold text-sm text-planthia-dark hover:text-planthia-green truncate">
+          <Link href={productPath(product)} className="block font-headline font-bold text-sm text-planthia-dark hover:text-planthia-green truncate">
             {product.name}
           </Link>
           <p className="text-sm text-planthia-dark/60">${formatPrice(product.price)}</p>
         </div>
         {hasVariants ? (
-          <Link href={`/shop/${product.id}`} aria-label={`Ver ${product.name}`} className="btn btn-secondary w-9 h-9 p-0 rounded-full">
+          <Link href={productPath(product)} aria-label={`Ver ${product.name}`} className="btn btn-secondary w-9 h-9 p-0 rounded-full">
             <ArrowRight size={16} />
           </Link>
         ) : (
@@ -65,18 +66,18 @@ export default function ProductRow({ product, reason, compact = false }: { produ
 
   return (
     <div className={`${CARD} p-3 flex items-center gap-4`}>
-      <Link href={`/shop/${product.id}`} className="relative w-16 h-16 rounded-xl bg-planthia-cream overflow-hidden flex-shrink-0">
+      <Link href={productPath(product)} className="relative w-16 h-16 rounded-xl bg-planthia-cream overflow-hidden flex-shrink-0">
         <Image src={product.image} alt={product.name} fill sizes="64px" className="object-contain p-1" />
       </Link>
       <div className="flex-1 min-w-0">
-        <Link href={`/shop/${product.id}`} className="font-headline font-bold text-[15px] text-planthia-dark hover:text-planthia-green">
+        <Link href={productPath(product)} className="font-headline font-bold text-[15px] text-planthia-dark hover:text-planthia-green">
           {product.name}
         </Link>
         {reason && <p className="text-xs text-planthia-dark/50">{reason}</p>}
         <p className="font-headline font-extrabold text-planthia-green mt-0.5">${formatPrice(product.price)}</p>
       </div>
       {hasVariants ? (
-        <Link href={`/shop/${product.id}`} className="btn btn-secondary btn-sm">Ver</Link>
+        <Link href={productPath(product)} className="btn btn-secondary btn-sm">Ver</Link>
       ) : (
         <button onClick={handleAdd} disabled={outOfStock} className="btn btn-primary btn-sm">
           {outOfStock ? 'Sin stock' : inCart ? 'Agregado' : 'Agregar'}

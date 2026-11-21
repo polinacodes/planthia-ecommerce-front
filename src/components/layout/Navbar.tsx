@@ -1,5 +1,6 @@
 "use client";
 
+import { productPath } from '@/lib/products';
 import { useState, useEffect, useMemo, Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -169,7 +170,7 @@ function NavbarContent() {
                           <div className="max-h-[340px] overflow-y-auto pr-1 space-y-3 scrollbar-thin scrollbar-thumb-planthia-green/20">
                             {previewFavorites.map((product) => (
                               <div key={product.id} className="flex items-center gap-3 bg-white/40 p-2 rounded-lg border border-planthia-dark/5 group/item">
-                                <Link href={`/shop/${product.id}`} className="relative w-12 h-12 rounded-md overflow-hidden bg-white/80 flex-shrink-0">
+                                <Link href={productPath(product)} className="relative w-12 h-12 rounded-md overflow-hidden bg-white/80 flex-shrink-0">
                                   <Image
                                     src={product.image}
                                     alt={product.name}
@@ -179,7 +180,7 @@ function NavbarContent() {
                                 </Link>
 
                                 <div className="flex-1 min-w-0">
-                                  <Link href={`/shop/${product.id}`} className="block">
+                                  <Link href={productPath(product)} className="block">
                                     <h4 className="text-xs font-bold text-planthia-dark hover:text-planthia-green transition-colors truncate">
                                       {product.name}
                                     </h4>

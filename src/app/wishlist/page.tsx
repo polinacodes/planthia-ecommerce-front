@@ -1,5 +1,6 @@
 "use client";
 
+import { productPath } from '@/lib/products';
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -113,7 +114,7 @@ export default function WishlistPage() {
                   className="p-4 sm:p-6 flex flex-col sm:flex-row items-center gap-4 sm:gap-6 hover:bg-planthia-cream/20 transition-colors"
                 >
                   {/* Imagen */}
-                  <Link href={`/shop/${product.id}`} className="relative w-24 h-24 sm:w-32 sm:h-32 bg-[#f9f9f9] rounded-xl overflow-hidden flex-shrink-0 group">
+                  <Link href={productPath(product)} className="relative w-24 h-24 sm:w-32 sm:h-32 bg-[#f9f9f9] rounded-xl overflow-hidden flex-shrink-0 group">
                     <Image
                       src={product.image}
                       alt={product.name}
@@ -124,7 +125,7 @@ export default function WishlistPage() {
 
                   {/* Info Detallada */}
                   <div className="flex-1 text-center sm:text-left space-y-1 min-w-0">
-                    <Link href={`/shop/${product.id}`} className="inline-block">
+                    <Link href={productPath(product)} className="inline-block">
                       <h3 className="text-lg font-bold text-gray-800 hover:text-planthia-green transition-colors truncate">
                         {product.name}
                       </h3>
@@ -155,7 +156,7 @@ export default function WishlistPage() {
                     {product.variants && product.variants.length > 0 ? (
           
                       <Link
-                        href={`/shop/${product.id}`}
+                        href={productPath(product)}
                         className="btn btn-primary btn-md flex-1 sm:flex-none sm:w-40"
                       >
                         <ShoppingCart size={14} />

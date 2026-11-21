@@ -10,6 +10,7 @@ import { CartDrawer } from "@/components/shop/CartDrawer";
 import NewsletterPopup from "@/components/layout/NewsletterPopup";
 import { FavoritesProvider } from '@/context/FavoritesContext';
 import { Suspense } from "react";
+import { SITE_URL } from "@/lib/seo";
 
 const manrope = Manrope({
   subsets: ["latin"],
@@ -21,9 +22,36 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
+const DESCRIPTION =
+  "Plantas de interior, exterior y aromáticas, sustratos y todo lo que necesitan para crecer. Guía de cuidados para cada planta y envíos a todo el país.";
+
 export const metadata: Metadata = {
-  title: "Planthia | Tienda de Plantas",
-  description: "Tu jungla urbana a un click de distancia. Descubre nuestra exclusiva colección de plantas de interior, diseñadas para transformar tu hogar en un oasis verde. Desde suculentas minimalistas hasta exuberantes helechos, cada planta es seleccionada por su belleza y facilidad de cuidado. Embellece tu espacio con Planthia, donde la naturaleza y el estilo se encuentran.",
+  metadataBase: new URL(SITE_URL),
+  // Cada página pone su título y se le agrega " | Planthia" (la home usa el de "default")
+  title: {
+    default: "Planthia | Tienda de plantas online",
+    template: "%s | Planthia",
+  },
+  description: DESCRIPTION,
+  applicationName: "Planthia",
+  keywords: ["plantas", "tienda de plantas", "plantas de interior", "plantas de exterior", "aromáticas", "sustratos", "vivero online", "Argentina"],
+  alternates: { canonical: "/" },
+  // Vista previa al compartir el link (WhatsApp, redes, etc.)
+  openGraph: {
+    type: "website",
+    locale: "es_AR",
+    siteName: "Planthia",
+    title: "Planthia | Tienda de plantas online",
+    description: DESCRIPTION,
+    url: "/",
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Planthia, tienda de plantas online" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Planthia | Tienda de plantas online",
+    description: DESCRIPTION,
+    images: ["/og.png"],
+  },
 };
 
 export default function RootLayout({

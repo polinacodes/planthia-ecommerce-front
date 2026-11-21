@@ -1,5 +1,6 @@
 "use client";
 
+import { productPath } from '@/lib/products';
 import React, { useEffect, useMemo, useState } from 'react';
 import { Eye, Heart } from 'lucide-react';
 import Image from 'next/image';
@@ -191,7 +192,7 @@ const ProductCard = ({ plant, isActive, onClick }: ProductCardProps) => {
                   {isLimitReached ? 'Máximo alcanzado' : (cartItem ? 'Agregado' : 'Agregar')}
                 </motion.button>
                 <Link
-                  href={`/shop/${plant.id}`}
+                  href={productPath(plant)}
                   tabIndex={isActive ? 0 : -1}
                   aria-label={`Ver ${plant.name}`}
                   className="flex-shrink-0 p-2 sm:p-2.5 lg:p-3 bg-white/20 rounded-full hover:bg-white/30 transition-colors"

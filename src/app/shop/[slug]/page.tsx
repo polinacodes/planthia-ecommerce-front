@@ -3,7 +3,8 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import Image from 'next/image';
 import { usePlants } from '@/hooks/usePlants';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
+import { findProductByParam, productPath, productSlug } from '@/lib/products';
 import { motion, AnimatePresence } from "framer-motion";
 import { Sun, Droplets, Thermometer, ArrowUp, Heart, PawPrint, Ruler, Package, HandHeart, BookOpen } from "lucide-react";
 import { slugify } from '@/lib/guide';
@@ -26,8 +27,9 @@ const CareItem = ({ icon: Icon, label, value }: any) => (
 );
 
 export default function ProductPage() {
-  const params = useParams();
-  const id = params.id;
+  const params = useParams<{ slug: string }>();
+  const slug = params.slug;
+  const router = useRouter();
   const { plants, loading } = usePlants();
   const { addItem, cart, removeItem, updateQuantity } = useCart();
   const { toggleFavorite, isFavorite } = useFavorites();
@@ -37,8 +39,13 @@ export default function ProductPage() {
 
   const product = useMemo(() => {
     if (!plants) return undefined;
-    return plants.find((p) => p.id.toString() === id?.toString());
-  }, [plants, id]);
+    return findProductByParam(plants, slug);
+  }, [plants, slug]);
+
+  // Las URLs viejas con número (/shop/126) pasan a la nueva con el nombre (/shop/monstera-deliciosa)
+  useEffect(() => {
+    if (product && slug !== productSlug(product)) router.replace(productPath(product));
+  }, [product, slug, router]);
 
   const active = useMemo(() => {
     if (!product) return false;
@@ -119,7 +126,7 @@ export default function ProductPage() {
       <main className="min-h-screen bg-planthia-cream">
         <EmptyState
           title="La planta que buscas no está en nuestro jardín."
-          description={<p>El ID <span className="font-bold text-[#5B823B]">{id}</span> no existe o fue movido,</p>}
+          description={<p>Puede que no exista o que haya cambiado de nombre,</p>}
         />
       </main>
     );

@@ -1,8 +1,9 @@
 // src/app/guia/[slug]/page.tsx
 'use client';
+import { productPath } from '@/lib/products';
 import { motion } from 'framer-motion';
 
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
@@ -36,10 +37,6 @@ export default function GuideDetailPage() {
     [products, slug]
   );
   const recommended = useMemo(() => (plant ? getRecommendedProducts(plant, products) : []), [plant, products]);
-
-  useEffect(() => {
-    if (plant) document.title = `Cómo cuidar ${plant.name} | Guía Planthia`;
-  }, [plant]);
 
   if (loading) {
     return <main className="min-h-screen bg-planthia-cream flex items-center justify-center"><div className="w-8 h-8 border-4 border-planthia-green border-t-transparent rounded-full animate-spin" /></main>;
@@ -122,7 +119,7 @@ export default function GuideDetailPage() {
                   {inStock ? `La tenemos en la tienda a $${formatPrice(plant.price)}` : 'Fijate más adelante o mirá otras plantas parecidas.'}
                 </p>
               </div>
-              <Link href={`/shop/${plant.id}`} className="btn btn-primary btn-md">Ver en la tienda</Link>
+              <Link href={productPath(plant)} className="btn btn-primary btn-md">Ver en la tienda</Link>
             </div>
           </div>
         </section>

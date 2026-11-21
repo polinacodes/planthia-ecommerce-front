@@ -10,7 +10,8 @@ import ArticleCard, { FeaturedArticleCard } from '@/components/blog/ArticleCard'
 import { BLOG_CATEGORIES, getArticles, isBlogCategory } from '@/lib/blog';
 
 export const metadata: Metadata = {
-  title: 'Blog | Planthia',
+  title: 'Blog',
+  alternates: { canonical: '/blog' },
   description: 'Ideas, trucos y cuidados para tu jungla urbana: riego, luz, aromáticas, decoración con plantas y más.',
 };
 
