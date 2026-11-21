@@ -1,6 +1,7 @@
 //src/components/home/Categories.tsx
 import Image from "next/image";
 import Link from "next/link";
+import { Reveal, RevealGroup, RevealItem } from "@/components/motion/Reveal";
 
 const categories = [
   { title: "Interior", img: "/interior.webp", link: "/shop?type=plantas&category=interior" },
@@ -15,7 +16,7 @@ export default function Categories() {
       
       {/* Encabezado */}
       {/* Mismo sistema que el hero: etiqueta chica + título en Manrope + párrafo en gris oscuro */}
-      <div className="mb-8 sm:mb-10">
+      <Reveal className="mb-8 sm:mb-10">
         <span className="font-headline font-bold tracking-[0.2em] text-xs text-planthia-dark mb-3 block uppercase">
           #TuJunglaUrbana
         </span>
@@ -25,12 +26,13 @@ export default function Categories() {
         <p className="font-body text-planthia-dark/60 mt-3 text-base sm:text-lg max-w-xl leading-relaxed">
           Plantas para cada rincón y todo lo que necesitan para crecer.
         </p>
-      </div>
+      </Reveal>
 
       {/* Grid de Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 lg:gap-10">
+      <RevealGroup className="grid grid-cols-2 md:grid-cols-4 gap-6 lg:gap-10">
         {categories.map((cat) => (
-          <Link key={cat.title} href={cat.link} className="group cursor-pointer">
+          <RevealItem key={cat.title}>
+          <Link href={cat.link} className="group cursor-pointer block">
             {/* Contenedor de imagen */}
             <div className="relative aspect-[4/5] rounded-[24px] overflow-hidden transition-all duration-500 group-hover:shadow-2xl group-hover:shadow-planthia-green/10">
               <Image
@@ -49,8 +51,9 @@ export default function Categories() {
               </div>
             </div>
           </Link>
+          </RevealItem>
         ))}
-      </div>
+      </RevealGroup>
     </section>
   );
 }

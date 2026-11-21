@@ -7,6 +7,7 @@ import BlogSection from "@/components/home/BlogSection";
 import BenefitsBar from "@/components/home/BenefitsBar";
 import NewsletterBlock from "@/components/layout/NewsletterBlock";
 import { HOME_CONTAINER } from "@/lib/layout";
+import { Reveal } from "@/components/motion/Reveal";
 import RecommendedSection from '@/components/home/RecommendedSection';
 import { usePlants } from "@/hooks/usePlants";
 
@@ -22,9 +23,9 @@ export default function HomePage() {
     <>
     <main className="relative overflow-x-clip px-0 md:px-4 lg:px-12 pt-10 pb-20">
       <Hero />
-      <RecommendedSection plants={featuredPlants} />
+      <Reveal><RecommendedSection plants={featuredPlants} /></Reveal>
       <Categories />
-      <CareGuideBanner />
+      <Reveal><CareGuideBanner /></Reveal>
       <BlogSection />
     </main>
     {/* Beneficios y newsletter a todo el ancho, pegados al footer */}

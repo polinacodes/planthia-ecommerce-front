@@ -5,6 +5,7 @@ import Link from 'next/link';
 import type { LucideIcon } from 'lucide-react';
 import { BookOpen, ShieldCheck, Sprout, Truck } from 'lucide-react';
 import { HOME_CONTAINER } from '@/lib/layout';
+import { RevealGroup, RevealItem } from '@/components/motion/Reveal';
 
 interface Benefit {
   Icon: LucideIcon;
@@ -41,19 +42,19 @@ export default function BenefitsBar() {
       className="bg-white border-t border-planthia-dark/[0.06]"
     >
       <div className={`${HOME_CONTAINER} py-10 sm:py-12`}>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-y-8">
-          {BENEFITS.map((benefit) =>
-            benefit.href ? (
-              <Link key={benefit.title} href={benefit.href} className={`${itemClass} hover:opacity-75 transition-opacity`}>
+        <RevealGroup className="grid grid-cols-2 md:grid-cols-4 gap-y-8" stagger={0.1}>
+          {BENEFITS.map((benefit) => (
+            <RevealItem key={benefit.title} className={itemClass}>
+              {benefit.href ? (
+                <Link href={benefit.href} className="flex flex-col items-center gap-3 hover:opacity-75 transition-opacity">
+                  <BenefitContent benefit={benefit} />
+                </Link>
+              ) : (
                 <BenefitContent benefit={benefit} />
-              </Link>
-            ) : (
-              <div key={benefit.title} className={itemClass}>
-                <BenefitContent benefit={benefit} />
-              </div>
-            ),
-          )}
-        </div>
+              )}
+            </RevealItem>
+          ))}
+        </RevealGroup>
       </div>
     </section>
   );

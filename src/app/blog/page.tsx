@@ -4,6 +4,7 @@ import Link from 'next/link';
 import PageHeader from '@/components/layout/PageHeader';
 import TextTabs from '@/components/layout/TextTabs';
 import NewsletterBlock from '@/components/layout/NewsletterBlock';
+import { Reveal, RevealGroup, RevealItem } from '@/components/motion/Reveal';
 import { PAGE_CONTAINER } from '@/lib/layout';
 import ArticleCard, { FeaturedArticleCard } from '@/components/blog/ArticleCard';
 import { BLOG_CATEGORIES, getArticles, isBlogCategory } from '@/lib/blog';
@@ -44,13 +45,15 @@ export default async function BlogPage({ searchParams }: { searchParams: Promise
 
         {articles.length > 0 ? (
           <div className="mt-10 sm:mt-12 space-y-14 sm:space-y-16">
-            {featured && <FeaturedArticleCard article={featured} />}
+            {featured && <Reveal><FeaturedArticleCard article={featured} /></Reveal>}
             {rest.length > 0 && (
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
+              <RevealGroup className="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
                 {rest.map((article) => (
-                  <ArticleCard key={article.documentId} article={article} />
+                  <RevealItem key={article.documentId}>
+                    <ArticleCard article={article} />
+                  </RevealItem>
                 ))}
-              </div>
+              </RevealGroup>
             )}
           </div>
         ) : (

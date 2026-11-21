@@ -8,6 +8,7 @@ import { usePlants } from '@/hooks/usePlants';
 import GuideCard from '@/components/guide/GuideCard';
 import PageHeader from '@/components/layout/PageHeader';
 import Pagination from '@/components/shop/Pagination';
+import { RevealGroup, RevealItem } from '@/components/motion/Reveal';
 import TextTabs from '@/components/layout/TextTabs';
 import { GUIDE_FILTERS, GuideFilterId, isGuidePlant, matchesSearch } from '@/lib/guide';
 
@@ -94,9 +95,13 @@ function GuideContent() {
             ))}
           </div>
         ) : plants.length > 0 ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
-            {pagePlants.map((plant) => <GuideCard key={plant.documentId} plant={plant} />)}
-          </div>
+          <RevealGroup key={`${filterId}-${query}-${currentPage}`} className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6" stagger={0.05}>
+            {pagePlants.map((plant) => (
+              <RevealItem key={plant.documentId} className="h-full [&>*]:h-full">
+                <GuideCard plant={plant} />
+              </RevealItem>
+            ))}
+          </RevealGroup>
         ) : (
           <div className="text-center py-16">
             <p className="font-headline font-extrabold text-2xl text-planthia-dark mb-2">Todavía no tenemos esa ficha</p>

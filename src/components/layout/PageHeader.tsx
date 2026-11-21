@@ -3,6 +3,7 @@
 // Etiqueta chica + título grande en Manrope + bajada en gris, alineados a la izquierda.
 // Lo que va como children se ubica a la derecha en escritorio (buscador, interruptor…).
 import type { ReactNode } from 'react';
+import { Reveal } from '@/components/motion/Reveal';
 
 interface PageHeaderProps {
   eyebrow: string;
@@ -13,6 +14,7 @@ interface PageHeaderProps {
 
 export default function PageHeader({ eyebrow, title, subtitle, children }: PageHeaderProps) {
   return (
+    <Reveal y={16}>
     <header className="pt-8 sm:pt-12 mb-8 sm:mb-10 flex flex-col md:flex-row md:items-end md:justify-between gap-6 md:gap-10">
       <div className="min-w-0">
         <span className="font-headline font-bold tracking-[0.2em] text-xs text-planthia-dark mb-3 block uppercase">
@@ -27,5 +29,6 @@ export default function PageHeader({ eyebrow, title, subtitle, children }: PageH
       </div>
       {children && <div className="w-full md:w-auto md:flex-none">{children}</div>}
     </header>
+    </Reveal>
   );
 }

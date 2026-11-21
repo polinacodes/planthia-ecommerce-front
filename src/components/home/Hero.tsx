@@ -42,6 +42,13 @@ function LeafFilled({ className }: { className?: string }) {
   );
 }
 
+// Entrada del texto del hero: aparece de a partes al cargar la página
+const heroText = { hidden: {}, show: { transition: { staggerChildren: 0.1, delayChildren: 0.1 } } };
+const heroItem = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const } },
+};
+
 export default function Hero() {
   const router = useRouter();
   const reduceMotion = useReducedMotion();
@@ -54,20 +61,20 @@ export default function Hero() {
       {/* Contenido Izquierdo  */}
       {/* Los márgenes negativos acercan el texto a la planta cuando van apilados (celular y tablet).
           En tablet vertical (md) la planta crece con el ancho, por eso el margen usa vw. */}
-      <div className="col-span-12 lg:col-span-5 z-10 -mt-[120px] max-[370px]:-mt-[150px] sm:-mt-[172px] md:mt-[calc(32.3vw-424px)] lg:-mt-30 xl:-mt-30 2xl:-mt-40 md:px-0 order-last lg:order-first max-[1366px]:order-last flex flex-col items-center lg:items-start text-center lg:text-left">
-        <span className="font-headline font-bold tracking-[0.2em] text-xs text-planthia-dark mb-4 block uppercase">
+      <motion.div variants={heroText} initial={reduceMotion ? false : "hidden"} animate="show" className="col-span-12 lg:col-span-5 z-10 -mt-[120px] max-[370px]:-mt-[150px] sm:-mt-[172px] md:mt-[calc(32.3vw-424px)] lg:-mt-30 xl:-mt-30 2xl:-mt-40 md:px-0 order-last lg:order-first max-[1366px]:order-last flex flex-col items-center lg:items-start text-center lg:text-left">
+        <motion.span variants={heroItem} className="font-headline font-bold tracking-[0.2em] text-xs text-planthia-dark mb-4 block uppercase">
           #RefugioVerde
-        </span>
-        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-headline font-extrabold leading-[1.05] tracking-tight mb-6 lg:mb-8 text-planthia-dark">
+        </motion.span>
+        <motion.h1 variants={heroItem} className="text-4xl sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-headline font-extrabold leading-[1.05] tracking-tight mb-6 lg:mb-8 text-planthia-dark">
           Llená de vida <br className="hidden sm:block" /> tus espacios
-        </h1>
-        <p className="font-body text-planthia-dark/60 text-base sm:text-lg max-w-md mb-8 lg:mb-10 leading-relaxed mx-auto lg:mx-0">
+        </motion.h1>
+        <motion.p variants={heroItem} className="font-body text-planthia-dark/60 text-base sm:text-lg max-w-md mb-8 lg:mb-10 leading-relaxed mx-auto lg:mx-0">
           Somos especialistas en plantas. En Planthia encontrás todo lo que necesitás para crear tu propio refugio verde en un solo lugar
-        </p>
+        </motion.p>
 
         {/* Botones encastrados: "Ir al shop" termina redondo y "Guía de cuidados" arranca con
             un borde en media luna que lo abraza, separados por unos píxeles (ver .pill-crescent) */}
-        <div className="hero-pills flex flex-row items-center">
+        <motion.div variants={heroItem} className="hero-pills flex flex-row items-center">
           <button
             onClick={() => router.push('/shop')}
             className="relative z-10 h-[var(--pill-h)] rounded-full bg-planthia-green text-white px-6 sm:px-8 2xl:px-10 font-headline font-bold whitespace-nowrap hover:bg-planthia-green-dark transition-colors cursor-pointer shadow-md shadow-planthia-green/20 flex-1 sm:flex-none text-[15px] max-[374px]:text-sm sm:text-lg lg:text-[15px] xl:text-base 2xl:text-lg"
@@ -80,11 +87,11 @@ export default function Hero() {
           >
             Guía de cuidados
           </button>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
       {/* Contenido Derecho */}
-      <div className="col-span-12 lg:col-span-7 relative h-auto lg:h-full min-h-[550px] sm:min-h-[650px] md:min-h-[860px] lg:min-h-[700px] xl:min-h-[700px] 2xl:min-h-[850px] order-first lg:order-last max-[1366px]:order-first">
+      <motion.div initial={reduceMotion ? false : { opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.15 }} className="col-span-12 lg:col-span-7 relative h-auto lg:h-full min-h-[550px] sm:min-h-[650px] md:min-h-[860px] lg:min-h-[700px] xl:min-h-[700px] 2xl:min-h-[850px] order-first lg:order-last max-[1366px]:order-first">
 
         {/* CONTENEDOR DE CÍRCULOS */}
         {/* <div className="absolute 
@@ -197,7 +204,7 @@ export default function Hero() {
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
     </section>
     </div>
   );

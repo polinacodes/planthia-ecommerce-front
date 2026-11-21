@@ -1,4 +1,5 @@
 "use client";
+import { RevealGroup, RevealItem } from '@/components/motion/Reveal';
 import React from 'react';
 import ProductCardShop from '@/components/products/ProductCardShop';
 import ProductSkeleton from '@/components/products/ProductSkeleton';
@@ -26,14 +27,17 @@ const ProductGrid = ({ products, isLoading, activeFiltersText, productsPerPage }
   }
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8 xl:gap-10">
+    // Las tarjetas aparecen en cascada (también al cambiar de filtro o de página)
+    <RevealGroup key={isLoading ? "loading" : products.map((p) => p.id).join("-")} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8 xl:gap-10" stagger={0.05}>
       {isLoading
         ? Array.from({ length: productsPerPage }).map((_, i) => <ProductSkeleton key={i} />)
         : products.map((product) => (
-          <ProductCardShop key={product.id} product={product} />
+          <RevealItem key={product.id} className="h-full [&>*]:h-full">
+            <ProductCardShop product={product} />
+          </RevealItem>
         ))
       }
-    </div>
+    </RevealGroup>
   );
 };
 

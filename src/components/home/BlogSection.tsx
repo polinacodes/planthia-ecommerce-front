@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import ArticleCard from '@/components/blog/ArticleCard';
+import { Reveal, RevealGroup, RevealItem } from '@/components/motion/Reveal';
 import { Article, getArticles } from '@/lib/blog';
 
 const LATEST_COUNT = 3;
@@ -32,7 +33,7 @@ export default function BlogSection() {
   return (
     <section className="bg-cream pt-16 sm:pt-20 pb-4 px-4 sm:px-6 lg:px-12 max-w-[1600px] mx-auto">
       {/* Encabezado: mismo sistema que "Explorá por categoría" */}
-      <div className="flex items-end justify-between gap-6 mb-8 sm:mb-10">
+      <Reveal className="flex items-end justify-between gap-6 mb-8 sm:mb-10">
         <div>
           <span className="font-headline font-bold tracking-[0.2em] text-xs text-planthia-dark mb-3 block uppercase">
             #DiarioVerde
@@ -45,16 +46,16 @@ export default function BlogSection() {
           </p>
         </div>
         <div className="hidden md:block flex-none pb-2">{allLink}</div>
-      </div>
+      </Reveal>
 
       {/* En celular se deslizan de costado; desde tablet, grilla */}
-      <div className="-mx-4 sm:-mx-6 md:mx-0 px-4 sm:px-6 md:px-0 flex md:grid md:grid-cols-3 gap-5 lg:gap-8 scroll-px-4 sm:scroll-px-6 md:scroll-px-0 overflow-x-auto md:overflow-visible snap-x snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <RevealGroup className="-mx-4 sm:-mx-6 md:mx-0 px-4 sm:px-6 md:px-0 flex md:grid md:grid-cols-3 gap-5 lg:gap-8 scroll-px-4 sm:scroll-px-6 md:scroll-px-0 overflow-x-auto md:overflow-visible snap-x snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {articles.map((article) => (
-          <div key={article.documentId} className="flex-[0_0_80%] sm:flex-[0_0_55%] md:flex-auto snap-start">
+          <RevealItem key={article.documentId} className="flex-[0_0_80%] sm:flex-[0_0_55%] md:flex-auto snap-start">
             <ArticleCard article={article} />
-          </div>
+          </RevealItem>
         ))}
-      </div>
+      </RevealGroup>
 
       <div className="md:hidden mt-8">{allLink}</div>
     </section>
