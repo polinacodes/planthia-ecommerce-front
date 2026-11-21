@@ -1,4 +1,5 @@
 // src/lib/blog.ts
+import { slugify } from '@/lib/guide';
 // Datos y helpers del blog. Los artículos se cargan en Strapi (colección "Artículo").
 
 export type BlogCategory = 'cuidados' | 'decoracion' | 'huerta';
@@ -74,4 +75,20 @@ export async function getArticle(slug: string): Promise<Article | null> {
   });
   const json = await strapiFetch(`/api/articles?${params}`);
   return json?.data?.[0] ?? null;
+}
+
+// Subtítulos (##) del artículo, para el índice "En este artículo"
+export function getHeadings(content?: string | null): { id: string; text: string }[] {
+  if (!content) return [];
+  return content
+    .split('\n')
+    .filter((line) => line.startsWith('## '))
+    .map((line) => {
+      const text = line
+        .slice(3)
+        .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+        .replace(/[*_`]/g, '')
+        .trim();
+      return { id: slugify(text), text };
+    });
 }

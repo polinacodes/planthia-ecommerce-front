@@ -1,11 +1,23 @@
 // src/components/blog/ArticleContent.tsx
 // Muestra el contenido del artículo (Markdown escrito en Strapi) con los estilos de la marca.
 import Link from 'next/link';
+import type { ReactNode } from 'react';
 import ReactMarkdown, { Components } from 'react-markdown';
+import { slugify } from '@/lib/guide';
+
+// Texto plano de un subtítulo, para armar su id (lo usa el índice del artículo)
+const textOf = (node: ReactNode): string =>
+  typeof node === 'string' || typeof node === 'number'
+    ? String(node)
+    : Array.isArray(node)
+      ? node.map(textOf).join('')
+      : node && typeof node === 'object' && 'props' in node
+        ? textOf((node as { props: { children?: ReactNode } }).props.children)
+        : '';
 
 const components: Components = {
   h2: ({ children }) => (
-    <h2 className="font-headline font-extrabold text-2xl sm:text-[28px] text-planthia-dark leading-tight mt-12 mb-4">{children}</h2>
+    <h2 id={slugify(textOf(children))} className="scroll-mt-28 font-headline font-extrabold text-2xl sm:text-[28px] text-planthia-dark leading-tight mt-12 mb-4 first:mt-0">{children}</h2>
   ),
   h3: ({ children }) => (
     <h3 className="font-headline font-bold text-xl text-planthia-dark leading-snug mt-8 mb-3">{children}</h3>

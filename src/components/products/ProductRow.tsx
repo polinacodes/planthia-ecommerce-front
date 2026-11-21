@@ -4,6 +4,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { toast } from 'sonner';
+import { ArrowRight, Check, Plus } from 'lucide-react';
 import { useCart, isCartItemOfProduct } from '@/hooks/useCart';
 
 const formatPrice = (value: number) => Math.round(value).toLocaleString('es-AR');
@@ -11,7 +12,8 @@ const formatPrice = (value: number) => Math.round(value).toLocaleString('es-AR')
 const CARD = 'bg-white border border-planthia-dark/[0.06] rounded-[20px]';
 
 // Insumo recomendado, con botón para sumarlo al carrito
-export default function ProductRow({ product, reason }: { product: any; reason?: string }) {
+// compact: versión sin caja y con botón redondo, para columnas angostas (barra lateral del blog)
+export default function ProductRow({ product, reason, compact = false }: { product: any; reason?: string; compact?: boolean }) {
   const { addItem, cart } = useCart();
   const inCart = cart.some((item) => isCartItemOfProduct(item, product));
   const hasVariants = Array.isArray(product.variants) && product.variants.length > 0;
@@ -29,6 +31,37 @@ export default function ProductRow({ product, reason }: { product: any; reason?:
     });
     if (added) toast.success(`${product.name} agregado`);
   };
+
+  if (compact) {
+    return (
+      <div className="flex items-center gap-3 py-3">
+        <Link href={`/shop/${product.id}`} className="relative w-12 h-12 rounded-xl bg-white overflow-hidden flex-shrink-0">
+          <Image src={product.image} alt={product.name} fill sizes="48px" className="object-contain p-1" />
+        </Link>
+        <div className="flex-1 min-w-0">
+          <Link href={`/shop/${product.id}`} className="block font-headline font-bold text-sm text-planthia-dark hover:text-planthia-green truncate">
+            {product.name}
+          </Link>
+          <p className="text-sm text-planthia-dark/60">${formatPrice(product.price)}</p>
+        </div>
+        {hasVariants ? (
+          <Link href={`/shop/${product.id}`} aria-label={`Ver ${product.name}`} className="btn btn-secondary w-9 h-9 p-0 rounded-full">
+            <ArrowRight size={16} />
+          </Link>
+        ) : (
+          <button
+            onClick={handleAdd}
+            disabled={outOfStock}
+            aria-label={outOfStock ? 'Sin stock' : `Agregar ${product.name} al carrito`}
+            title={outOfStock ? 'Sin stock' : inCart ? 'Agregado' : 'Agregar al carrito'}
+            className={`btn w-9 h-9 p-0 rounded-full ${inCart ? 'btn-secondary' : 'btn-primary'}`}
+          >
+            {inCart ? <Check size={16} /> : <Plus size={16} />}
+          </button>
+        )}
+      </div>
+    );
+  }
 
   return (
     <div className={`${CARD} p-3 flex items-center gap-4`}>

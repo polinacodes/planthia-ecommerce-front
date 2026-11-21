@@ -1,7 +1,8 @@
 "use client";
 
-import CategorySelector from '@/components/shop/CategorySelector';
-import HeroShop from '@/components/shop/HeroShop';
+import CategorySelector, { TypeSwitch } from '@/components/shop/CategorySelector';
+// import HeroShop from '@/components/shop/HeroShop';
+import PageHeader from '@/components/layout/PageHeader';
 import Pagination from '@/components/shop/Pagination';
 import ProductGrid from '@/components/shop/ProductGrid';
 import ShopToolbar from '@/components/shop/ShopToolbar';
@@ -168,15 +169,25 @@ const ShopPageContent = () => {
   useEffect(() => { setCurrentPage(1); }, [searchQuery, typeQuery, categoryQuery, lightQuery, diffQuery, petQuery, sortQuery, productsPerPage]);
 
   return (
-    <div className="min-h-screen bg-cream pt-24 pb-16 ">
-      <HeroShop />
+    <div className="min-h-screen bg-cream pb-16 ">
+      {/* Banner con foto anterior: se reemplazó por el encabezado limpio (mismo estilo que la guía y el blog) */}
+      {/* <HeroShop /> */}
       <div className="max-w-[1400px] mx-auto px-6 sm:px-12">
+
+        <PageHeader
+          eyebrow="#TuJunglaUrbana"
+          title="Tienda"
+          subtitle="Plantas y todo lo que necesitan para crecer."
+        >
+          <TypeSwitch typeQuery={typeQuery} hasSearch={!!searchQuery} onFilterChange={updateFilter} />
+        </PageHeader>
 
         <CategorySelector
           typeQuery={typeQuery}
           categoryQuery={categoryQuery}
           hasSearch={!!searchQuery}
           onFilterChange={updateFilter}
+          withTypeSwitch={false}
         />
 
         <ShopToolbar

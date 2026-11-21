@@ -6,6 +6,8 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Search, X } from 'lucide-react';
 import { usePlants } from '@/hooks/usePlants';
 import GuideCard from '@/components/guide/GuideCard';
+import PageHeader from '@/components/layout/PageHeader';
+import TextTabs from '@/components/layout/TextTabs';
 import { GUIDE_FILTERS, GuideFilterId, isGuidePlant, matchesSearch } from '@/lib/guide';
 
 function GuideContent() {
@@ -36,16 +38,14 @@ function GuideContent() {
 
   return (
     <main className="min-h-screen bg-planthia-cream pb-24">
-      <div className="max-w-[1400px] mx-auto px-6 sm:px-12 pt-6">
-        {/* Encabezado con buscador */}
-        <section className="rounded-3xl px-6 py-12 sm:px-12 sm:py-16 text-center bg-white bg-planthia-gradient">
-          <span className="font-headline font-bold tracking-[0.2em] text-xs text-planthia-dark uppercase">#GuíaPlanthia</span>
-          <h1 className="font-headline font-extrabold text-4xl sm:text-5xl text-planthia-dark mt-3 mb-3">¿Qué planta tenés?</h1>
-          <p className="text-planthia-dark/60 text-base sm:text-lg max-w-xl mx-auto mb-8">
-            Buscala y te contamos cómo cuidarla: luz, riego, sustrato y todo lo que necesita.
-          </p>
-
-          <div className="max-w-xl mx-auto flex items-center gap-3 bg-white border-[1.5px] border-[#dfe5d8] focus-within:border-planthia-green rounded-full pl-5 pr-2 py-2 shadow-sm transition-colors">
+      <div className="max-w-[1400px] mx-auto px-6 sm:px-12">
+        {/* Encabezado limpio (mismo estilo que la tienda y el blog), con el buscador a la derecha */}
+        <PageHeader
+          eyebrow="#GuíaPlanthia"
+          title="Guía de cuidados"
+          subtitle="Buscá tu planta y te contamos cómo cuidarla: luz, riego, sustrato y todo lo que necesita."
+        >
+          <div className="md:w-[380px] flex items-center gap-3 bg-white border-[1.5px] border-[#dfe5d8] focus-within:border-planthia-green rounded-full pl-5 pr-2 py-1.5 transition-colors">
             <Search size={18} className="text-planthia-dark/40 flex-shrink-0" />
             <input
               type="search"
@@ -61,25 +61,21 @@ function GuideContent() {
               </button>
             )}
           </div>
+        </PageHeader>
 
-          {/* Filtros rápidos: en celular se deslizan de costado */}
-          <div className="mt-6 -mx-6 px-6 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            <div className="flex gap-2 w-max mx-auto">
-              {GUIDE_FILTERS.map((f) => (
-                <button
-                  key={f.id}
-                  onClick={() => setParam('filtro', f.id)}
-                  className={`btn btn-sm ${filterId === f.id ? 'btn-primary' : 'btn-secondary'}`}
-                >
-                  {f.label}
-                </button>
-              ))}
-            </div>
-          </div>
-        </section>
+        {/* Filtros rápidos en texto */}
+        <div className="border-b border-planthia-dark/10">
+          <TextTabs
+            tabs={GUIDE_FILTERS.map((f) => ({
+              label: f.label,
+              active: filterId === f.id,
+              onClick: () => setParam('filtro', f.id),
+            }))}
+          />
+        </div>
 
         {/* Resultados */}
-        <p className="text-xs font-bold tracking-[0.15em] uppercase text-planthia-dark/50 mt-10 mb-5">
+        <p className="text-xs font-bold tracking-[0.15em] uppercase text-planthia-dark/50 mt-6 mb-5">
           {loading ? 'Cargando fichas…' : `${plants.length} ${plants.length === 1 ? 'ficha' : 'fichas'}`}
         </p>
 
