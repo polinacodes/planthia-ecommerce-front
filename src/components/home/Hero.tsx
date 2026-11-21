@@ -139,7 +139,7 @@ export default function Hero() {
               </div>
 
               <Image
-                src="/heroo.webp"
+                src="/heroo-corto.webp"
                 alt="Marble Queen Pothos Planthia"
                 fill
                 priority
