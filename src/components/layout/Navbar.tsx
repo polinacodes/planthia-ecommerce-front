@@ -100,6 +100,7 @@ function NavbarContent() {
             <button
               onClick={() => setIsMobileMenuOpen(true)}
               className="md:hidden text-planthia-dark hover:text-planthia-green transition-colors mr-4"
+              aria-label="Abrir menú"
             >
               <Menu size={24} />
             </button>
@@ -219,7 +220,8 @@ function NavbarContent() {
 
             <button
               onClick={toggleCart}
-              className="hover:text-planthia-green transition-colors cursor-pointer relative">
+              className="hover:text-planthia-green transition-colors cursor-pointer relative"
+              aria-label={totalItems > 0 ? `Abrir carrito (${totalItems} productos)` : 'Abrir carrito'}>
               <ShoppingCart size={20} className="sm:w-[22px] sm:h-[22px]" />
               {totalItems > 0 && (
                 <span className="absolute -top-2 -right-2 bg-planthia-green text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
