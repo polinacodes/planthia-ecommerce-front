@@ -3,7 +3,7 @@
 // íconos grandes arriba y textos abajo, en verde.
 import Link from 'next/link';
 import type { LucideIcon } from 'lucide-react';
-import { BookOpen, ShieldCheck, Sparkles, Truck } from 'lucide-react';
+import { BookOpen, ShieldCheck, Sprout, Truck } from 'lucide-react';
 import { HOME_CONTAINER } from '@/lib/layout';
 
 interface Benefit {
@@ -16,7 +16,7 @@ interface Benefit {
 const BENEFITS: Benefit[] = [
   { Icon: Truck, title: 'Envíos a todo el país', text: 'Llegamos a donde estés' },
   { Icon: ShieldCheck, title: 'Compra 100 % segura', text: 'Pagos protegidos' },
-  { Icon: Sparkles, title: 'Plantas seleccionadas', text: 'Elegidas por su calidad' },
+  { Icon: Sprout, title: 'Plantas seleccionadas', text: 'Elegidas por su calidad' },
   { Icon: BookOpen, title: 'Guía de cuidados', text: 'Para cada una de nuestras plantas', href: '/guia' },
 ];
 
