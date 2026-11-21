@@ -152,11 +152,12 @@ export default function ProductPage() {
     );
   };
 
-  const currentUniqueId = selectedVariant
-    ? `${product.id}-${selectedVariant.color.toLowerCase()}`
-    : product.id;
+  // Mismo formato que usa el carrito: texto en minúsculas ("107", "107-naranja")
+  const currentUniqueId = (selectedVariant
+    ? `${product.id}-${selectedVariant.color}`
+    : String(product.id)).toLowerCase();
 
-  const cartItem = cart.find((item: any) => item.id === currentUniqueId);
+  const cartItem = cart.find((item: any) => String(item.id).toLowerCase() === currentUniqueId);
   const quantityInCart = cartItem ? cartItem.quantity : 0;
 
   const handleAddToCart = () => {

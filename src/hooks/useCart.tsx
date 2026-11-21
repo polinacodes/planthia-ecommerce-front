@@ -32,6 +32,29 @@ interface CartStore {
 const MAX_LIMIT = 10;
 
 /**
+ * Id del ítem siempre como texto en minúsculas ("107", "107-naranja").
+ * Antes unos lugares lo guardaban como número (107) y otros como texto ("107"), o con el color
+ * en mayúscula: el carrito no los reconocía como el mismo producto y quedaban filas duplicadas.
+ */
+const normalizeId = (id: string | number) => String(id).trim().toLowerCase();
+
+/** Junta ítems repetidos (carritos guardados antes del arreglo) sumando cantidades */
+function mergeDuplicates(cart: CartItem[]): CartItem[] {
+  const merged = new Map<string, CartItem>();
+  for (const item of cart) {
+    const id = normalizeId(item.id);
+    const existing = merged.get(id);
+    if (existing) {
+      const limit = Math.min(MAX_LIMIT, existing.stock || MAX_LIMIT);
+      existing.quantity = Math.min(existing.quantity + item.quantity, limit);
+    } else {
+      merged.set(id, { ...item, id });
+    }
+  }
+  return [...merged.values()];
+}
+
+/**
  * ¿Este ítem del carrito es de este producto? (con cualquiera de sus colores)
  * Antes se usaba startsWith(id), y el producto 1 "encontraba" al 12, al 13...
  */
@@ -51,8 +74,9 @@ export const useCart = create<CartStore>()(
       cart: [],
       isOpen: false,
 
-      addItem: (newItem) => {
-        const existingItem = get().cart.find((item) => item.id === newItem.id);
+      addItem: (rawItem) => {
+        const newItem = { ...rawItem, id: normalizeId(rawItem.id) };
+        const existingItem = get().cart.find((item) => normalizeId(item.id) === newItem.id);
 
         if (existingItem) {
           if (existingItem.quantity >= MAX_LIMIT) {
@@ -67,7 +91,7 @@ export const useCart = create<CartStore>()(
 
           set((state) => ({
             cart: state.cart.map((item) =>
-              item.id === newItem.id
+              normalizeId(item.id) === newItem.id
                 ? { ...item, quantity: item.quantity + 1 }
                 : item
             ),
@@ -92,20 +116,20 @@ export const useCart = create<CartStore>()(
         }
 
         set((state) => {
-          const item = state.cart.find((i) => i.id === id);
+          const item = state.cart.find((i) => normalizeId(i.id) === normalizeId(id));
           if (!item) return state;
 
           const validatedQuantity = Math.min(Math.max(1, quantity), item.stock || 0);
 
           return {
             cart: state.cart.map((i) =>
-              i.id === id ? { ...i, quantity: validatedQuantity } : i
+              normalizeId(i.id) === normalizeId(id) ? { ...i, quantity: validatedQuantity } : i
             ),
           };
         });
       },
 
-      removeItem: (id) => set((state) => ({ cart: state.cart.filter((i) => i.id !== id) })),
+      removeItem: (id) => set((state) => ({ cart: state.cart.filter((i) => normalizeId(i.id) !== normalizeId(id)) })),
       clearCart: () => set({ cart: [] }),
 
       // Actualiza stock y precio de cada ítem con los datos actuales de Strapi.
@@ -148,6 +172,13 @@ export const useCart = create<CartStore>()(
       closeCart: () => set({ isOpen: false }),
       toggleCart: () => set((state) => ({ isOpen: !state.isOpen })),
     }),
-    { name: 'planthia-cart-storage' }
+    {
+      name: 'planthia-cart-storage',
+      // Al cargar un carrito guardado, junta los ítems repetidos
+      merge: (persisted, current) => {
+        const saved = (persisted as Partial<CartStore>) ?? {};
+        return { ...current, ...saved, cart: mergeDuplicates(saved.cart ?? []) };
+      },
+    }
   )
 );
