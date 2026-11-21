@@ -269,9 +269,9 @@ export default function ProductPage() {
                   {/* Link a la ficha completa en la guía de cuidados */}
                   <Link
                     href={`/guia/${slugify(product.name)}`}
-                    className="group col-span-2 flex items-center justify-center gap-2.5 border-t border-planthia-dark/10 pt-6 lg:pt-7 text-xs font-headline font-bold uppercase tracking-[0.15em] text-planthia-green hover:text-planthia-green-dark transition-colors"
+                    className="group col-span-2 flex items-center gap-4 border-t border-planthia-dark/10 pt-6 lg:pt-7 text-xs font-headline font-bold uppercase tracking-[0.15em] text-planthia-green hover:text-planthia-green-dark transition-colors"
                   >
-                    <BookOpen size={18} className="transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-110" /> Ver guía de cuidados
+                    <BookOpen size={20} strokeWidth={1.75} className="flex-shrink-0 transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-110" /> Ver guía de cuidados
                   </Link>
                 </>
               ) : (
