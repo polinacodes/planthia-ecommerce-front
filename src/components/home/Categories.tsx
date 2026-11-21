@@ -6,7 +6,7 @@ const categories = [
   { title: "Interior", img: "/interior.webp", link: "/shop?type=plantas&category=interior" },
   { title: "Exterior", img: "/exterior-4.webp", link: "/shop?type=plantas&category=exterior" },
   { title: "Aromáticas", img: "/aromaticas.webp", link: "/shop?type=plantas&category=aromaticas" },
-  { title: "Insumos", img: "/insumos.webp", link: "/shop?type=cuidados" },
+  { title: "Insumos", img: "/insumos-2.webp", link: "/shop?type=cuidados" },
 ];
 
 export default function Categories() {
