@@ -4,6 +4,7 @@ import Link from 'next/link';
 import PageHeader from '@/components/layout/PageHeader';
 import TextTabs from '@/components/layout/TextTabs';
 import NewsletterBlock from '@/components/layout/NewsletterBlock';
+import { PAGE_CONTAINER } from '@/lib/layout';
 import ArticleCard, { FeaturedArticleCard } from '@/components/blog/ArticleCard';
 import { BLOG_CATEGORIES, getArticles, isBlogCategory } from '@/lib/blog';
 
@@ -29,7 +30,8 @@ export default async function BlogPage({ searchParams }: { searchParams: Promise
   }));
 
   return (
-    <main className="min-h-screen bg-planthia-cream pb-24">
+    <>
+    <main className="bg-planthia-cream pb-24">
       <div className="max-w-[1600px] mx-auto px-6 sm:px-12">
         <PageHeader eyebrow="#DiarioVerde" title="Blog" subtitle="Ideas, trucos y cuidados para tu jungla urbana." />
 
@@ -58,9 +60,10 @@ export default async function BlogPage({ searchParams }: { searchParams: Promise
             <Link href="/blog" className="btn btn-secondary btn-md">Ver todos los artículos</Link>
           </div>
         )}
-
-        <NewsletterBlock className="mt-20 sm:mt-24" />
       </div>
     </main>
+    {/* Newsletter a todo el ancho, pegada al footer */}
+    <NewsletterBlock containerClassName={PAGE_CONTAINER} />
+    </>
   );
 }
