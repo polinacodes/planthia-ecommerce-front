@@ -82,6 +82,7 @@ function NavbarContent() {
     if (href === "/") return pathname === "/";
     if (href === "/shop?type=plantas") return pathname === "/shop" && searchParams.get("type") === "plantas";
     if (href === "/shop?type=cuidados") return pathname === "/shop" && searchParams.get("type") === "cuidados";
+    if (href === "/guia") return pathname.startsWith("/guia");
     return false;
   };
 
@@ -107,14 +108,14 @@ function NavbarContent() {
           </div>
 
           <div className="hidden md:flex items-center gap-8 font-body text-base font-semibold text-planthia-dark/70">
-            <Link href="/" className={`${isActive("/") ? "text-planthia-green" : "hover:text-planthia-green"} transition-colors`}>
-              Inicio
-            </Link>
             <Link href="/shop?type=plantas" className={`${isActive("/shop?type=plantas") ? "text-planthia-green" : "hover:text-planthia-green"} transition-colors`}>
               Plantas
             </Link>
             <Link href="/shop?type=cuidados" className={`${isActive("/shop?type=cuidados") ? "text-planthia-green" : "hover:text-planthia-green"} transition-colors`}>
               Insumos
+            </Link>
+            <Link href="/guia" className={`${isActive("/guia") ? "text-planthia-green" : "hover:text-planthia-green"} transition-colors`}>
+              Guía de cuidados
             </Link>
           </div>
 
@@ -301,9 +302,9 @@ function NavbarContent() {
             >
               {/* Logo */}
               <div className="flex justify-between items-start mb-10">
-                <div className="flex flex-col">
+                <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="flex flex-col" aria-label="Planthia, ir al inicio">
                   <Logo className="h-8 w-auto" symbolColor="currentColor" />
-                </div>
+                </Link>
                 <button onClick={() => setIsMobileMenuOpen(false)} className=" hover:bg-white/20 transition-colors">
                   <X size={24} />
                 </button>
@@ -312,9 +313,9 @@ function NavbarContent() {
               {/* Listado de Navegación */}
               <div className="flex flex-col gap-5 text-lg font-bold font-body">
 
-                <Link href="/" className="hover:opacity-80 transition-opacity">Inicio</Link>
                 <Link href="/shop?type=plantas" className="hover:opacity-80 transition-opacity">Plantas</Link>
                 <Link href="/shop?type=cuidados" className="hover:opacity-80 transition-opacity">Insumos</Link>
+                <Link href="/guia" className="hover:opacity-80 transition-opacity">Guía de cuidados</Link>
 
                 <div className="h-px bg-planthia-cream/20 my-2" />
 
