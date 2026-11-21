@@ -70,9 +70,10 @@ export default function GuideDetailPage() {
         </nav>
 
         {/* Encabezado */}
-        <section className="grid grid-cols-1 lg:grid-cols-[minmax(0,420px)_1fr] gap-8 lg:gap-12">
-          <div className="relative aspect-square rounded-3xl bg-[#ecebe6] overflow-hidden">
-            <Image src={plant.image} alt={plant.name} fill priority sizes="(max-width: 1024px) 100vw, 420px" className="object-contain p-8" />
+        <section className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] gap-6 lg:gap-12">
+          {/* Foto sin fondo, como en la ficha de producto: ocupa toda la altura de la columna de datos */}
+          <div className="relative aspect-square max-h-[420px] lg:max-h-none lg:aspect-auto lg:min-h-[480px] w-full">
+            <Image src={plant.image} alt={plant.name} fill priority sizes="(max-width: 1024px) 100vw, 560px" className="object-contain" />
           </div>
 
           <div>
