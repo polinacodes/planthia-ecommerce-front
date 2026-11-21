@@ -67,7 +67,7 @@ const RecommendedSection = ({ plants }: { plants: any[] }) => {
   return (
     <>
     {/* Encabezado: mismo sistema que "Explorá por categoría" */}
-    <div className="pt-16 sm:pt-20 px-4 sm:px-6 lg:px-12 max-w-[1600px] mx-auto flex items-end justify-between gap-6 mb-8 sm:mb-10 md:mb-6">
+    <div className="mt-12 lg:-mt-[110px] xl:mt-0 2xl:mt-0 min-[1921px]:!mt-0 pt-4 sm:pt-6 px-4 sm:px-6 lg:px-12 max-w-[1600px] mx-auto flex items-end justify-between gap-6 mb-8 sm:mb-10 md:mb-6">
       <div>
         <span className="font-headline font-bold tracking-[0.2em] text-xs text-planthia-dark mb-3 block uppercase">
           #LasMásElegidas

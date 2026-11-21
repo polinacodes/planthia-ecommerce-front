@@ -22,13 +22,13 @@ export default function HomePage() {
     <>
     <main className="relative overflow-x-clip px-0 md:px-4 lg:px-12 pt-10 pb-20">
       <Hero />
-      <BenefitsBar />
       <RecommendedSection plants={featuredPlants} />
       <Categories />
       <CareGuideBanner />
       <BlogSection />
     </main>
-    {/* Newsletter a todo el ancho, pegada al footer */}
+    {/* Beneficios y newsletter a todo el ancho, pegados al footer */}
+    <BenefitsBar />
     <NewsletterBlock containerClassName={HOME_CONTAINER} />
     </>
   );
