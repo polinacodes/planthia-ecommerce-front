@@ -103,7 +103,7 @@ export function matchesSearch(product: any, query: string): boolean {
  */
 const RECOMMENDATION_RULES: { product: string[]; when: (m: any) => boolean; reason: string }[] = [
   { product: ['fibra de coco'], when: (m) => /coco/.test(normalizeText(m.substratum)), reason: 'Base del sustrato que necesita' },
-  { product: ['perlita'], when: (m) => /perlita|drenad|poroso|aireado|suelto|arenoso/.test(normalizeText(m.substratum)), reason: 'Para mejorar el drenaje' },
+  { product: ['perlita'], when: (m) => /perlita|drena|poroso|aireado|suelto|arenoso|ligero/.test(normalizeText(m.substratum)), reason: 'Para mejorar el drenaje' },
   { product: ['humus'], when: (m) => /humus|fertil|rico/.test(normalizeText(m.substratum)), reason: 'Nutrientes naturales' },
   { product: ['compost'], when: (m) => /compost|materia organica/.test(normalizeText(m.substratum)), reason: 'Materia orgánica para el suelo' },
   { product: ['vermiculita'], when: (m) => /vermiculita|retenga humedad|retentor/.test(normalizeText(m.substratum)), reason: 'Para retener humedad' },

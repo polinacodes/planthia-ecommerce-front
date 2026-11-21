@@ -65,6 +65,8 @@ const RecommendedSection = ({ plants }: { plants: any[] }) => {
 
   return (
     <section className="mt-12 lg:mt-0 xl:mt-10 2xl:mt-28 min-[1921px]:!mt-72 pt-8 lg:pt-12 pb-8 px-4 sm:px-6 lg:px-12 max-w-[1600px] mx-auto bg-[#F7F5F0]">
+      {/* Título solo para lectores de pantalla: ordena los títulos de la página sin cambiar el diseño */}
+      <h2 className="sr-only">Plantas destacadas</h2>
       {/* VISTA MOBILE: Scroll horizontal nativo */}
       <div className="md:hidden">
         <div className="flex gap-4 overflow-x-auto pb-4 -mr-4 pr-4 snap-x snap-mandatory">
