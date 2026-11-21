@@ -94,13 +94,13 @@ export default function Hero() {
           <div className="relative w-full lg:w-[110%] max-[1366px]:w-full h-full overflow-y-clip" style={{ containerType: "size" }}>
             {/* MARCO DE LA PLANTA: mide exactamente lo que medía la imagen con object-cover + object-top
                 (por el alto o por el ancho, lo que sea mayor; entre 640 y 767 px, por el alto
-                para que no se corte abajo). --plant-scale achica todo junto (planta y círculos): 1 = tamaño original. Los círculos van adentro en %,
+                para que no se corte abajo). --plant-scale achica solo la planta (desde arriba, así las sogas siguen saliendo del tope); los círculos mantienen su tamaño y bajan/suben con la maceta. 1 = tamaño original. Los círculos van adentro en %,
                 así siempre quedan centrados en la maceta y escalan junto con la planta. */}
             <div
-              className="absolute top-0 left-1/2 -translate-x-1/2 aspect-[1086/1448] w-[calc(max(100cqw,75cqh)*var(--plant-scale))] sm:max-md:w-[calc(75cqh*var(--plant-scale))] [--plant-scale:0.92]"
+              className="absolute top-0 left-1/2 -translate-x-1/2 aspect-[1086/1448] w-[max(100cqw,75cqh)] sm:max-md:w-[75cqh] [--plant-scale:0.92]"
             >
-              {/* CÍRCULOS (centrados en la maceta; para subirlos o bajarlos, cambiá top-[51%]) */}
-              <div className="absolute left-[51%] top-[48%] -translate-x-1/2 -translate-y-1/2 w-[66%] sm:w-[80%] aspect-square">
+              {/* CÍRCULOS (centrados en la maceta; para subirlos o bajarlos, cambiá el 48% de top-[calc(48%*…)]) */}
+              <div className="absolute left-[51%] top-[calc(48%*var(--plant-scale))] -translate-x-1/2 -translate-y-1/2 w-[66%] sm:w-[80%] aspect-square">
                 {/* Círculo Exterior */}
                 <div className="absolute inset-0 border-[4px] sm:border-[6px] border-white rounded-full shadow-md" />
                 {/* Círculo Interior */}
@@ -138,6 +138,8 @@ export default function Hero() {
                 </motion.div>
               </div>
 
+              {/* La planta se achica desde el borde de arriba (ver --plant-scale) */}
+              <div className="absolute inset-0 origin-top scale-[var(--plant-scale)]">
               <Image
                 src="/heroo-corto.webp"
                 alt="Marble Queen Pothos Planthia"
@@ -146,6 +148,7 @@ export default function Hero() {
                 className="object-contain transition-transform duration-700 ease-out hover:scale-110"
                 sizes="(max-width: 640px) 100vw, (max-width: 1200px) 100vw, 80vw"
               />
+              </div>
             </div>
           </div>
 
