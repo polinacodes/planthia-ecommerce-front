@@ -404,7 +404,8 @@ export default function ProductPageContent({ initialPlants }: { initialPlants?: 
 
         {/* SECCIÓN: PODRÍA INTERESARTE */}
         {relatedProducts.length > 0 && (
-          <section className="mt-20 xl:mt-32 pb-20 border-t border-planthia-dark/5 pt-16 lg:pt-14 xl:pt-20">
+          <section className="mt-10 lg:mt-14 pb-20 border-t border-planthia-dark/5 pt-10 lg:pt-12">
+            {/* mt igual al espacio que hay arriba del bloque de precio (40px en celular, 56px desde lg) */}
             <h2 className="text-2xl lg:text-3xl font-headline font-extrabold text-planthia-dark mb-8 lg:mb-12">Podría interesarte</h2>
 
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
