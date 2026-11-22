@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 function ProductList({ products }: { products: any[] }) {
   return (
     <div>
-      <p className="font-headline font-bold tracking-[0.2em] text-[11px] text-planthia-dark/50 uppercase mb-2">Lo que necesitás</p>
+      <p className="font-headline font-bold tracking-[0.2em] text-[11px] text-planthia-dark/70 uppercase mb-2">Lo que necesitás</p>
       <div className="divide-y divide-planthia-dark/10">
         {products.map((product) => (
           <ProductRow key={product.documentId} product={product} compact />
@@ -72,7 +72,7 @@ export default async function ArticlePage({ params }: Props) {
           {article.excerpt && (
             <p className="max-w-2xl text-lg sm:text-xl text-planthia-dark/60 leading-relaxed mt-5">{article.excerpt}</p>
           )}
-          <p className="text-xs uppercase tracking-[0.15em] text-planthia-dark/50 mt-6">
+          <p className="text-xs uppercase tracking-[0.15em] text-planthia-dark/70 mt-6">
             {formatArticleDate(article.publishedAt)}
             {article.reading_time ? ` · ${article.reading_time} min de lectura` : ''}
           </p>
@@ -85,7 +85,8 @@ export default async function ArticlePage({ params }: Props) {
               src={article.cover.url}
               alt={article.cover.alternativeText || article.title}
               fill
-              priority
+              preload
+              fetchPriority="high"
               sizes="(max-width: 1600px) 100vw, 1500px"
               className="object-cover"
             />
