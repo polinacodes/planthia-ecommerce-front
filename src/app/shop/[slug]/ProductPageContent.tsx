@@ -304,7 +304,8 @@ export default function ProductPageContent({ initialPlants }: { initialPlants?: 
               )}
             </div>
 
-            {product.variants && (
+            {/* Solo si hay colores: un array vacío también dibujaba la caja y sumaba espacio de más */}
+            {product.variants?.length > 0 && (
               <div className="hidden lg:flex">
                 <VariantSelector />
               </div>
@@ -403,7 +404,7 @@ export default function ProductPageContent({ initialPlants }: { initialPlants?: 
 
         {/* SECCIÓN: PODRÍA INTERESARTE */}
         {relatedProducts.length > 0 && (
-          <section className="mt-20 lg:mt-32 pb-20 border-t border-planthia-dark/5 pt-16 lg:pt-20">
+          <section className="mt-16 lg:mt-20 xl:mt-32 pb-20 border-t border-planthia-dark/5 pt-12 lg:pt-14 xl:pt-20">
             <h2 className="text-2xl lg:text-3xl font-headline font-extrabold text-planthia-dark mb-8 lg:mb-12">Podría interesarte</h2>
 
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
