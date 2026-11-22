@@ -142,8 +142,8 @@ const ProductCardShop = ({ product, headingAs: Heading = 'h3', priority = false 
         </p>
 
         {/* Precio y Acción */}
-        <div className="flex items-center justify-between mt-auto">
-          <span className="text-xl font-extrabold text-[#4F7A2E]">
+        <div className="flex items-center justify-between gap-2 mt-auto">
+          <span className="text-lg min-[400px]:text-xl font-extrabold text-[#4F7A2E]">
             ${product.price.toLocaleString('es-AR')}
           </span>
 
@@ -159,7 +159,7 @@ const ProductCardShop = ({ product, headingAs: Heading = 'h3', priority = false 
                     ? `Agregar otra unidad de ${product.name} (${quantityInCart} en el carrito)`
                     : `Agregar ${product.name} al carrito`
             }
-            className={`text-white font-headline font-bold p-2 md:px-4 md:py-2 rounded-full transition-colors flex items-center justify-center gap-2 min-w-[40px]
+            className={`text-white font-headline font-bold w-10 h-10 flex-shrink-0 md:w-auto md:h-auto md:px-4 md:py-2 rounded-full transition-colors flex items-center justify-center gap-2
               ${isOutOfStock 
                 ? "bg-gray-400 cursor-not-allowed" 
                 : isAlreadyInCart 

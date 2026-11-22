@@ -77,6 +77,7 @@ export default function GuideDetailContent({ initialPlants }: { initialPlants?: 
             text={plant.description}
             image={plant.image}
             className="flex-none"
+            iconOnlyOnMobile
           />
         </div>
 

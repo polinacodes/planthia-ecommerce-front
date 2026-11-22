@@ -76,12 +76,28 @@ export default function ProductRow({ product, reason, compact = false }: { produ
         {reason && <p className="text-xs text-planthia-dark/70">{reason}</p>}
         <p className="font-headline font-extrabold text-planthia-green mt-0.5">${formatPrice(product.price)}</p>
       </div>
+      {/* En celular: botón redondo con + (como en la barra del blog). Desde tablet: botón con texto */}
       {hasVariants ? (
-        <Link href={productPath(product)} className="btn btn-secondary btn-sm">Ver</Link>
+        <>
+          <Link href={productPath(product)} aria-label={`Ver ${product.name}`} className="sm:hidden btn btn-secondary w-10 h-10 p-0 rounded-full flex-shrink-0">
+            <ArrowRight size={18} />
+          </Link>
+          <Link href={productPath(product)} className="hidden sm:inline-flex btn btn-secondary btn-sm">Ver</Link>
+        </>
       ) : (
-        <button onClick={handleAdd} disabled={outOfStock} className="btn btn-primary btn-sm">
-          {outOfStock ? 'Sin stock' : inCart ? 'Agregado' : 'Agregar'}
-        </button>
+        <>
+          <button
+            onClick={handleAdd}
+            disabled={outOfStock}
+            aria-label={outOfStock ? `${product.name}: sin stock` : inCart ? `Agregar otro ${product.name} al carrito` : `Agregar ${product.name} al carrito`}
+            className={`sm:hidden flex-shrink-0 ${inCart ? 'btn btn-secondary w-10 h-10 p-0 rounded-full' : 'w-10 h-10 rounded-full flex items-center justify-center bg-planthia-green text-white hover:bg-[#C1D37F] hover:text-[#4F7A2E] transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed'}`}
+          >
+            {inCart ? <Check size={18} /> : <Plus size={18} />}
+          </button>
+          <button onClick={handleAdd} disabled={outOfStock} className="hidden sm:inline-flex btn btn-primary btn-sm">
+            {outOfStock ? 'Sin stock' : inCart ? 'Agregado' : 'Agregar'}
+          </button>
+        </>
       )}
     </div>
   );

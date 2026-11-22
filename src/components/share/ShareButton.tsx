@@ -75,7 +75,7 @@ const MENU_ITEM =
 const TRIGGER_STYLES = {
   // Mismo círculo que el botón de favoritos de la ficha de producto
   circle:
-    'p-2 sm:p-3 lg:p-4 rounded-full cursor-pointer border border-[#dfe5d8] bg-white text-planthia-green hover:border-planthia-green hover:bg-[#f3f7ef] transition-all duration-300 flex-shrink-0',
+    'p-2 sm:p-3 xl:p-4 rounded-full cursor-pointer border border-[#dfe5d8] bg-white text-planthia-green hover:border-planthia-green hover:bg-[#f3f7ef] transition-all duration-300 flex-shrink-0',
   // Pastilla con texto, para la línea de las migas de pan o de la fecha
   pill:
     'inline-flex items-center gap-1.5 rounded-full cursor-pointer border border-[#dfe5d8] bg-white px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.15em] text-planthia-green hover:border-planthia-green hover:bg-[#f3f7ef] transition-colors',
@@ -85,8 +85,15 @@ export default function ShareButton({
   variant = 'circle',
   align = 'right',
   className = '',
+  iconOnlyOnMobile = false,
   ...share
-}: ShareProps & { variant?: 'circle' | 'pill'; align?: 'left' | 'right'; className?: string }) {
+}: ShareProps & {
+  variant?: 'circle' | 'pill';
+  align?: 'left' | 'right';
+  className?: string;
+  /** Pastilla que en celular se ve como círculo con el ícono solo */
+  iconOnlyOnMobile?: boolean;
+}) {
   const [open, setOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -118,16 +125,17 @@ export default function ShareButton({
       <button
         type="button"
         onClick={handleClick}
-        aria-label={variant === 'circle' ? `Compartir ${share.title}` : undefined}
+        aria-label={variant === 'circle' || iconOnlyOnMobile ? `Compartir ${share.title}` : undefined}
         aria-haspopup="menu"
         aria-expanded={open}
-        className={TRIGGER_STYLES[variant]}
+        className={`${TRIGGER_STYLES[variant]} ${iconOnlyOnMobile ? 'max-md:w-9 max-md:h-9 max-md:p-0 max-md:justify-center' : ''}`}
       >
         {variant === 'circle' ? (
           <Share2 size={18} strokeWidth={1.5} className="sm:w-5 sm:h-5" />
         ) : (
           <>
-            <Share2 size={14} strokeWidth={2} /> Compartir
+            <Share2 size={iconOnlyOnMobile ? 16 : 14} strokeWidth={2} className={iconOnlyOnMobile ? 'md:w-3.5 md:h-3.5' : ''} />
+            <span className={iconOnlyOnMobile ? 'hidden md:inline' : ''}>Compartir</span>
           </>
         )}
       </button>

@@ -201,7 +201,8 @@ export default function ProductPageContent({ initialPlants }: { initialPlants?: 
 
   return (
     <main className="min-h-screen bg-planthia-cream pt-6 md:pt-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Mismos márgenes laterales que el nav y el footer */}
+      <div className="max-w-7xl mx-auto px-6 sm:px-12">
         {/* 1. BREADCRUMBS */}
         <nav className="text-[10px] uppercase tracking-[0.2em] text-planthia-dark/60 mb-4 flex flex-wrap gap-x-2">
           <Link
@@ -265,7 +266,7 @@ export default function ProductPageContent({ initialPlants }: { initialPlants?: 
           </div>
 
           {/* COLUMNA DERECHA: INFO y COMPRA */}
-          <div className="flex flex-col -mt-8 lg:mt-16 justify-center space-y-6 lg:space-y-8 lg:pl-12">
+          <div className="flex flex-col -mt-8 lg:mt-16 justify-center space-y-6 lg:space-y-8 lg:pl-8 xl:pl-12">
             <div className="space-y-4">
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-headline font-extrabold text-planthia-dark leading-tight break-words">
                 {product.name}
@@ -310,8 +311,8 @@ export default function ProductPageContent({ initialPlants }: { initialPlants?: 
             )}
 
             {/* PRECIO + BOTÓN AGREGAR + FAVORITOS - SIEMPRE EN LÍNEA */}
-            <div className="flex items-center gap-3 sm:gap-4 pt-4 lg:pt-6">
-              <span className="text-2xl sm:text-3xl lg:text-4xl font-headline font-extrabold text-planthia-dark flex-shrink-0">
+            <div className="flex items-center gap-2 min-[400px]:gap-3 sm:gap-4 pt-4 lg:pt-6">
+              <span className="text-2xl sm:text-3xl xl:text-4xl font-headline font-extrabold text-planthia-dark flex-shrink-0">
                 ${product.price.toLocaleString('es-AR')}
               </span>
 
@@ -360,7 +361,7 @@ export default function ProductPageContent({ initialPlants }: { initialPlants?: 
                   <button
                     onClick={handleAddToCart}
                     disabled={isOutOfStock}
-                    className="w-full h-full min-h-[48px] sm:min-h-[52px] px-3 sm:px-6 cursor-pointer text-sm sm:text-base font-bold whitespace-nowrap"
+                    className="w-full h-full min-h-[48px] sm:min-h-[52px] px-3 sm:px-6 lg:px-4 xl:px-6 cursor-pointer text-[13px] min-[400px]:text-sm sm:text-base lg:text-sm xl:text-base font-bold whitespace-nowrap"
                   >
                     {isOutOfStock ? "Sin stock" : "Agregar al carrito"}
                   </button>
@@ -372,7 +373,7 @@ export default function ProductPageContent({ initialPlants }: { initialPlants?: 
                 onClick={() => toggleFavorite(product.documentId, product.name)}
                 aria-label={active ? `Quitar ${product.name} de favoritos` : `Agregar ${product.name} a favoritos`}
                 aria-pressed={active}
-                className={`p-2 sm:p-3 lg:p-4 rounded-full cursor-pointer border transition-all duration-300 group flex-shrink-0
+                className={`p-2 sm:p-3 xl:p-4 rounded-full cursor-pointer border transition-all duration-300 group flex-shrink-0
                     ${active
                     ? "border-[#dfe5d8] bg-white hover:border-planthia-green hover:bg-[#f3f7ef]"
                     : "border-[#dfe5d8] bg-white text-planthia-green hover:border-planthia-green hover:bg-[#f3f7ef]"
