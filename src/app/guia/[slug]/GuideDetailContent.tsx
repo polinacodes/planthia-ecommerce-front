@@ -9,6 +9,7 @@ import { useParams } from 'next/navigation';
 import { ArrowUp, Droplets, Leaf, MapPin, PawPrint, Scissors, Sun, Thermometer, Wind } from 'lucide-react';
 import { usePlants } from '@/hooks/usePlants';
 import ProductRow from '@/components/products/ProductRow';
+import ShareButton from '@/components/share/ShareButton';
 import { careTipsList, difficultyLabel, getRecommendedProducts, isGuidePlant, slugify } from '@/lib/guide';
 
 const formatPrice = (value: number) => Math.round(value).toLocaleString('es-AR');
@@ -62,11 +63,22 @@ export default function GuideDetailContent({ initialPlants }: { initialPlants?: 
   return (
     <main className="min-h-screen bg-planthia-cream pb-24">
       <div className="max-w-[1200px] mx-auto px-6 sm:px-12 pt-6">
-        <nav className="text-[11px] font-semibold uppercase tracking-[0.15em] text-planthia-dark/70 mb-6">
-          <Link href="/guia" className="hover:text-planthia-green">Guía de cuidados</Link>
-          <span className="mx-2">/</span>
-          <span className="text-planthia-dark">{plant.name}</span>
-        </nav>
+        {/* Migas de pan + compartir a la derecha */}
+        <div className="flex items-center justify-between gap-4 mb-6">
+          <nav className="text-[11px] font-semibold uppercase tracking-[0.15em] text-planthia-dark/70 min-w-0">
+            <Link href="/guia" className="hover:text-planthia-green">Guía de cuidados</Link>
+            <span className="mx-2">/</span>
+            <span className="text-planthia-dark">{plant.name}</span>
+          </nav>
+          <ShareButton
+            variant="pill"
+            path={`/guia/${slugify(plant.name)}`}
+            title={`${plant.name}: guía de cuidados | Planthia`}
+            text={plant.description}
+            image={plant.image}
+            className="flex-none"
+          />
+        </div>
 
         {/* Encabezado */}
         <section className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] gap-6 lg:gap-12">

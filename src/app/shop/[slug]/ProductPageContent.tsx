@@ -14,6 +14,7 @@ import EmptyState from '@/components/products/EmptyState';
 import { useCart } from '@/hooks/useCart';
 import { useFavorites } from '@/context/FavoritesContext';
 import { toast } from 'sonner';
+import ShareButton from '@/components/share/ShareButton';
 
 // --- SUB-COMPONENTES AUXILIARES ---
 const CareItem = ({ icon: Icon, label, value }: any) => (
@@ -309,7 +310,7 @@ export default function ProductPageContent({ initialPlants }: { initialPlants?: 
             )}
 
             {/* PRECIO + BOTÓN AGREGAR + FAVORITOS - SIEMPRE EN LÍNEA */}
-            <div className="flex items-center gap-4 sm:gap-6 pt-4 lg:pt-6">
+            <div className="flex items-center gap-3 sm:gap-4 pt-4 lg:pt-6">
               <span className="text-2xl sm:text-3xl lg:text-4xl font-headline font-extrabold text-planthia-dark flex-shrink-0">
                 ${product.price.toLocaleString('es-AR')}
               </span>
@@ -359,7 +360,7 @@ export default function ProductPageContent({ initialPlants }: { initialPlants?: 
                   <button
                     onClick={handleAddToCart}
                     disabled={isOutOfStock}
-                    className="w-full h-full min-h-[48px] sm:min-h-[52px] px-6 cursor-pointer text-base font-bold"
+                    className="w-full h-full min-h-[48px] sm:min-h-[52px] px-3 sm:px-6 cursor-pointer text-sm sm:text-base font-bold whitespace-nowrap"
                   >
                     {isOutOfStock ? "Sin stock" : "Agregar al carrito"}
                   </button>
@@ -387,6 +388,14 @@ export default function ProductPageContent({ initialPlants }: { initialPlants?: 
                     }`}
                 />
               </button>
+
+              {/* BOTÓN COMPARTIR (mismo círculo que favoritos) */}
+              <ShareButton
+                path={productPath(product)}
+                title={`${product.name} | Planthia`}
+                text={product.description}
+                image={product.image}
+              />
             </div>
           </div>
         </div>

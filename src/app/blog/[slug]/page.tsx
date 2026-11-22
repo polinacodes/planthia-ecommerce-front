@@ -2,6 +2,7 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
+import ShareButton, { ShareInline } from '@/components/share/ShareButton';
 import { notFound } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
 import ArticleContent from '@/components/blog/ArticleContent';
@@ -72,10 +73,20 @@ export default async function ArticlePage({ params }: Props) {
           {article.excerpt && (
             <p className="max-w-2xl text-lg sm:text-xl text-planthia-dark/60 leading-relaxed mt-5">{article.excerpt}</p>
           )}
-          <p className="text-xs uppercase tracking-[0.15em] text-planthia-dark/70 mt-6">
-            {formatArticleDate(article.publishedAt)}
-            {article.reading_time ? ` · ${article.reading_time} min de lectura` : ''}
-          </p>
+          {/* Fecha y lectura + compartir al lado */}
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-3 mt-6">
+            <p className="text-xs uppercase tracking-[0.15em] text-planthia-dark/70">
+              {formatArticleDate(article.publishedAt)}
+              {article.reading_time ? ` · ${article.reading_time} min de lectura` : ''}
+            </p>
+            <ShareButton
+              variant="pill"
+              path={`/blog/${article.slug}`}
+              title={article.title}
+              text={article.excerpt ?? undefined}
+              image={article.cover?.url}
+            />
+          </div>
         </header>
 
         {/* Portada a todo el ancho del contenido */}
@@ -105,13 +116,20 @@ export default async function ArticlePage({ params }: Props) {
               </div>
             )}
 
-            <div className="mt-14 pt-8 border-t border-planthia-dark/10">
+            {/* Al terminar de leer: compartir y volver al blog */}
+            <div className="mt-14 pt-8 border-t border-planthia-dark/10 flex flex-wrap-reverse items-center justify-between gap-6">
               <Link
                 href="/blog"
                 className="inline-flex items-center gap-2 font-headline font-bold text-sm uppercase tracking-[0.15em] text-planthia-green hover:text-planthia-green-dark transition-colors"
               >
                 <ArrowLeft size={18} /> Ver todos los artículos
               </Link>
+              <ShareInline
+                path={`/blog/${article.slug}`}
+                title={article.title}
+                text={article.excerpt ?? undefined}
+                image={article.cover?.url}
+              />
             </div>
           </div>
 
