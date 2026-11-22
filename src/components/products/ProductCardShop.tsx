@@ -20,7 +20,15 @@ interface Product {
   variants?: any[];
 }
 
-const ProductCardShop = ({ product }: { product: Product }) => {
+interface ProductCardShopProps {
+  product: Product;
+  /** En el shop las tarjetas van debajo del h1, así que usan h2 (en otras secciones, h3) */
+  headingAs?: 'h2' | 'h3';
+  /** Primeras fotos de la página: se descargan antes (mejora el LCP) */
+  priority?: boolean;
+}
+
+const ProductCardShop = ({ product, headingAs: Heading = 'h3', priority = false }: ProductCardShopProps) => {
   const { addItem, cart, openCart } = useCart();
   const { toggleFavorite, isFavorite } = useFavorites();
   const router = useRouter();
@@ -82,6 +90,8 @@ const ProductCardShop = ({ product }: { product: Product }) => {
             alt={product.name}
             fill
             sizes="(max-width: 640px) 50vw, (max-width: 1280px) 33vw, 25vw"
+            preload={priority}
+            fetchPriority={priority ? "high" : undefined}
             className="object-cover group-hover:scale-105 transition-transform duration-500"
           />
         </Link>
@@ -97,6 +107,7 @@ const ProductCardShop = ({ product }: { product: Product }) => {
         <button 
           onClick={handleFavorite}
           title={favoriteActive ? "Quitar de favoritos" : "Agregar a favoritos"}
+          aria-label={`${favoriteActive ? "Quitar de favoritos" : "Agregar a favoritos"}: ${product.name}`}
           className="absolute top-3 right-3 p-2 bg-transparent hover:bg-transparent backdrop-blur-md rounded-full transition-all text-planthia-green hover:text-planthia-green cursor-pointer z-20"
         >
           <Heart 
@@ -112,6 +123,7 @@ const ProductCardShop = ({ product }: { product: Product }) => {
 
         <Link
           href={productPath(product)}
+          aria-label={`Ver ${product.name}`}
           className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 hidden md:flex z-10"
         >
           <div className="bg-white/80 backdrop-blur-sm p-2 rounded-full text-[#4F7A2E] hover:bg-planthia-green hover:text-white transition-colors">
@@ -122,9 +134,9 @@ const ProductCardShop = ({ product }: { product: Product }) => {
 
       {/* Info del Producto */}
       <div className="p-4 flex flex-col flex-grow">
-        <h3 className="text-lg font-bold text-gray-800 leading-tight mb-1">
+        <Heading className="text-lg font-bold text-gray-800 leading-tight mb-1">
           {product.name}
-        </h3>
+        </Heading>
         <p className="text-gray-500 text-xs line-clamp-1 mb-4 flex-grow">
           {product.description}
         </p>
@@ -138,6 +150,15 @@ const ProductCardShop = ({ product }: { product: Product }) => {
           <button
             onClick={handleAction}
             disabled={isOutOfStock}
+            aria-label={
+              isOutOfStock
+                ? `${product.name}: sin stock`
+                : hasVariants
+                  ? `Elegir opciones de ${product.name}`
+                  : isAlreadyInCart
+                    ? `Agregar otra unidad de ${product.name} (${quantityInCart} en el carrito)`
+                    : `Agregar ${product.name} al carrito`
+            }
             className={`text-white font-headline font-bold p-2 md:px-4 md:py-2 rounded-full transition-colors flex items-center justify-center gap-2 min-w-[40px]
               ${isOutOfStock 
                 ? "bg-gray-400 cursor-not-allowed" 

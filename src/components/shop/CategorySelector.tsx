@@ -79,7 +79,7 @@ const CategorySelector = ({ typeQuery, categoryQuery, hasSearch = false, onFilte
               onClick={() => onFilterChange('category', value)}
               className={`flex-none text-sm font-semibold cursor-pointer transition-colors duration-200 underline-offset-8 decoration-2 ${isActive
                 ? 'text-[#3f6224] underline decoration-[#4F7A2E]'
-                : 'text-gray-500 hover:text-[#4F7A2E]'
+                : 'text-gray-600 hover:text-[#4F7A2E]'
                 }`}
             >
               {label}
