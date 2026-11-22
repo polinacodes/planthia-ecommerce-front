@@ -100,13 +100,14 @@ function NavbarContent() {
           <div className="flex items-center">
             <button
               onClick={() => setIsMobileMenuOpen(true)}
-              className="md:hidden text-planthia-dark hover:text-planthia-green transition-colors mr-4"
+              className="md:hidden text-planthia-dark hover:text-planthia-green transition-colors mr-3"
               aria-label="Abrir menú"
             >
               <Menu size={24} />
             </button>
-            <Link href="/" className="hidden md:block text-planthia-dark" aria-label="Planthia, ir al inicio">
-              <Logo className="h-8 w-auto" />
+            {/* El logo se ve siempre (en celular, al lado del menú y un poco más chico) */}
+            <Link href="/" className="block text-planthia-dark" aria-label="Planthia, ir al inicio">
+              <Logo className="h-7 md:h-8 w-auto" />
             </Link>
           </div>
 

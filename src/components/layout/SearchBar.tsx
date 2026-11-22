@@ -7,6 +7,19 @@ import { motion, AnimatePresence } from 'framer-motion';
 const SearchBarContent = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [text, setText] = useState('');
+  // Ancho del buscador abierto: 220px en tablet/compu. En celular ocupa todo el espacio
+  // a la izquierda de la lupa (tapa el menú y el logo) para no quedar encimado
+  const [formWidth, setFormWidth] = useState(220);
+
+  const toggleSearch = () => {
+    if (!isExpanded && containerRef.current && window.innerWidth < 768) {
+      const left = containerRef.current.getBoundingClientRect().left;
+      setFormWidth(Math.max(160, left - 24 - 8)); // 24px de margen de la página y 8px de separación
+    } else if (!isExpanded) {
+      setFormWidth(220);
+    }
+    setIsExpanded(!isExpanded);
+  };
   const containerRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -55,10 +68,10 @@ const SearchBarContent = () => {
         {isExpanded && (
           <motion.form
             initial={{ width: 0, opacity: 0, x: 20 }}
-            animate={{ width: 220, opacity: 1, x: 0 }}
+            animate={{ width: formWidth, opacity: 1, x: 0 }}
             exit={{ width: 0, opacity: 0, x: 20 }}
             onSubmit={handleSubmit}
-            className="absolute right-full mr-2 z-10 flex items-center"
+            className="absolute right-full mr-2 z-10 flex items-center h-10 bg-planthia-cream md:bg-transparent"
           >
             <input
               autoFocus
@@ -82,7 +95,7 @@ const SearchBarContent = () => {
       </AnimatePresence>
 
       <button
-        onClick={() => setIsExpanded(!isExpanded)}
+        onClick={toggleSearch}
         aria-label={isExpanded ? 'Cerrar búsqueda' : 'Buscar productos'}
         className={`hover:text-planthia-green transition-colors p-1 z-20 ${isExpanded ? 'text-planthia-green' : 'text-planthia-dark'}`}
       >
