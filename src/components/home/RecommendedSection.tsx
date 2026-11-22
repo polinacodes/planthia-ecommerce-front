@@ -127,6 +127,7 @@ const RecommendedSection = ({ plants }: { plants: any[] }) => {
         {/* Flecha Izquierda */}
         <button
           onClick={prevSlide}
+          aria-label="Ver plantas anteriores"
           disabled={currentIndex === 0}
           className={`absolute left-0 top-1/2 -translate-y-1/2 -translate-x-5 lg:-translate-x-6 z-20 w-10 h-10 lg:w-12 lg:h-12 bg-white rounded-full shadow-lg flex items-center justify-center text-[#5B823B] hover:bg-[#5B823B] hover:text-white transition-all duration-300 ${currentIndex === 0 ? 'opacity-0 pointer-events-none' : 'opacity-100'
             }`}
@@ -162,6 +163,7 @@ const RecommendedSection = ({ plants }: { plants: any[] }) => {
         {/* Flecha Derecha */}
         <button
           onClick={nextSlide}
+          aria-label="Ver más plantas"
           disabled={currentIndex >= maxIndex}
           className={`absolute right-0 top-1/2 -translate-y-1/2 translate-x-5 lg:translate-x-6 z-20 w-10 h-10 lg:w-12 lg:h-12 bg-white rounded-full shadow-lg flex items-center justify-center text-[#5B823B] hover:bg-[#5B823B] hover:text-white transition-all duration-300 ${currentIndex >= maxIndex ? 'opacity-0 pointer-events-none' : 'opacity-100'
             }`}

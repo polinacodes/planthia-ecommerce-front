@@ -36,6 +36,7 @@ export default function NewsletterPopup() {
           >
             <button
               onClick={closePopup}
+              aria-label="Cerrar"
               className="absolute top-4 right-4 z-20 p-2 rounded-full bg-planthia-ice/50 hover:bg-planthia-ice transition-colors"
             >
               <X size={20} className="text-planthia-dark" />

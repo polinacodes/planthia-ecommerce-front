@@ -165,7 +165,8 @@ export default function Hero() {
                 src="/heroo-corto.webp"
                 alt="Marble Queen Pothos Planthia"
                 fill
-                priority
+                preload
+                fetchPriority="high"
                 className="object-contain transition-transform duration-700 ease-out hover:scale-110"
                 sizes="(max-width: 640px) 100vw, (max-width: 1200px) 100vw, 80vw"
               />

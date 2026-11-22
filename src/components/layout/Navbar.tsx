@@ -240,6 +240,7 @@ function NavbarContent() {
               {!user ? (
                 <Link
                   href="/login"
+                  aria-label="Ingresar a mi cuenta"
                   className="hover:text-planthia-green transition-colors cursor-pointer flex items-center p-1"
                 >
                   <User size={20} className="sm:w-[22px] sm:h-[22px]" />
