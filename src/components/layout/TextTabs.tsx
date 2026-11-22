@@ -14,7 +14,7 @@ export interface TextTab {
 
 const tabClass = (active: boolean) =>
   `flex-none text-sm font-semibold cursor-pointer transition-colors duration-200 underline-offset-8 decoration-2 ${
-    active ? 'text-planthia-green-dark underline decoration-planthia-green' : 'text-planthia-dark/50 hover:text-planthia-green'
+    active ? 'text-planthia-green-dark underline decoration-planthia-green' : 'text-planthia-dark/70 hover:text-planthia-green'
   }`;
 
 export default function TextTabs({ tabs, className = '' }: { tabs: TextTab[]; className?: string }) {
