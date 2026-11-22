@@ -14,7 +14,7 @@ const ProductSkeleton = () => {
 
       <div className="flex justify-between items-center mt-auto">
         <div className="h-7 bg-gray-200 rounded-full w-1/3"></div>
-        <div className="w-10 h-10 bg-[#5B823B]/20 rounded-xl"></div>
+        <div className="w-10 h-10 bg-[#4F7A2E]/20 rounded-xl"></div>
       </div>
     </div>
   );

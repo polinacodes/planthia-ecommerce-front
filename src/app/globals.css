@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-  --color-planthia-green: #588534;
+  --color-planthia-green: #4F7A2E;
   --color-planthia-dark: #0F110E;
   --color-planthia-light-green: #739D52;
   --color-planthia-green-dark: #3F6224; /* hover de los botones verdes */

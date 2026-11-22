@@ -40,14 +40,14 @@ export const TypeSwitch = ({ typeQuery, hasSearch = false, onFilterChange }: Pic
         <button
           key={value}
           onClick={() => onFilterChange('type', value)}
-          className={`relative px-4 py-1.5 md:px-5 rounded-full text-sm font-bold cursor-pointer transition-colors duration-300 ${isActive ? 'text-white' : 'text-gray-500 hover:text-[#5B823B]'
+          className={`relative px-4 py-1.5 md:px-5 rounded-full text-sm font-bold cursor-pointer transition-colors duration-300 ${isActive ? 'text-white' : 'text-gray-500 hover:text-[#4F7A2E]'
             }`}
         >
           {/* El fondo verde se desliza de una opción a la otra */}
           {isActive && (
             <motion.span
               layoutId="shop-type-pill"
-              className="absolute inset-0 rounded-full bg-[#5B823B]"
+              className="absolute inset-0 rounded-full bg-[#4F7A2E]"
               transition={{ type: 'spring', stiffness: 400, damping: 35 }}
             />
           )}
@@ -78,8 +78,8 @@ const CategorySelector = ({ typeQuery, categoryQuery, hasSearch = false, onFilte
               key={value}
               onClick={() => onFilterChange('category', value)}
               className={`flex-none text-sm font-semibold cursor-pointer transition-colors duration-200 underline-offset-8 decoration-2 ${isActive
-                ? 'text-[#3f6224] underline decoration-[#5B823B]'
-                : 'text-gray-500 hover:text-[#5B823B]'
+                ? 'text-[#3f6224] underline decoration-[#4F7A2E]'
+                : 'text-gray-500 hover:text-[#4F7A2E]'
                 }`}
             >
               {label}

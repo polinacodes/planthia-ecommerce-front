@@ -185,7 +185,7 @@ function NavbarContent() {
                                       {product.name}
                                     </h4>
                                   </Link>
-                                  <span className="text-xs font-extrabold text-[#5B823B] block mt-0.5">
+                                  <span className="text-xs font-extrabold text-[#4F7A2E] block mt-0.5">
                                     ${product.price.toLocaleString('es-AR')}
                                   </span>
                                 </div>

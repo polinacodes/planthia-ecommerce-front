@@ -114,7 +114,7 @@ const ProductCardShop = ({ product }: { product: Product }) => {
           href={productPath(product)}
           className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 hidden md:flex z-10"
         >
-          <div className="bg-white/80 backdrop-blur-sm p-2 rounded-full text-[#5B823B] hover:bg-planthia-green hover:text-white transition-colors">
+          <div className="bg-white/80 backdrop-blur-sm p-2 rounded-full text-[#4F7A2E] hover:bg-planthia-green hover:text-white transition-colors">
             <Eye size={20} />
           </div>
         </Link>
@@ -131,7 +131,7 @@ const ProductCardShop = ({ product }: { product: Product }) => {
 
         {/* Precio y Acción */}
         <div className="flex items-center justify-between mt-auto">
-          <span className="text-xl font-extrabold text-[#5B823B]">
+          <span className="text-xl font-extrabold text-[#4F7A2E]">
             ${product.price.toLocaleString('es-AR')}
           </span>
 

@@ -31,7 +31,7 @@ const EmptyState = ({ title = "Uy, parece que esa plantita todavía no llegó a 
   return (
     <div className={`flex flex-col items-center w-full max-w-7xl mx-auto px-4 sm:px-8 ${className}`}>
       <div className="bg-white p-6 rounded-full shadow-sm mb-6">
-        <SearchX size={40} className="text-[#5B823B]/40" strokeWidth={1.5} />
+        <SearchX size={40} className="text-[#4F7A2E]/40" strokeWidth={1.5} />
       </div>
 
       <h2 className="text-xl sm:text-2xl font-headline font-bold text-planthia-dark text-center px-4">

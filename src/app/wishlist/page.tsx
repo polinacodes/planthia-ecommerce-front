@@ -142,7 +142,7 @@ export default function WishlistPage() {
 
                   {/* Precio */}
                   <div className="text-center sm:text-right flex-shrink-0">
-                    <span className="text-xl font-extrabold text-[#5B823B] block">
+                    <span className="text-xl font-extrabold text-[#4F7A2E] block">
                       ${product.price.toLocaleString('es-AR')}
                     </span>
                     <span className={`text-[10px] font-bold uppercase tracking-wider block mt-0.5 ${isOutOfStock ? 'text-rose-500' : 'text-planthia-light-green'}`}>

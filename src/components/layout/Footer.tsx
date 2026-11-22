@@ -39,7 +39,7 @@ const ACCOUNT_LINKS = {
   ],
 };
 
-const SOCIAL_CLASS = 'p-2 bg-white/10 rounded-full hover:bg-[#C1D37F] hover:text-[#5B823B] transition-all';
+const SOCIAL_CLASS = 'p-2 bg-white/10 rounded-full hover:bg-[#C1D37F] hover:text-[#4F7A2E] transition-all';
 
 const Footer = () => {
   const pathname = usePathname();
@@ -65,7 +65,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-[#5B823B] text-[#F7F5F0]">
+    <footer className="bg-[#4F7A2E] text-[#F7F5F0]">
       <div className={container}>
 
         {/* Marca + columnas de links */}
@@ -74,18 +74,18 @@ const Footer = () => {
             <Link href="/" onClick={handleLogoClick} className="inline-block hover:opacity-80 transition-opacity" aria-label="Planthia, ir al inicio">
               <Logo className="h-8 w-auto" symbolColor="currentColor" />
             </Link>
-            <p className="text-sm text-white/80 leading-relaxed mt-4 max-w-xs">
+            <p className="text-sm text-white leading-relaxed mt-4 max-w-xs">
               Plantas y todo lo que necesitan para crecer. Llená de vida tus espacios.
             </p>
           </div>
 
           {columns.map((column) => (
             <nav key={column.title} aria-label={column.title}>
-              <p className="font-headline font-bold text-xs uppercase tracking-[0.18em] text-white/70 mb-4">{column.title}</p>
+              <p className="font-headline font-bold text-xs uppercase tracking-[0.18em] text-white mb-4">{column.title}</p>
               <ul className="space-y-2.5">
                 {column.links.map((link) => (
                   <li key={link.label}>
-                    <Link href={link.href} className="text-sm text-white/90 hover:text-[#C1D37F] transition-colors">
+                    <Link href={link.href} className="text-sm text-white hover:text-[#C1D37F] transition-colors">
                       {link.label}
                     </Link>
                   </li>
@@ -97,7 +97,7 @@ const Footer = () => {
 
         {/* Línea final */}
         <div className="border-t border-white/10 py-6 flex flex-col-reverse sm:flex-row justify-between items-center gap-4">
-          <p className="text-xs md:text-sm font-medium tracking-widest opacity-70 text-center sm:text-left">
+          <p className="text-xs md:text-sm font-medium tracking-widest text-center sm:text-left">
             © 2026 Planthia · Desarrollado por Polinacodes
           </p>
 

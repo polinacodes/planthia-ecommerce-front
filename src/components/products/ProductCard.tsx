@@ -96,7 +96,7 @@ const ProductCard = ({ plant, isActive, onClick }: ProductCardProps) => {
       className={`relative cursor-pointer rounded-3xl p-4 sm:p-5 lg:p-6 group flex items-center
         transition-[background-color,color,box-shadow,height,min-height,scale,translate] duration-500 ${EASE}
         ${isActive
-        ? 'bg-[#5B823B] text-white lg:scale-105 z-20 shadow-lg sm:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.4)] lg:shadow-[0_35px_60px_-15px_rgba(0,0,0,0.5)] min-h-[180px] sm:min-h-[200px] lg:h-[240px]'
+        ? 'bg-[#4F7A2E] text-white lg:scale-105 z-20 shadow-lg sm:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.4)] lg:shadow-[0_35px_60px_-15px_rgba(0,0,0,0.5)] min-h-[180px] sm:min-h-[200px] lg:h-[240px]'
         : 'bg-white text-gray-800 shadow-sm border border-gray-100 hover:shadow-lg hover:scale-[1.02] hover:-translate-y-0.5 active:scale-[0.98] min-h-[160px] sm:min-h-[180px] lg:h-[220px] z-10 overflow-hidden'
         }`}
     >
@@ -160,13 +160,13 @@ const ProductCard = ({ plant, isActive, onClick }: ProductCardProps) => {
           </h3>
 
           {/* Descripción: siempre visible, máximo 2 líneas con "…" */}
-          <p className={`mt-1 text-[11px] sm:text-xs leading-relaxed line-clamp-2 transition-colors duration-500 ${EASE} ${isActive ? 'text-white/90' : 'text-gray-500'
+          <p className={`mt-1 text-[11px] sm:text-xs leading-relaxed line-clamp-2 transition-colors duration-500 ${EASE} ${isActive ? 'text-white' : 'text-gray-500'
             }`}>
             {plant.description}
           </p>
 
           {/* Precio */}
-          <span className={`font-bold block my-1 sm:my-2 transition-[color,font-size] duration-500 ${EASE} ${isActive ? 'text-white' : 'text-[#5B823B]'
+          <span className={`font-bold block my-1 sm:my-2 transition-[color,font-size] duration-500 ${EASE} ${isActive ? 'text-white' : 'text-[#4F7A2E]'
             } ${isActive ? 'text-lg sm:text-xl lg:text-2xl' : 'text-base sm:text-lg lg:text-xl'}`}>
             ${plant.price}
           </span>
@@ -187,7 +187,7 @@ const ProductCard = ({ plant, isActive, onClick }: ProductCardProps) => {
                   className={`flex-1 min-w-0 whitespace-nowrap px-3 sm:px-4 lg:px-5 py-1.5 sm:py-2 lg:py-2.5 rounded-full font-headline text-xs sm:text-sm font-bold transition-colors shadow-sm cursor-pointer
                       ${isLimitReached
                       ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                      : "bg-white text-[#5B823B] hover:bg-gray-100"}`}
+                      : "bg-white text-[#4F7A2E] hover:bg-gray-100"}`}
                 >
                   {isLimitReached ? 'Máximo alcanzado' : (cartItem ? 'Agregado' : 'Agregar')}
                 </motion.button>

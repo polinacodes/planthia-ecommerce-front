@@ -38,7 +38,7 @@ const ShopToolbar = ({
           <div className="relative">
             <button
               onClick={() => setIsFilterOpen(!isFilterOpen)}
-              className="flex items-center gap-2 text-sm font-bold text-gray-700 hover:text-[#5B823B] transition-colors cursor-pointer focus:outline-none"
+              className="flex items-center gap-2 text-sm font-bold text-gray-700 hover:text-[#4F7A2E] transition-colors cursor-pointer focus:outline-none"
             >
               <SlidersHorizontal size={18} />
               FILTRAR
@@ -72,9 +72,9 @@ const ShopToolbar = ({
                                 const next = current.includes(luz) ? current.filter(l => l !== luz) : [...current, luz];
                                 updateFilter('light', next.join(','));
                               }}
-                              className="w-4 h-4 rounded border-gray-300 accent-planthia-green text-[#5B823B] focus:ring-[#5B823B]"
+                              className="w-4 h-4 rounded border-gray-300 accent-planthia-green text-[#4F7A2E] focus:ring-[#4F7A2E]"
                             />
-                            <span className="text-sm text-gray-600 group-hover:text-[#5B823B] capitalize">{luz}</span>
+                            <span className="text-sm text-gray-600 group-hover:text-[#4F7A2E] capitalize">{luz}</span>
                           </label>
                         ))}
                       </div>
@@ -94,9 +94,9 @@ const ShopToolbar = ({
                                 const next = current.includes(dif) ? current.filter(d => d !== dif) : [...current, dif];
                                 updateFilter('difficulty', next.join(','));
                               }}
-                              className="w-4 h-4 rounded border-gray-300 accent-planthia-green text-[#5B823B] focus:ring-[#5B823B]"
+                              className="w-4 h-4 rounded border-gray-300 accent-planthia-green text-[#4F7A2E] focus:ring-[#4F7A2E]"
                             />
-                            <span className="text-sm text-gray-600 group-hover:text-[#5B823B] capitalize">{dif}</span>
+                            <span className="text-sm text-gray-600 group-hover:text-[#4F7A2E] capitalize">{dif}</span>
                           </label>
                         ))}
                       </div>
@@ -115,7 +115,7 @@ const ShopToolbar = ({
                           onChange={() => updateFilter('petFriendly', (!petQuery).toString())}
                           className="sr-only peer"
                         />
-                        <div className="w-10 h-5 bg-gray-200 rounded-full peer peer-checked:bg-[#5B823B] relative after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-full"></div>
+                        <div className="w-10 h-5 bg-gray-200 rounded-full peer peer-checked:bg-[#4F7A2E] relative after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-full"></div>
                       </label>
                     </div>
                   </motion.div>
@@ -142,7 +142,7 @@ const ShopToolbar = ({
       <div className="relative">
         <button
           onClick={() => setIsSortOpen(!isSortOpen)}
-          className="flex items-center gap-2 text-sm font-bold text-gray-700 hover:text-[#5B823B] transition-all uppercase tracking-wider focus:outline-none cursor-pointer"
+          className="flex items-center gap-2 text-sm font-bold text-gray-700 hover:text-[#4F7A2E] transition-all uppercase tracking-wider focus:outline-none cursor-pointer"
         >
           <ArrowUpDown size={18} className="text-gray-500" />
           <span>{sortLabels[sortQuery]}</span>
@@ -168,7 +168,7 @@ const ShopToolbar = ({
                       updateFilter('sort', value);
                       setIsSortOpen(false);
                     }}
-                    className={`w-full text-left px-4 py-3 text-sm rounded-xl transition-colors cursor-pointer ${sortQuery === value ? 'bg-[#5B823B]/10 text-[#5B823B] font-bold' : 'text-gray-600 hover:bg-gray-50'
+                    className={`w-full text-left px-4 py-3 text-sm rounded-xl transition-colors cursor-pointer ${sortQuery === value ? 'bg-[#4F7A2E]/10 text-[#4F7A2E] font-bold' : 'text-gray-600 hover:bg-gray-50'
                       }`}
                   >
                     {label}

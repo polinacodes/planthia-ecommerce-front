@@ -20,7 +20,7 @@ const ProductGrid = ({ products, isLoading, activeFiltersText, productsPerPage }
       className="pb-16 pt-0"
         title="Uy, parece que esa plantita todavía no llegó a nuestra selva."
   description={activeFiltersText
-        ? <>No encontramos nada para <span className="font-bold text-[#5B823B]">{activeFiltersText}</span>, </>
+        ? <>No encontramos nada para <span className="font-bold text-[#4F7A2E]">{activeFiltersText}</span>, </>
         : <>Todavía no hay productos en esta sección, </>}
       />
     );
