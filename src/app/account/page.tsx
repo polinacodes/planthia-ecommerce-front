@@ -7,7 +7,7 @@ import OrdersSection, { statusConfig } from '@/components/account/OrdersSection'
 import ProfileSection from '@/components/account/ProfileSection';
 import RecommendedProducts from '@/components/account/RecommendedProducts'; // <-- Importamos el nuevo componente
 
-import { Package, User, MapPin, Heart, Pencil, ArrowLeft } from 'lucide-react';
+import { Package, User, MapPin, Heart, Pencil } from 'lucide-react';
 
 interface OrderItem {
   id: number;
@@ -131,7 +131,8 @@ export default function AccountPage() {
     <main className="pt-8 sm:pt-12 pb-24 px-6 sm:px-12 max-w-[1600px] mx-auto min-h-screen bg-planthia-cream text-planthia-dark">
 
       {/* Profile Header */}
-      <div className="flex flex-col md:flex-row items-center gap-8 mb-16 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      {/* mb igual al espacio de arriba (pt de main): 32px en celular, 48px desde 640px */}
+      <div className="flex flex-col md:flex-row items-center gap-8 mb-8 sm:mb-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
         <div className="flex flex-col md:flex-row items-center gap-8">
         <div className="relative group">
           <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-planthia-ice shadow-sm relative bg-planthia-light-green/10 flex items-center justify-center">
@@ -186,15 +187,32 @@ export default function AccountPage() {
               <span className="font-headline tracking-wide text-sm">Mis pedidos</span>
             </button>
 
-            {/* Pedido abierto: muestra dónde estás; volver = tocar "Mis pedidos" */}
+            {/* Pedido abierto: lista de todos los pedidos, con el actual resaltado, para pasar de uno a otro */}
             {activeTab === 'orders' && selectedOrder && (
-              <button
-                onClick={() => setSelectedOrder(null)}
-                className="hidden lg:flex items-center gap-2 ml-6 -mt-1 pl-4 py-2 border-l-2 border-planthia-green text-sm font-semibold text-planthia-green hover:text-planthia-green-dark cursor-pointer w-fit"
-              >
-                <ArrowLeft size={14} />
-                #PL-{selectedOrder.id}
-              </button>
+              <ul className="hidden lg:block ml-6 -mt-1 max-h-72 overflow-y-auto">
+                {[...(user.orders || [])]
+                  .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+                  .map((order) => {
+                    const isCurrent = order.id === selectedOrder.id;
+                    return (
+                      <li key={order.id}>
+                        <button
+                          onClick={() => setSelectedOrder(order)}
+                          aria-current={isCurrent ? 'page' : undefined}
+                          className={`flex w-full items-baseline justify-between gap-3 pl-4 pr-2 py-2 border-l-2 text-sm cursor-pointer transition-colors ${isCurrent
+                            ? 'border-planthia-green text-planthia-green font-bold'
+                            : 'border-planthia-dark/10 text-planthia-dark/70 font-semibold hover:text-planthia-green hover:border-planthia-green/40'
+                            }`}
+                        >
+                          #PL-{order.id}
+                          <span className={`text-xs font-normal ${isCurrent ? 'text-planthia-green' : 'text-planthia-dark/60'}`}>
+                            {new Date(order.createdAt).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })}
+                          </span>
+                        </button>
+                      </li>
+                    );
+                  })}
+              </ul>
             )}
 
             <button

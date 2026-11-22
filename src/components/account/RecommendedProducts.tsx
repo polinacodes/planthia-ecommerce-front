@@ -70,8 +70,9 @@ export default function RecommendedProducts({ orders }: RecommendedProductsProps
   if (plantsLoading || recommendedProducts.length === 0) return null;
 
   return (
-    <section className="mt-20 lg:mt-32 pb-16 border-t border-planthia-dark/5 pt-16 lg:pt-16">
-      <h2 className="font-headline font-extrabold text-2xl lg:text-3xl text-planthia-dark mb-8 lg:mb-12">
+    <section className="mt-12 lg:mt-16 pb-16 border-t border-planthia-dark/5 pt-10 lg:pt-12">
+      {/* Mismo estilo que "Mis pedidos recientes" */}
+      <h2 className="font-headline font-bold text-2xl text-planthia-dark mb-6">
         {orders && orders.length > 0
           ? "Basado en tu última compra"
           : "Recomendados para tu jardín"}
