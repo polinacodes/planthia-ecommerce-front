@@ -73,7 +73,7 @@ export default function ProductRow({ product, reason, compact = false }: { produ
         <Link href={productPath(product)} className="font-headline font-bold text-[15px] text-planthia-dark hover:text-planthia-green">
           {product.name}
         </Link>
-        {reason && <p className="text-xs text-planthia-dark/50">{reason}</p>}
+        {reason && <p className="text-xs text-planthia-dark/70">{reason}</p>}
         <p className="font-headline font-extrabold text-planthia-green mt-0.5">${formatPrice(product.price)}</p>
       </div>
       {hasVariants ? (
