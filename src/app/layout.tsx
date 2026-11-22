@@ -63,7 +63,8 @@ export default function RootLayout({
     <html lang="es" className={`${manrope.variable} ${inter.variable}`}>
       <body className=" relative font-body antialiased bg-planthia-cream text-planthia-dark">
         <FavoritesProvider>
-          <Suspense fallback={null}>
+          {/* Mientras llega el nav se reserva su alto (72px): si no, todo bajaba de golpe al aparecer */}
+          <Suspense fallback={<div className="h-[72px]" aria-hidden="true" />}>
             <Navbar />
           </Suspense>
           <CartDrawer />

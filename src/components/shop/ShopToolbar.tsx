@@ -60,7 +60,7 @@ const ShopToolbar = ({
                   >
                     {/* Necesidad de Luz */}
                     <div className="mb-6">
-                      <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3">Necesidad de luz</p>
+                      <p className="text-[10px] font-bold text-gray-600 uppercase tracking-widest mb-3">Necesidad de luz</p>
                       <div className="space-y-2">
                         {['sombra', 'indirecta', 'sol'].map((luz) => (
                           <label key={luz} className="flex items-center gap-3 cursor-pointer group">
@@ -82,7 +82,7 @@ const ShopToolbar = ({
 
                     {/* Dificultad */}
                     <div className="mb-6 border-t border-gray-100 pt-4">
-                      <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3">Dificultad</p>
+                      <p className="text-[10px] font-bold text-gray-600 uppercase tracking-widest mb-3">Dificultad</p>
                       <div className="space-y-2">
                         {['principiante', 'experto'].map((dif) => (
                           <label key={dif} className="flex items-center gap-3 cursor-pointer group">
@@ -124,7 +124,7 @@ const ShopToolbar = ({
             </AnimatePresence>
           </div>
 
-          <span className="hidden md:block text-[11px] font-bold text-gray-400 uppercase tracking-[0.2em]">
+          <span className="hidden md:block text-[11px] font-bold text-gray-600 uppercase tracking-[0.2em]">
             {totalProducts} Productos encontrados
           </span>
         </div>
@@ -132,7 +132,7 @@ const ShopToolbar = ({
 
       {!showFilters && (
         <div className="flex items-center">
-          <span className="text-[11px] font-bold text-gray-400 uppercase tracking-[0.2em]">
+          <span className="text-[11px] font-bold text-gray-600 uppercase tracking-[0.2em]">
             {totalProducts} Productos encontrados
           </span>
         </div>
