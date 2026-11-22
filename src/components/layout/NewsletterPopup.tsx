@@ -54,7 +54,7 @@ export default function NewsletterPopup() {
 
             <div className="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center">
               <span className="inline-block px-3 py-1 rounded-full bg-planthia-green/10 text-planthia-green-dark font-bold text-[10px] uppercase tracking-[0.2em] mb-4 self-start">
-                Exclusive Access
+                #ComunidadPlanthia
               </span>
               <h2 className="text-4xl font-headline font-extrabold text-planthia-dark mb-3">
                 Bienvenido a Planthia<span className="text-planthia-green">.</span>
