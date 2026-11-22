@@ -4,7 +4,7 @@ import Link from 'next/link';
 import PageHeader from '@/components/layout/PageHeader';
 import TextTabs from '@/components/layout/TextTabs';
 import NewsletterBlock from '@/components/layout/NewsletterBlock';
-import { Reveal, RevealGroup, RevealItem } from '@/components/motion/Reveal';
+import { RevealGroup, RevealItem } from '@/components/motion/Reveal';
 import { PAGE_CONTAINER } from '@/lib/layout';
 import ArticleCard, { FeaturedArticleCard } from '@/components/blog/ArticleCard';
 import { BLOG_CATEGORIES, getArticles, isBlogCategory } from '@/lib/blog';
@@ -39,21 +39,31 @@ export default async function BlogPage({ searchParams }: { searchParams: Promise
 
         <div className="border-b border-planthia-dark/10 flex items-end justify-between gap-6">
           <TextTabs tabs={tabs} className="min-w-0" />
-          <p className="hidden sm:block flex-none pb-3 text-xs font-bold tracking-[0.15em] uppercase text-planthia-dark/50">
+          <p className="hidden sm:block flex-none pb-3 text-xs font-bold tracking-[0.15em] uppercase text-planthia-dark/70">
             {articles.length} {articles.length === 1 ? 'artículo' : 'artículos'}
           </p>
         </div>
 
         {articles.length > 0 ? (
           <div className="mt-10 sm:mt-12 space-y-14 sm:space-y-16">
-            {featured && <Reveal><FeaturedArticleCard article={featured} /></Reveal>}
+            {/* El destacado se ve sin hacer scroll: va sin animación de entrada para que la foto aparezca enseguida (LCP) */}
+            {featured && <FeaturedArticleCard article={featured} />}
             {rest.length > 0 && (
-              <RevealGroup className="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
-                {rest.map((article) => (
-                  <RevealItem key={article.documentId}>
-                    <ArticleCard article={article} />
-                  </RevealItem>
-                ))}
+              // key por categoría: al cambiar de pestaña la grilla se arma de nuevo y la cascada vuelve a correr.
+              // Sin la key, las tarjetas nuevas quedaban invisibles hasta refrescar la página
+              <RevealGroup key={category ?? 'todos'} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
+                {rest.map((article, i) =>
+                  // Con una categoría elegida no hay destacado: la primera tarjeta va sin animar y con prioridad
+                  !featured && i === 0 ? (
+                    <div key={article.documentId}>
+                      <ArticleCard article={article} priority />
+                    </div>
+                  ) : (
+                    <RevealItem key={article.documentId}>
+                      <ArticleCard article={article} />
+                    </RevealItem>
+                  )
+                )}
               </RevealGroup>
             )}
           </div>

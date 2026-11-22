@@ -26,7 +26,7 @@ export default function ArticleToc({ headings }: { headings: { id: string; text:
 
   return (
     <nav aria-label="En este artículo">
-      <p className="font-headline font-bold tracking-[0.2em] text-[11px] text-planthia-dark/50 uppercase mb-4">En este artículo</p>
+      <p className="font-headline font-bold tracking-[0.2em] text-[11px] text-planthia-dark/70 uppercase mb-4">En este artículo</p>
       <ul className="space-y-2.5">
         {headings.map((h) => (
           <li key={h.id}>

@@ -13,7 +13,8 @@ function Cover({ article, sizes, priority }: { article: Article; sizes: string; 
       alt={article.cover.alternativeText || article.title}
       fill
       sizes={sizes}
-      priority={priority}
+      preload={priority}
+      fetchPriority={priority ? 'high' : undefined}
       className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
     />
   ) : (
@@ -36,7 +37,7 @@ export function FeaturedArticleCard({ article }: { article: Article }) {
   return (
     <Link href={`/blog/${article.slug}`} className="group grid md:grid-cols-[1.35fr_1fr] gap-6 md:gap-10 lg:gap-14 items-center">
       <div className="relative aspect-[16/10] rounded-3xl overflow-hidden">
-        <Cover article={article} sizes="(max-width: 768px) 100vw, 60vw" priority />
+        <Cover article={article} sizes="(max-width: 767px) 100vw, (max-width: 1600px) 55vw, 860px" priority />
       </div>
       <div className="flex flex-col gap-4">
         <Kicker article={article} />
@@ -44,7 +45,7 @@ export function FeaturedArticleCard({ article }: { article: Article }) {
           {article.title}
         </h2>
         {article.excerpt && <p className="text-planthia-dark/60 text-base lg:text-lg leading-relaxed">{article.excerpt}</p>}
-        <p className="text-xs text-planthia-dark/50">{formatArticleDate(article.publishedAt)}</p>
+        <p className="text-xs text-planthia-dark/70">{formatArticleDate(article.publishedAt)}</p>
         <span className="inline-flex items-center gap-2 font-headline font-bold text-xs uppercase tracking-[0.15em] text-planthia-green mt-1">
           Leer artículo <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
         </span>
@@ -53,11 +54,12 @@ export function FeaturedArticleCard({ article }: { article: Article }) {
   );
 }
 
-export default function ArticleCard({ article }: { article: Article }) {
+// priority: si es la primera tarjeta de la página (cuando no hay destacado), su foto se descarga antes
+export default function ArticleCard({ article, priority = false }: { article: Article; priority?: boolean }) {
   return (
     <Link href={`/blog/${article.slug}`} className="group flex flex-col gap-4">
       <div className="relative aspect-[16/10] rounded-2xl overflow-hidden">
-        <Cover article={article} sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw" />
+        <Cover article={article} sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, (max-width: 1600px) 30vw, 500px" priority={priority} />
       </div>
       <div className="flex flex-col gap-2">
         <Kicker article={article} />
@@ -65,7 +67,7 @@ export default function ArticleCard({ article }: { article: Article }) {
           {article.title}
         </h3>
         {article.excerpt && <p className="text-sm text-planthia-dark/60 leading-relaxed line-clamp-2">{article.excerpt}</p>}
-        <p className="text-xs text-planthia-dark/50 mt-1">{formatArticleDate(article.publishedAt)}</p>
+        <p className="text-xs text-planthia-dark/70 mt-1">{formatArticleDate(article.publishedAt)}</p>
       </div>
     </Link>
   );
