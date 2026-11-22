@@ -61,7 +61,8 @@ export default function GuideDetailContent({ initialPlants }: { initialPlants?: 
   const shortName = plant.name.split(' ')[0];
 
   return (
-    <main className="min-h-screen bg-planthia-cream pb-24">
+    <main className="bg-planthia-cream pb-24">
+      {/* Sin min-h-screen: en pantallas altas (iPad Pro) dejaba mucho aire antes del footer */}
       <div className="max-w-[1200px] mx-auto px-6 sm:px-12 pt-6">
         {/* Migas de pan + compartir a la derecha */}
         <div className="flex items-center justify-between gap-4 mb-6">

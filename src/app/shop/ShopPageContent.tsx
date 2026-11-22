@@ -171,7 +171,8 @@ const ShopPageContent = ({ initialPlants }: { initialPlants?: any[] | null }) =>
   useEffect(() => { setCurrentPage(1); }, [searchQuery, typeQuery, categoryQuery, lightQuery, diffQuery, petQuery, sortQuery, productsPerPage]);
 
   return (
-    <div className="min-h-screen bg-cream pb-16 ">
+    <div className="bg-cream pb-16">
+      {/* Sin min-h-screen: en pantallas altas (iPad Pro) dejaba mucho aire antes del footer */}
       {/* Banner con foto anterior: se reemplazó por el encabezado limpio (mismo estilo que la guía y el blog) */}
       {/* <HeroShop /> */}
       <div className="max-w-[1600px] mx-auto px-6 sm:px-12">

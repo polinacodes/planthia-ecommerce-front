@@ -54,7 +54,9 @@ export default function Hero() {
       {/* Contenido Izquierdo  */}
       {/* Los márgenes negativos acercan el texto a la planta cuando van apilados (celular y tablet).
           En tablet vertical (md) la planta crece con el ancho, por eso el margen usa vw. */}
-      <div className="col-span-12 lg:col-span-5 z-10 -mt-[120px] max-[370px]:-mt-[150px] sm:-mt-[172px] md:mt-[calc(32.3vw-424px)] lg:-mt-30 xl:-mt-30 2xl:-mt-40 md:px-0 order-last lg:order-first max-[1366px]:order-last flex flex-col items-center lg:items-start text-center lg:text-left">
+      {/* Desde lg, el texto se corre lo justo para quedar alineado con el nav (sin mover la planta).
+          En pantallas de 1696px o más ya coincide, así que ahí no se mueve */}
+      <div className="lg:[translate:max(-48px,min(0px,calc((100vw-1696px)/2)))_0] col-span-12 lg:col-span-5 z-10 -mt-[120px] max-[370px]:-mt-[150px] sm:-mt-[172px] md:mt-[calc(32.3vw-424px)] lg:-mt-30 xl:-mt-30 2xl:-mt-40 md:px-0 order-last lg:order-first max-[1366px]:order-last flex flex-col items-center lg:items-start text-center lg:text-left">
         <span className="font-headline font-bold tracking-[0.2em] text-xs text-planthia-dark mb-4 block uppercase">
           #RefugioVerde
         </span>

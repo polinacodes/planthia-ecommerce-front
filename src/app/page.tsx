@@ -21,8 +21,11 @@ export default function HomePage() {
 
   return (
     <>
-    <main className="relative overflow-x-clip px-0 md:px-4 lg:px-12 pt-10 pb-20">
-      <Hero />
+    <main className="relative overflow-x-clip pt-10 pb-20">
+      {/* El hero conserva sus márgenes de siempre (la planta y los círculos están calibrados con ellos) */}
+      <div className="md:px-4 lg:px-12">
+        <Hero />
+      </div>
       <RecommendedSection plants={featuredPlants} />
       <Categories />
       <Reveal><CareGuideBanner /></Reveal>

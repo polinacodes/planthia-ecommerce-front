@@ -159,7 +159,7 @@ const ProductCardShop = ({ product, headingAs: Heading = 'h3', priority = false 
                     ? `Agregar otra unidad de ${product.name} (${quantityInCart} en el carrito)`
                     : `Agregar ${product.name} al carrito`
             }
-            className={`text-white font-headline font-bold w-10 h-10 flex-shrink-0 md:w-auto md:h-auto md:px-4 md:py-2 rounded-full transition-colors flex items-center justify-center gap-2
+            className={`text-white font-headline font-bold w-[34px] h-[34px] sm:w-10 sm:h-10 flex-shrink-0 md:w-auto md:h-auto md:px-4 md:py-2 rounded-full transition-colors flex items-center justify-center gap-2
               ${isOutOfStock 
                 ? "bg-gray-400 cursor-not-allowed" 
                 : isAlreadyInCart 
@@ -169,7 +169,7 @@ const ProductCardShop = ({ product, headingAs: Heading = 'h3', priority = false 
           >
             {/* VISTA MOBILE */}
             <div className="md:hidden flex items-center justify-center font-bold">
-              {isAlreadyInCart ? <span className="text-sm">{quantityInCart}</span> : <Plus size={20} />}
+              {isAlreadyInCart ? <span className="text-sm">{quantityInCart}</span> : <Plus size={18} />}
             </div>
 
             {/* VISTA DESKTOP */}

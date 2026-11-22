@@ -12,7 +12,7 @@ const categories = [
 
 export default function Categories() {
   return (
-    <section className="bg-cream pt-16 sm:pt-20 pb-4 px-4 sm:px-6 lg:px-12 max-w-[1600px] mx-auto relative z-0">
+    <section className="bg-cream pt-16 sm:pt-20 pb-4 px-4 sm:px-6 md:px-12 max-w-[1600px] mx-auto relative z-0">
       
       {/* Encabezado */}
       {/* Mismo sistema que el hero: etiqueta chica + título en Manrope + párrafo en gris oscuro */}

@@ -31,7 +31,7 @@ export default function BlogSection() {
   );
 
   return (
-    <section className="bg-cream pt-16 sm:pt-20 pb-4 px-4 sm:px-6 lg:px-12 max-w-[1600px] mx-auto">
+    <section className="bg-cream pt-16 sm:pt-20 pb-4 px-4 sm:px-6 md:px-12 max-w-[1600px] mx-auto">
       {/* Encabezado: mismo sistema que "Explorá por categoría" */}
       <Reveal className="flex items-end justify-between gap-6 mb-8 sm:mb-10">
         <div>

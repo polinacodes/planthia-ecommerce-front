@@ -6,7 +6,7 @@ import { ArrowRight } from 'lucide-react';
 // Banner de la home que lleva a la guía de cuidados (va debajo de las categorías)
 export default function CareGuideBanner() {
   return (
-    <section className="px-4 sm:px-6 lg:px-12 max-w-[1600px] mx-auto pt-12 sm:pt-16 pb-4">
+    <section className="px-4 sm:px-6 md:px-12 max-w-[1600px] mx-auto pt-12 sm:pt-16 pb-4">
       <div className="relative overflow-hidden rounded-3xl bg-white grid grid-cols-1 md:grid-cols-2 items-stretch">
         {/* El degradé va solo en el recuadro del texto: así el verde queda arriba a la derecha de esta parte */}
         <div className="bg-planthia-gradient p-8 sm:p-12 lg:p-16 flex flex-col justify-center order-last md:order-first">
