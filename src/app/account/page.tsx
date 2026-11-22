@@ -128,7 +128,7 @@ export default function AccountPage() {
   });
 
   return (
-    <main className="pt-32 pb-24 px-6 md:px-12 max-w-[1440px] mx-auto min-h-screen bg-planthia-cream text-planthia-dark">
+    <main className="pt-8 sm:pt-12 pb-24 px-6 sm:px-12 max-w-[1600px] mx-auto min-h-screen bg-planthia-cream text-planthia-dark">
 
       {/* Profile Header */}
       <div className="flex flex-col md:flex-row items-center gap-8 mb-16 animate-in fade-in slide-in-from-bottom-4 duration-700">
