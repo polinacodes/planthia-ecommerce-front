@@ -37,7 +37,7 @@ export default function Categories() {
             <div className="relative aspect-[4/5] rounded-[24px] overflow-hidden transition-all duration-500 group-hover:shadow-2xl group-hover:shadow-planthia-green/10">
               <Image
                 src={cat.img} 
-                alt={cat.title}
+                alt=""
                 fill
                 sizes="(max-width: 768px) 50vw, 25vw"
                 className="object-cover transform transition-transform duration-700 group-hover:scale-110"

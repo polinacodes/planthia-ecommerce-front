@@ -53,7 +53,7 @@ export default function NewsletterPopup() {
             </div>
 
             <div className="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center">
-              <span className="inline-block px-3 py-1 rounded-full bg-planthia-light-green/20 text-planthia-green font-bold text-[10px] uppercase tracking-[0.2em] mb-4 self-start">
+              <span className="inline-block px-3 py-1 rounded-full bg-planthia-green/10 text-planthia-green-dark font-bold text-[10px] uppercase tracking-[0.2em] mb-4 self-start">
                 Exclusive Access
               </span>
               <h2 className="text-4xl font-headline font-extrabold text-planthia-dark mb-3">
