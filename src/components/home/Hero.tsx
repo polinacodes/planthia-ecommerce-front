@@ -123,7 +123,7 @@ export default function Hero() {
               className="absolute top-0 left-1/2 -translate-x-1/2 aspect-[1086/1448] w-[max(100cqw,75cqh)] sm:max-md:w-[75cqh] [--plant-scale:0.92] max-[370px]:[--plant-scale:0.86] min-[1440px]:scale-[0.85] origin-[50%_46%]"
             >
               {/* CÍRCULOS (centrados en la maceta; para subirlos o bajarlos, cambiá el 48% de top-[calc(48%*…)]) */}
-              <div className="absolute left-[51%] top-[calc(50%*var(--plant-scale))] -translate-x-1/2 -translate-y-1/2 w-[78%] max-[370px]:w-[66%] sm:w-[80%] aspect-square">
+              <div className="absolute left-1/2 lg:left-[51%] top-[calc(50%*var(--plant-scale))] -translate-x-1/2 -translate-y-1/2 w-[78%] max-[370px]:w-[66%] sm:w-[80%] aspect-square">
                 {/* Círculo Exterior */}
                 <div className="absolute inset-0 border-[4px] sm:border-[6px] border-white rounded-full shadow-md" />
                 {/* Círculo Interior */}
@@ -193,7 +193,11 @@ export default function Hero() {
           </div>
 
           {/* CARD */}
-          <div className="absolute bottom-40 sm:bottom-40 md:bottom-80 lg:bottom-60 xl:bottom-90 2xl:bottom-120 left-4 sm:left-10 md:left-20 lg:left-0 xl:left-10 z-20
+          {/* Posición por pantalla: bottom (altura) y left; el tamaño se ajusta con scale desde la esquina de abajo a la izquierda.
+              Celular chico (<400px): más arriba. Celular grande (400-639px): un poco más grande y más arriba.
+              Tablet ancha (900-1023px, Surface): más grande. 1280-1535px (Nest Hub): un poco más abajo. 1536px o más: más grande */}
+          <div className="absolute bottom-50 min-[400px]:bottom-48 sm:bottom-40 md:bottom-80 lg:bottom-60 xl:bottom-[330px] 2xl:bottom-120 left-4 sm:left-10 md:left-20 lg:left-0 xl:left-10 z-20
+              origin-bottom-left min-[400px]:max-sm:scale-110 min-[900px]:max-lg:scale-[1.2] 2xl:scale-[1.2]
               bg-white/60
               backdrop-blur-md
               border border-white/80
