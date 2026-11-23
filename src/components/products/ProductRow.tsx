@@ -15,12 +15,17 @@ const CARD = 'bg-white border border-planthia-dark/[0.06] rounded-[20px]';
 // Insumo recomendado, con botón para sumarlo al carrito
 // compact: versión sin caja y con botón redondo, para columnas angostas (barra lateral del blog)
 export default function ProductRow({ product, reason, compact = false }: { product: any; reason?: string; compact?: boolean }) {
-  const { addItem, cart } = useCart();
+  const { addItem, cart, openCart } = useCart();
   const inCart = cart.some((item) => isCartItemOfProduct(item, product));
   const hasVariants = Array.isArray(product.variants) && product.variants.length > 0;
   const outOfStock = (Number(product.stock) || 0) <= 0;
 
+  // Si ya está en el carrito, abre el carrito en vez de sumar otra unidad (igual que el botón de la guía)
   const handleAdd = () => {
+    if (inCart) {
+      openCart();
+      return;
+    }
     const added = addItem({
       id: String(product.id),
       documentId: product.documentId,
@@ -53,8 +58,8 @@ export default function ProductRow({ product, reason, compact = false }: { produ
           <button
             onClick={handleAdd}
             disabled={outOfStock}
-            aria-label={outOfStock ? 'Sin stock' : `Agregar ${product.name} al carrito`}
-            title={outOfStock ? 'Sin stock' : inCart ? 'Agregado' : 'Agregar al carrito'}
+            aria-label={outOfStock ? 'Sin stock' : inCart ? `${product.name} ya está en tu carrito: ver carrito` : `Agregar ${product.name} al carrito`}
+            title={outOfStock ? 'Sin stock' : inCart ? 'Ya está en tu carrito' : 'Agregar al carrito'}
             className={inCart ? 'btn btn-secondary w-9 h-9 p-0 rounded-full' : 'w-9 h-9 rounded-full flex items-center justify-center bg-planthia-green text-white hover:bg-[#C1D37F] hover:text-[#4F7A2E] transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed'}
           >
             {inCart ? <Check size={16} /> : <Plus size={16} />}
@@ -89,7 +94,7 @@ export default function ProductRow({ product, reason, compact = false }: { produ
           <button
             onClick={handleAdd}
             disabled={outOfStock}
-            aria-label={outOfStock ? `${product.name}: sin stock` : inCart ? `Agregar otro ${product.name} al carrito` : `Agregar ${product.name} al carrito`}
+            aria-label={outOfStock ? `${product.name}: sin stock` : inCart ? `${product.name} ya está en tu carrito: ver carrito` : `Agregar ${product.name} al carrito`}
             className={`sm:hidden flex-shrink-0 ${inCart ? 'btn btn-secondary w-10 h-10 p-0 rounded-full' : 'w-10 h-10 rounded-full flex items-center justify-center bg-planthia-green text-white hover:bg-[#C1D37F] hover:text-[#4F7A2E] transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed'}`}
           >
             {inCart ? <Check size={18} /> : <Plus size={18} />}
