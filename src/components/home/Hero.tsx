@@ -120,7 +120,7 @@ export default function Hero() {
                 para que no se corte abajo). --plant-scale achica solo la planta (desde arriba, así las sogas siguen saliendo del tope); los círculos mantienen su tamaño y bajan/suben con la maceta. 1 = tamaño original. Los círculos van adentro en %,
                 así siempre quedan centrados en la maceta y escalan junto con la planta. */}
             <div
-              className="absolute top-0 left-1/2 -translate-x-1/2 aspect-[1086/1448] w-[max(100cqw,75cqh)] sm:max-md:w-[75cqh] [--plant-scale:0.92] max-[370px]:[--plant-scale:0.86] min-[1440px]:scale-[0.85] origin-[50%_46%]"
+              className="absolute top-0 left-1/2 -translate-x-1/2 aspect-[1086/1448] w-[max(100cqw,75cqh)] sm:max-md:w-[75cqh] [--plant-scale:0.92] max-[370px]:[--plant-scale:0.86] 2xl:scale-[0.85] origin-[50%_46%]"
             >
               {/* CÍRCULOS (centrados en la maceta; para subirlos o bajarlos, cambiá el 48% de top-[calc(48%*…)]) */}
               <div className="absolute left-1/2 lg:left-[51%] top-[calc(50%*var(--plant-scale))] -translate-x-1/2 -translate-y-1/2 w-[78%] max-[370px]:w-[66%] sm:w-[80%] aspect-square">
