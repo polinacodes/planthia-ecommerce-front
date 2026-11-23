@@ -4,12 +4,12 @@
 export const PRODUCTS_QUERY =
   'populate=subcategory&populate=metadata&populate=variants&pagination[pageSize]=100';
 
-// Se usa en el servidor. Queda en caché 5 minutos (igual que el blog).
+// Se usa en el servidor. Queda en caché 1 minuto: los cambios de Strapi (precios, stock, textos) tardan hasta 1 minuto en verse.
 // Si Strapi falla devuelve null y el shop los pide desde el navegador, como antes.
 export async function getShopProducts(): Promise<any[] | null> {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/products?${PRODUCTS_QUERY}`, {
-      next: { revalidate: 300 },
+      next: { revalidate: 60 },
     });
     if (!res.ok) return null;
     const json = await res.json();

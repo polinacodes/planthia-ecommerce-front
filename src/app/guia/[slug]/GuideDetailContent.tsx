@@ -10,6 +10,8 @@ import { ArrowUp, Droplets, Leaf, MapPin, PawPrint, Scissors, Sun, Thermometer, 
 import { usePlants } from '@/hooks/usePlants';
 import ProductRow from '@/components/products/ProductRow';
 import ShareButton from '@/components/share/ShareButton';
+import { toast } from 'sonner';
+import { useCart, isCartItemOfProduct } from '@/hooks/useCart';
 import { careTipsList, difficultyLabel, getRecommendedProducts, isGuidePlant, slugify } from '@/lib/guide';
 
 const formatPrice = (value: number) => Math.round(value).toLocaleString('es-AR');
@@ -33,6 +35,7 @@ function Fact({ icon: Icon, label, value }: { icon: any; label: string; value?: 
 export default function GuideDetailContent({ initialPlants }: { initialPlants?: any[] | null }) {
   const { slug } = useParams<{ slug: string }>();
   const { plants: products, loading } = usePlants(initialPlants);
+  const { addItem, cart, openCart } = useCart();
 
   const plant = useMemo(
     () => products.filter(isGuidePlant).find((p) => slugify(p.name) === slug),
@@ -58,6 +61,22 @@ export default function GuideDetailContent({ initialPlants }: { initialPlants?: 
   const tips = careTipsList(m);
   const difficulty = difficultyLabel(m);
   const inStock = (Number(plant.stock) || 0) > 0;
+  const hasVariants = Array.isArray(plant.variants) && plant.variants.length > 0;
+  const inCart = cart.some((item) => isCartItemOfProduct(item, plant));
+
+  // Sin colores: se agrega directo al carrito desde la guía
+  const handleAdd = () => {
+    const added = addItem({
+      id: String(plant.id),
+      documentId: plant.documentId,
+      name: plant.name,
+      price: plant.price,
+      image: plant.image,
+      quantity: 1,
+      stock: Number(plant.stock) || 0,
+    });
+    if (added) toast.success(`${plant.name} agregada al carrito`);
+  };
   const shortName = plant.name.split(' ')[0];
 
   return (
@@ -130,7 +149,17 @@ export default function GuideDetailContent({ initialPlants }: { initialPlants?: 
                   {inStock ? `La tenemos en la tienda a $${formatPrice(plant.price)}` : 'Fijate más adelante o mirá otras plantas parecidas.'}
                 </p>
               </div>
-              <Link href={productPath(plant)} className="btn btn-primary btn-md">Ver en la tienda</Link>
+              {/* Con colores: va a la ficha para elegir. Sin colores: agrega directo (y si ya está, abre el carrito).
+                  Sin stock: link a la ficha, como antes */}
+              {!inStock ? (
+                <Link href={productPath(plant)} className="btn btn-secondary btn-md">Ver en la tienda</Link>
+              ) : hasVariants ? (
+                <Link href={productPath(plant)} className="btn btn-primary btn-md">Elegir color</Link>
+              ) : inCart ? (
+                <button type="button" onClick={openCart} className="btn btn-secondary btn-md">Ya está en tu carrito</button>
+              ) : (
+                <button type="button" onClick={handleAdd} className="btn btn-primary btn-md">Agregar al carrito</button>
+              )}
             </div>
           </div>
         </section>
