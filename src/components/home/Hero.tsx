@@ -160,10 +160,10 @@ export default function Hero() {
                   })}
                 </motion.div>
 
-                {/* PLANTA (Monstera apoyada): un poco más grande que el círculo (106%), así las hojas
-                    asoman por arriba y la maceta llega casi al borde de abajo. Va después de los íconos,
-                    así queda por delante de ellos. Para moverla: -top-[5%] (arriba/abajo) y w-[106%] (tamaño) */}
-                <div className="absolute left-1/2 -translate-x-1/2 -top-[5%] w-[106%] aspect-square">
+                {/* PLANTA (Monstera apoyada): 92% del círculo, así las hojas
+                    asoman apenas por arriba y la maceta queda cerca del borde de abajo. Va después de los íconos,
+                    así queda por delante de ellos. Para moverla: top-[3%] (arriba/abajo) y w-[92%] (tamaño) */}
+                <div className="absolute left-1/2 -translate-x-1/2 top-[3%] w-[92%] aspect-square">
                   <Image
                     src="/hero-monstera.webp"
                     alt="Monstera deliciosa en maceta blanca"
@@ -197,20 +197,20 @@ export default function Hero() {
               bg-white/60
               backdrop-blur-md
               border border-white/80
-              p-4 sm:p-3 md:p-4 lg:p-3 xl:p-4 rounded-xl
-              flex items-center gap-3 sm:gap-4
-              max-w-[260px] sm:max-w-[300px] lg:max-w-[300px] xl:max-w-[400px] 2xl:max-w-[450px]
+              p-2.5 sm:p-3 md:p-4 lg:p-3 xl:p-4 rounded-xl
+              flex items-center gap-2.5 sm:gap-4
+              max-w-[200px] sm:max-w-[300px] lg:max-w-[300px] xl:max-w-[400px] 2xl:max-w-[450px]
               shadow-[0_12px_40px_0_rgba(0,0,0,0.06)]">
 
-            <div className="bg-white p-2 sm:p-2 lg:p-2 xl:p-2 rounded-xl shadow-sm flex-shrink-0">
-              <Star className="w-5 h-5 sm:w-6 sm:h-6 text-planthia-green fill-planthia-green" />
+            <div className="bg-white p-1.5 sm:p-2 lg:p-2 xl:p-2 rounded-lg sm:rounded-xl shadow-sm flex-shrink-0">
+              <Star className="w-4 h-4 sm:w-6 sm:h-6 text-planthia-green fill-planthia-green" />
             </div>
 
             <div className="flex flex-col">
-              <p className="font-headline font-bold text-planthia-dark text-sm sm:text-base leading-tight">
+              <p className="font-headline font-bold text-planthia-dark text-xs sm:text-base leading-tight">
                 La más vendida
               </p>
-              <p className="font-body text-[10px] sm:text-xs text-planthia-dark/50 mt-1 leading-snug">
+              <p className="font-body text-[10px] sm:text-xs text-planthia-dark/50 mt-0.5 sm:mt-1 leading-snug">
                 Monstera deliciosa
               </p>
             </div>
