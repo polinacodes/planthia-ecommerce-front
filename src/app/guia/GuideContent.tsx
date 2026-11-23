@@ -55,7 +55,7 @@ export default function GuideContent({ initialPlants }: { initialPlants?: any[] 
   const isFirstLoad = gridKey === firstKey.current;
 
   return (
-    <main className="min-h-screen bg-planthia-cream pb-24">
+    <main data-page-bg="top" className="min-h-screen pb-24">
       <div className="max-w-[1600px] mx-auto px-6 sm:px-12">
         {/* Encabezado limpio (mismo estilo que la tienda y el blog), con el buscador a la derecha */}
         <PageHeader

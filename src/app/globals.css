@@ -88,3 +88,30 @@
   }
   .pill-crescent:hover { --ring: var(--color-planthia-green); --fill: #eaf1e3; }
 }
+
+/* ============================================================
+   DEGRADADO DE FONDO POR PÁGINA
+   Va en el fondo del body (así también pasa por detrás del nav, sin cortes).
+   Cada página elige el suyo con data-page-bg en su contenedor principal:
+   - "top":  verde suave arriba a la derecha (home, shop, guía, blog)
+   - "auth": el degradado verde + terracota de las páginas de cuenta (login, registro, etc.)
+   Las páginas sin data-page-bg (ficha de producto, artículo, mi cuenta...) quedan lisas.
+   ============================================================ */
+body:has([data-page-bg="top"]) {
+  background-image: radial-gradient(
+    55vw 720px at 90% 4%,
+    rgb(115 157 82 / 0.28) 0%,
+    rgb(115 157 82 / 0.17) 25%,
+    rgb(115 157 82 / 0.08) 50%,
+    rgb(115 157 82 / 0.025) 75%,
+    rgb(115 157 82 / 0) 100%
+  );
+  background-repeat: no-repeat;
+  background-size: 100% 1100px;
+}
+
+body:has([data-page-bg="auth"]) {
+  background-image: var(--background-image-planthia-gradient);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}

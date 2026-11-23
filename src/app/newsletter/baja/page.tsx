@@ -35,7 +35,7 @@ function UnsubscribeContent() {
   };
 
   return (
-    <main className="min-h-screen bg-planthia-gradient font-body text-planthia-dark flex items-center justify-center p-6 relative">
+    <main data-page-bg="auth" className="min-h-screen font-body text-planthia-dark flex items-center justify-center p-6 relative">
       <div className="w-full max-w-lg bg-white rounded-3xl shadow-xl p-8 md:p-12 z-10 text-center space-y-6">
         {status === 'done' ? (
           <>

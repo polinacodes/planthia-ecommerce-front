@@ -159,9 +159,24 @@ export default function Hero() {
                     );
                   })}
                 </motion.div>
+
+                {/* PLANTA (Monstera apoyada): un poco más grande que el círculo (106%), así las hojas
+                    asoman por arriba y la maceta llega casi al borde de abajo. Va después de los íconos,
+                    así queda por delante de ellos. Para moverla: -top-[5%] (arriba/abajo) y w-[106%] (tamaño) */}
+                <div className="absolute left-1/2 -translate-x-1/2 -top-[5%] w-[106%] aspect-square">
+                  <Image
+                    src="/hero-monstera.webp"
+                    alt="Monstera deliciosa en maceta blanca"
+                    fill
+                    preload
+                    fetchPriority="high"
+                    className="object-contain transition-transform duration-700 ease-out hover:scale-105"
+                    sizes="(max-width: 1023px) 85vw, 45vw"
+                  />
+                </div>
               </div>
 
-              {/* La planta se achica desde el borde de arriba (ver --plant-scale) */}
+              {/* PLANTA ANTERIOR (pothos colgante): se achicaba desde el borde de arriba con --plant-scale
               <div className="absolute inset-0 origin-top scale-[var(--plant-scale)]">
               <Image
                 src="/heroo-corto.webp"
@@ -173,6 +188,7 @@ export default function Hero() {
                 sizes="(max-width: 1023px) 100vw, 55vw"
               />
               </div>
+              */}
             </div>
           </div>
 
@@ -195,7 +211,7 @@ export default function Hero() {
                 La más vendida
               </p>
               <p className="font-body text-[10px] sm:text-xs text-planthia-dark/50 mt-1 leading-snug">
-                Marble Queen pothus
+                Monstera deliciosa
               </p>
             </div>
           </div>

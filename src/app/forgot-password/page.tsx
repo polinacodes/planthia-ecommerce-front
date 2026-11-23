@@ -27,7 +27,7 @@ export default function ForgotPasswordPage() {
 
   if (sent) {
     return (
-      <main className="min-h-screen bg-planthia-gradient font-body text-planthia-dark flex items-center justify-center p-6 relative">
+      <main data-page-bg="auth" className="min-h-screen font-body text-planthia-dark flex items-center justify-center p-6 relative">
         <div className="w-full max-w-lg bg-white rounded-3xl shadow-xl p-8 md:p-12 z-10 text-center space-y-6">
           <CheckCircle className="w-16 h-16 text-planthia-green mx-auto" strokeWidth={1.5} />
           <div>
@@ -51,7 +51,7 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <main className="min-h-screen bg-planthia-gradient font-body text-planthia-dark flex items-center justify-center p-6 relative">
+    <main data-page-bg="auth" className="min-h-screen font-body text-planthia-dark flex items-center justify-center p-6 relative">
       <div className="w-full max-w-lg bg-white rounded-3xl shadow-xl p-8 md:p-12 z-10">
         <div className="flex flex-col items-center text-center mb-8">
           <Logo symbolOnly className="w-12 h-12 mb-5" />

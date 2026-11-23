@@ -33,7 +33,7 @@ export default async function BlogPage({ searchParams }: { searchParams: Promise
 
   return (
     <>
-    <main className="bg-planthia-cream pb-24">
+    <main data-page-bg="top" className="pb-24">
       <div className="max-w-[1600px] mx-auto px-6 sm:px-12">
         <PageHeader eyebrow="#DiarioVerde" title="Blog" subtitle="Ideas, trucos y cuidados para tu jungla urbana." />
 
