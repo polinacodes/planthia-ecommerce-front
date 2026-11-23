@@ -1,4 +1,6 @@
-//src/components/products/RecommendedSection.tsx
+// src/components/home/RecommendedSection.tsx
+// "Más vendidas": carrusel con las mismas tarjetas del shop.
+// La versión anterior (tarjetas horizontales que se agrandan) está guardada en src/components/_archive/home-cards
 "use client";
 
 import React, { useState, useEffect } from 'react';
@@ -6,14 +8,13 @@ import Link from 'next/link';
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { Reveal } from '@/components/motion/Reveal';
-import ProductCard from '../products/ProductCard';
+import ProductCardShop from '../products/ProductCardShop';
 
 // Máximo de plantas destacadas en el carrusel de la home
 const MAX_FEATURED = 10;
 
 const RecommendedSection = ({ plants }: { plants: any[] }) => {
   const featuredPlants = plants.slice(0, MAX_FEATURED);
-  const [activeId, setActiveId] = useState<string | number | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [visibleCount, setVisibleCount] = useState(4);
 
@@ -34,22 +35,10 @@ const RecommendedSection = ({ plants }: { plants: any[] }) => {
   const mobilePlants = plants.slice(0, MAX_FEATURED);
 
   useEffect(() => {
-    const handleClickOutside = () => {
-      if (activeId !== null) {
-        setActiveId(null);
-      }
-    };
-
-    document.addEventListener('click', handleClickOutside);
-    return () => document.removeEventListener('click', handleClickOutside);
-  }, [activeId]);
-
-  useEffect(() => {
     const handleResize = () => {
       const width = window.innerWidth;
-      if (width < 640) setVisibleCount(1);
-      else if (width < 1280) setVisibleCount(2);
-      else if (width < 1536) setVisibleCount(3);
+      // Desde tablet: 3 tarjetas; desde 1280px: 4 (igual que la grilla del shop)
+      if (width < 1280) setVisibleCount(3);
       else setVisibleCount(4);
     };
     handleResize();
@@ -72,11 +61,6 @@ const RecommendedSection = ({ plants }: { plants: any[] }) => {
   };
 
   const visiblePlants = featuredPlants.slice(currentIndex, currentIndex + visibleCount);
-
-  const handleCardClick = (plantId: string | number, e: React.MouseEvent) => {
-    e.stopPropagation();
-    setActiveId(activeId === plantId ? null : plantId);
-  };
 
 
   return (
@@ -106,14 +90,11 @@ const RecommendedSection = ({ plants }: { plants: any[] }) => {
     <section aria-label="Más vendidas" className="pt-2 md:pt-0 pb-8 px-4 sm:px-6 md:px-12 max-w-[1600px] mx-auto bg-[#F7F5F0]">
       {/* VISTA MOBILE: Scroll horizontal nativo */}
       <div className="md:hidden">
-        <div className="flex gap-4 overflow-x-auto pb-4 -mr-4 pr-4 snap-x snap-mandatory">
+        <div className="flex gap-4 overflow-x-auto pt-2 pb-4 -mx-4 px-4 sm:-mx-6 sm:px-6 scroll-px-4 sm:scroll-px-6 snap-x snap-mandatory">
           {mobilePlants.map((plant, index) => (
-            <motion.div key={`mobile-${plant.id}`} {...(index < 2 ? cardReveal(index, index === Math.min(mobilePlants.length, 2) - 1) : {})} className="min-w-[280px] max-w-[320px] snap-center flex-shrink-0">
-              <ProductCard
-                plant={plant}
-                isActive={activeId === plant.id}
-                onClick={(e: React.MouseEvent) => handleCardClick(plant.id, e)}
-              />
+            // En celular se ven dos tarjetas y asoma la tercera, para que se note que se desliza
+            <motion.div key={`mobile-${plant.id}`} {...(index < 2 ? cardReveal(index, index === Math.min(mobilePlants.length, 2) - 1) : {})} className="w-[44%] sm:w-[30%] snap-start flex-shrink-0 [&>*]:h-full">
+              <ProductCardShop product={plant} />
             </motion.div>
           ))}
         </div>
@@ -142,19 +123,11 @@ const RecommendedSection = ({ plants }: { plants: any[] }) => {
             initial={{ opacity: 0.6, x: 10 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ type: "spring", stiffness: 500, damping: 35, mass: 0.5 }}
-            className={`grid gap-4 lg:gap-6 ${visibleCount === 2 ? 'grid-cols-2' :
-                visibleCount === 3 ? 'grid-cols-3' :
-                  'grid-cols-4'
-              }`}
+            className={`grid gap-4 lg:gap-6 ${visibleCount === 3 ? 'grid-cols-3' : 'grid-cols-4'}`}
           >
             {visiblePlants.map((plant, index) => (
-              <motion.div key={`carousel-${plant.id}`} {...cardReveal(index, index === visiblePlants.length - 1)} className="pt-4 pb-4 lg:pb-6 w-full">
-                
-                <ProductCard
-                  plant={plant}
-                  isActive={activeId === plant.id}
-                  onClick={(e: React.MouseEvent) => handleCardClick(plant.id, e)}
-                />
+              <motion.div key={`carousel-${plant.id}`} {...cardReveal(index, index === visiblePlants.length - 1)} className="pt-4 pb-4 lg:pb-6 w-full [&>*]:h-full">
+                <ProductCardShop product={plant} />
               </motion.div>
             ))}
           </motion.div>

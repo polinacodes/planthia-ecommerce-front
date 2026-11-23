@@ -1,3 +1,5 @@
+// ARCHIVADO (no se usa): tarjeta horizontal de la home que se pone verde y se agranda al tocarla.
+// La usa RecommendedSectionHorizontal.tsx, en esta misma carpeta.
 "use client";
 
 import { productPath } from '@/lib/products';
