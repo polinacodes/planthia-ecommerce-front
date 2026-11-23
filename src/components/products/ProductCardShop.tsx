@@ -159,12 +159,13 @@ const ProductCardShop = ({ product, headingAs: Heading = 'h3', priority = false 
                     ? `Agregar otra unidad de ${product.name} (${quantityInCart} en el carrito)`
                     : `Agregar ${product.name} al carrito`
             }
-            className={`text-white font-headline font-bold w-[34px] h-[34px] sm:w-10 sm:h-10 flex-shrink-0 md:w-auto md:h-auto md:px-4 md:py-2 rounded-full transition-colors flex items-center justify-center gap-2
+            className={`font-headline font-bold w-[34px] h-[34px] sm:w-10 sm:h-10 flex-shrink-0 md:w-auto md:h-auto md:px-4 md:py-2 rounded-full transition-colors flex items-center justify-center gap-2 border-[1.5px]
               ${isOutOfStock 
-                ? "bg-gray-400 cursor-not-allowed" 
+                ? "text-white bg-gray-400 border-gray-400 cursor-not-allowed" 
                 : isAlreadyInCart 
-                  ? "bg-planthia-light-green hover:bg-planthia-green-dark" 
-                  : "bg-planthia-green hover:bg-planthia-green-dark"
+                  // Ya en el carrito: blanco con contorno y letras verdes (igual que "Agregado" de la guía y el blog)
+                  ? "bg-white text-planthia-green border-[#dfe5d8] hover:border-planthia-green hover:bg-[#f3f7ef]" 
+                  : "text-white bg-planthia-green border-planthia-green hover:bg-planthia-green-dark hover:border-planthia-green-dark"
               }`}
           >
             {/* VISTA MOBILE */}
