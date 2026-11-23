@@ -267,20 +267,21 @@ function NavbarContent() {
                           transformOrigin: 'top'
                         }}
                         // className="absolute right-[-3rem] top-[3.7rem] w-44 bg-planthia-cream/90 shadow-xl rounded-b-xl rounded-t-none p-2 z-40 border-x border-b border-white/20 origin-top-right"
-                        className="absolute right-[-3rem] top-[3rem] mt-3 w-44 bg-planthia-cream/90 shadow-xl rounded-xl p-2 z-40 border border-white/20 origin-top-right before:content-[''] before:absolute before:bottom-full before:right-[3.35rem] before:border-[8px] before:border-transparent before:border-b-planthia-cream/90"
+                        className="absolute right-[-3rem] top-[3rem] mt-3 w-48 bg-planthia-cream/90 shadow-xl rounded-xl p-4 z-40 border border-white/20 origin-top-right before:content-[''] before:absolute before:bottom-full before:right-[3.35rem] before:border-[8px] before:border-transparent before:border-b-planthia-cream/90"
                       >
-                        <div className="p-2 space-y-1">
+                        {/* Mismo estilo de ítems que el desplegable de favoritos (tarjetitas blancas translúcidas) */}
+                        <div className="space-y-2">
                           <Link
                             href="/account"
                             onClick={() => setIsUserMenuOpen(false)}
-                            className="flex items-center gap-3 w-full px-4 py-3 text-sm font-bold text-planthia-dark/90 hover:text-planthia-green transition-all"
+                            className="flex items-center gap-3 w-full px-4 py-3 rounded-lg bg-white/40 border border-planthia-dark/5 text-sm font-bold text-planthia-dark/90 hover:bg-white/70 hover:text-planthia-green transition-all"
                           >
                             <Settings size={16} />
                             Mi Cuenta
                           </Link>
                           <button
                             onClick={handleLogout}
-                            className="flex items-center gap-3 w-full px-4 py-3 text-sm font-bold text-planthia-dark/90 hover:text-red-500 transition-all cursor-pointer"
+                            className="flex items-center gap-3 w-full px-4 py-3 rounded-lg bg-white/40 border border-planthia-dark/5 text-sm font-bold text-planthia-dark/90 hover:bg-white/70 hover:text-red-500 transition-all cursor-pointer"
                           >
                             <LogOut size={16} />
                             Salir
