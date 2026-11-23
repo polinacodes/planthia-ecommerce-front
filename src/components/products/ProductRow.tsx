@@ -94,7 +94,8 @@ export default function ProductRow({ product, reason, compact = false }: { produ
           >
             {inCart ? <Check size={18} /> : <Plus size={18} />}
           </button>
-          <button onClick={handleAdd} disabled={outOfStock} className="hidden sm:inline-flex btn btn-primary btn-sm">
+          {/* Ya en el carrito: blanco con contorno y letras verdes, igual que las tarjetas */}
+          <button onClick={handleAdd} disabled={outOfStock} className={`hidden sm:inline-flex btn btn-sm ${inCart ? 'btn-secondary' : 'btn-primary'}`}>
             {outOfStock ? 'Sin stock' : inCart ? 'Agregado' : 'Agregar'}
           </button>
         </>
